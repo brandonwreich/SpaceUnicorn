@@ -1,0 +1,30 @@
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/obj/x86/Debug/SpaceUnicorn.Icon.ico
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/MonoGame.Framework.dll
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x64/libopenal.so.1
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x64/soft_oal.dll
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x64/libSDL2-2.0.so.0
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x64/SDL2.dll
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x86/libopenal.so.1
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x86/soft_oal.dll
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x86/libSDL2-2.0.so.0
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/x86/SDL2.dll
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/MonoGame.Framework.dll.config
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/libopenal.1.dylib
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/libSDL2-2.0.0.dylib
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/SpaceUnicorn.pdb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/SpaceUnicorn.exe
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/obj/x86/Debug/SpaceUnicorn.exe
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/obj/x86/Debug/SpaceUnicorn.pdb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/Space Unicorn.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Background/space.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Music/Space Unicorn.ogg
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Music/Space Unicorn.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/marshmallowLaser.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Background/spaceBackground.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/enemy.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/explosion.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/glitterExplosion.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/healthPowerUp.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/enemySpawnRateIncrease.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/healthPowerUp.xnb

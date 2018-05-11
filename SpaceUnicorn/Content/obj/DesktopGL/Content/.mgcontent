@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Animation/enemy.png</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Animation/explosion.png</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Animation/marshmallowLaser.png</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Animation/Space Unicorn.png</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Background/spaceBackground.jpg</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Music/Space Unicorn.mp3</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Powers/enemySpawnRateIncrease.png</File>
+    <File>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Powers/healthPowerUp.png</File>
+  </SourceFiles>
+</SourceFileCollection>

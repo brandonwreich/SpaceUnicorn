@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{9A4D983E-9298-4F5D-9691-D3BEC3B12B86}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceUnicorn/Controller/SpaceUnicorn.cs">
+    <Files>
+      <File FileName="SpaceUnicorn/Controller/SpaceUnicorn.cs" Line="499" Column="7" />
+      <File FileName="SpaceUnicorn/Model/Enemies.cs" Line="37" Column="22" />
+      <File FileName="SpaceUnicorn/Model/MarshmallowLaser.cs" Line="87" Column="4" />
+      <File FileName="SpaceUnicorn/Model/Player.cs" Line="36" Column="4" />
+      <File FileName="SpaceUnicorn/Model/HealthPowerUp.cs" Line="59" Column="4" />
+      <File FileName="SpaceUnicorn/Model/EnemySpawnRatePowerDown.cs" Line="63" Column="20" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.ItemProperties.SpaceUnicorn PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
