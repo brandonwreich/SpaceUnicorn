@@ -692,7 +692,7 @@ namespace SpaceUnicorn
 		private void AddExplosion(Vector2 position)
 		{
 			Animation explosion = new Animation();
-			explosion.Initialize(explosionTexture, position, 134, 134, 100, 75, Color.White, 1f, false);
+			explosion.Initialize(explosionTexture, position, 134, 134, 12, 45, Color.White, 1f, false);
 			explosions.Add(explosion);
 		}
 
