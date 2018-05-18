@@ -1,0 +1,6 @@
+namespace SpaceUnicorn
+{
+	class CountDownTimer
+	{
+	}
+}

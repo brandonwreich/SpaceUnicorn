@@ -1,12 +1,15 @@
 ﻿<Properties StartupConfiguration="{9A4D983E-9298-4F5D-9691-D3BEC3B12B86}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="SpaceUnicorn/Controller/SpaceUnicorn.cs">
     <Files>
-      <File FileName="SpaceUnicorn/Controller/SpaceUnicorn.cs" Line="499" Column="7" />
-      <File FileName="SpaceUnicorn/Model/Enemies.cs" Line="37" Column="22" />
-      <File FileName="SpaceUnicorn/Model/MarshmallowLaser.cs" Line="87" Column="4" />
-      <File FileName="SpaceUnicorn/Model/Player.cs" Line="36" Column="4" />
-      <File FileName="SpaceUnicorn/Model/HealthPowerUp.cs" Line="59" Column="4" />
-      <File FileName="SpaceUnicorn/Model/EnemySpawnRatePowerDown.cs" Line="63" Column="20" />
+      <File FileName="SpaceUnicorn/Controller/SpaceUnicorn.cs" Line="531" Column="47" />
+      <File FileName="SpaceUnicorn/Model/Enemy.cs" Line="78" Column="4" />
+      <File FileName="SpaceUnicorn/Model/Player.cs" Line="17" Column="4" />
+      <File FileName="SpaceUnicorn/Model/Powers/SlowMotion.cs" Line="83" Column="4" />
+      <File FileName="SpaceUnicorn/Model/Powers/HealthBoost.cs" Line="7" Column="26" />
+      <File FileName="SpaceUnicorn/Model/Powers/Invasion.cs" Line="7" Column="22" />
+      <File FileName="SpaceUnicorn/Model/Powers/HyperSpace.cs" Line="54" Column="4" />
+      <File FileName="SpaceUnicorn/Controller/Program.cs" Line="28" Column="1" />
+      <File FileName="SpaceUnicorn/Model/Powers/SpeedPower.cs" Line="95" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

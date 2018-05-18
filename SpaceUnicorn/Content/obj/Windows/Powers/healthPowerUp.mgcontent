@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/Powers/healthPowerUp.png</SourceFile>
-  <SourceTime>2018-05-10T09:26:09-06:00</SourceTime>
+  <SourceTime>2018-05-14T07:32:09-06:00</SourceTime>
   <DestFile>/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/Content/bin/Windows/Powers/healthPowerUp.xnb</DestFile>
-  <DestTime>2018-05-10T09:26:33-06:00</DestTime>
+  <DestTime>2018-05-14T08:36:03-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-04-25T09:21:10-06:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

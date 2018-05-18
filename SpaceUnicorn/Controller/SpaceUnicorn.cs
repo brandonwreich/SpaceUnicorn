@@ -4,10 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Audio;
+using System.Timers;
 
 using SpaceUnicorn.Model;
 using SpaceUnicorn.View;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace SpaceUnicorn
 {
@@ -24,7 +26,7 @@ namespace SpaceUnicorn
 
 		// Init enemy
 		private Texture2D enemyTexture;
-		private List<Enemies> enemies;
+		private List<Enemy> enemies;
 
 		// Enemy spawn rate
 		private TimeSpan enemySpawnTime;
@@ -63,19 +65,39 @@ namespace SpaceUnicorn
 		private Texture2D explosionTexture;
 		private List<Animation> explosions;
 
+		// Fonts
+		private int score;
+		private SpriteFont font;
+
 		/* Power Ups/Downs */
 
+		private static System.Timers.Timer powerTimer;
+		private int countSeconds;
+
 		// Health power up
-		private Texture2D healthPowerPic;
-		private List<HealthPowerUp> healthy;
+		private Texture2D healthBoostIcon;
+		private List<HealthBoost> healthy;
 		private TimeSpan healthSpawnTime;
 		private TimeSpan previousHealthSpawnTime;
 
+		//  Speed power
+		private Texture2D speedIcon;
+		private List<SpeedPower> speed;
+		private TimeSpan speedSpawnTime;
+		private TimeSpan previousSpeedSpawnTime;
+
 		// Enemy Spawn Rate power down
-		private Texture2D enemySpawnPowerDown;
-		private List<EnemySpawnRatePowerDown> invasion ;
-		private TimeSpan invasionSpawnTime;
-		private TimeSpan previousInvasionSpawnTime;
+		private bool isInvading;
+
+		// Slow motion power up
+		private bool isSlowingDown;
+
+		// Hyper space
+		private Texture2D hyperSpaceIcon;
+		private List<HyperSpace> hyperSpace;
+		private TimeSpan hyperSpaceSpawnTime;
+		private TimeSpan previousHyperSpaceSpawnTime;
+		private bool isJumping;
 
 		public SpaceUnicorn()
 		{
@@ -98,7 +120,7 @@ namespace SpaceUnicorn
 			playerMoveSpeed = 8.0f;
 
 			// Init enemy class
-			enemies = new List<Enemies>();
+			enemies = new List<Enemy>();
 
 			// Enemy spawn time
 			previousEnemySpawnTime = TimeSpan.Zero;
@@ -119,18 +141,43 @@ namespace SpaceUnicorn
 			// Explosions
 			explosions = new List<Animation>();
 
-			powerTime = TimeSpan.FromSeconds(10);
+			// Score
+			score = 0;
+
+			/* Power ups/downs */
+
+			powerTimer = new System.Timers.Timer();
+			powerTimer.Interval = 1;
+			powerTimer.Elapsed += OnTimedEvent;
+			powerTimer.Enabled = false;
+			powerTimer.AutoReset = true;
+			countSeconds = 10000;
+
+			// Time power
+			powerTime = TimeSpan.FromSeconds(10f);
 			endPowerTime = TimeSpan.Zero;
 
 			// Health power up
-			healthy = new List<HealthPowerUp>();
+			healthy = new List<HealthBoost>();
 			previousHealthSpawnTime = TimeSpan.Zero;
 			healthSpawnTime = TimeSpan.FromMinutes(random.Next(1, 5));
 
+			// Speed Power
+			speed = new List<SpeedPower>();
+			previousSpeedSpawnTime = TimeSpan.Zero;
+			speedSpawnTime = TimeSpan.FromMinutes(random.Next(1, 3));
+
 			// Enemy spawn power down
-			invasion = new List<EnemySpawnRatePowerDown>();
-			previousInvasionSpawnTime = TimeSpan.Zero;
-			invasionSpawnTime = TimeSpan.FromMinutes(random.Next(1, 2));
+			isInvading = false;
+
+			// Slow motion
+			isSlowingDown = false;
+
+			// Hyper space
+			hyperSpace = new List<HyperSpace>();
+			previousHyperSpaceSpawnTime = TimeSpan.Zero;
+			hyperSpaceSpawnTime = TimeSpan.FromMinutes(random.Next(1, 1));
+			isJumping = false;
 
 			base.Initialize();
 		}
@@ -167,11 +214,13 @@ namespace SpaceUnicorn
 			// Load explosion
 			explosionTexture = Content.Load<Texture2D>("Animation/explosion");
 
-			// Load health powerup
-			healthPowerPic = Content.Load<Texture2D>("Powers/healthPowerUp");
+			// Load font
+			font = Content.Load<SpriteFont>("Fonts/gameFont");
 
-			// Load enemy spawn power down
-			enemySpawnPowerDown = Content.Load<Texture2D>("Powers/enemySpawnRateIncrease");
+			// Powers
+			healthBoostIcon = Content.Load<Texture2D>("Powers/healthPowerUp");
+			speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
+			hyperSpaceIcon = Content.Load<Texture2D>("Powers/hyperSpace");
 
 			// Play music
 			PlayMusic(gameMusic);
@@ -216,11 +265,10 @@ namespace SpaceUnicorn
 			// Update the explosions
 			UpdateExplosions(gameTime);
 
-			// Update Health powerup
-			UpdateHealthPowerUp(gameTime);
-
-			// Update Enemy spawn power down
-			UpdateEnemySpawnPowerDown(gameTime);
+			// Update powers
+			UpdateHealthBoost(gameTime);
+			UpdateSpeed(gameTime);
+			UpdateHyperSpace(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -260,17 +308,27 @@ namespace SpaceUnicorn
 				explosions[i].Draw(spriteBatch);
 			}
 
-			// Draw health powerups
+			// Draw health boost
 			for (int i = 0; i < healthy.Count; i++)
 			{
 				healthy[i].Draw(spriteBatch);
 			}
 
-			// Draw enemy spawn power downs
-			for (int i = 0; i < invasion.Count; i++)
+			for (int i = 0; i < speed.Count; i++)
 			{
-				invasion[i].Draw(spriteBatch);
+				speed[i].Draw(spriteBatch);
 			}
+
+			// Draw hyper space power
+			for (int i = 0; i < hyperSpace.Count; i++)
+			{
+				hyperSpace[i].Draw(spriteBatch);
+			}
+
+			// Draw the score
+			spriteBatch.DrawString(font, "Score: " + score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+			// Draw the player health
+			spriteBatch.DrawString(font, "Health: " + player.Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
 
 			//Stop drawing
 			spriteBatch.End();
@@ -287,22 +345,32 @@ namespace SpaceUnicorn
 			player.Position.Y -= currentGamePadState.ThumbSticks.Left.Y * playerMoveSpeed;
 
 			// Use the Keyboard / Dpad
+
+			// Move left
 			if (currentKeyboardState.IsKeyDown(Keys.Left) || currentGamePadState.DPad.Left == ButtonState.Pressed)
 			{
 				player.Position.X -= playerMoveSpeed;
 			}
+
+			// Move right
 			if (currentKeyboardState.IsKeyDown(Keys.Right) || currentGamePadState.DPad.Right == ButtonState.Pressed)
 			{
 				player.Position.X += playerMoveSpeed;
 			}
+
+			// Move up
 			if (currentKeyboardState.IsKeyDown(Keys.Up) || currentGamePadState.DPad.Up == ButtonState.Pressed)
 			{
 				player.Position.Y -= playerMoveSpeed;
 			}
+
+			// Move down
 			if (currentKeyboardState.IsKeyDown(Keys.Down) || currentGamePadState.DPad.Down == ButtonState.Pressed)
 			{
 				player.Position.Y += playerMoveSpeed;
 			}
+
+			// Fire marshmallows
 			if (currentKeyboardState.IsKeyDown(Keys.Space))
 			{
 				if (gameTime.TotalGameTime - previousFireTime > fireTime)
@@ -316,6 +384,12 @@ namespace SpaceUnicorn
 			// Make sure that the player does not go out of bounds
 			player.Position.X = MathHelper.Clamp(player.Position.X, 10, 790);
 			player.Position.Y = MathHelper.Clamp(player.Position.Y, 10, 470);
+
+			if (player.Health <= 0)
+			{
+				player.Health = 100;
+				score = 0;
+			}
 		}
 
 		private void PlayMusic(Song song)
@@ -335,11 +409,11 @@ namespace SpaceUnicorn
 		{
 			Animation enemyAnimation = new Animation();
 
-			enemyAnimation.Initialize(enemyTexture, Vector2.Zero, 80, 40, 1, 5, Color.White, 1f, true);
+			enemyAnimation.Initialize(enemyTexture, Vector2.Zero, 80, 40, 6, 50, Color.White, 1f, true);
 
 			Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + enemyTexture.Width / 2, random.Next(50, GraphicsDevice.Viewport.Height - 50));
 
-			Enemies enemy = new Enemies();
+			Enemy enemy = new Enemy();
 
 			enemy.Initialize(enemyAnimation, position);
 
@@ -355,6 +429,30 @@ namespace SpaceUnicorn
 				AddEnemy();
 			}
 
+			if (isJumping == true)
+			{
+				for (int j = 0; j < enemies.Count; j++)
+				{
+					enemies[j].EnemyMoveSpeed = 50f;
+					enemySpawnTime = TimeSpan.FromSeconds(.000001);
+				}
+			}
+
+			if (isInvading == true)
+			{
+				enemySpawnTime = TimeSpan.FromSeconds(.15f);
+
+				fireTime = TimeSpan.FromSeconds(.00001f);
+			}
+
+			if (isSlowingDown == true)
+			{
+				for (int i = 0; i < enemies.Count; i++)
+				{
+					enemies[i].EnemyMoveSpeed = 3f;
+				}
+			}
+
 			for (int i = enemies.Count - 1; i >= 0; i--)
 			{
 				enemies[i].Update(gameTime);
@@ -366,6 +464,14 @@ namespace SpaceUnicorn
 					{
 						// Add an explosion
 						AddExplosion(enemies[i].Position);
+						if (enemies[i].Position.X <= 0)
+						{
+							score -= enemies[i].ScoreValue;
+						}
+						else
+						{
+							score += enemies[i].ScoreValue;
+						}
 					}
 
 					enemies.RemoveAt(i);
@@ -393,20 +499,20 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void AddHealthPowerUp()
+		private void AddHealthBoost()
 		{
-			HealthPowerUp health = new HealthPowerUp();
-			health.Initialize(GraphicsDevice.Viewport, healthPowerPic, new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2), random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+			HealthBoost health = new HealthBoost();
+			health.Initialize(GraphicsDevice.Viewport, healthBoostIcon, new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2), random.Next(50, GraphicsDevice.Viewport.Height - 50)));
 			healthy.Add(health);
 		}
 
-		private void UpdateHealthPowerUp(GameTime gameTime)
+		private void UpdateHealthBoost(GameTime gameTime)
 		{
 			if (gameTime.TotalGameTime - previousHealthSpawnTime > healthSpawnTime)
 			{
 				previousHealthSpawnTime = gameTime.TotalGameTime;
 
-				AddHealthPowerUp();
+				AddHealthBoost();
 			}
 
 			for (int i = healthy.Count - 1; i >= 0; i--)
@@ -420,29 +526,61 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void AddEnemySpawnPowerDown()
+		private void AddSpeed()
 		{
-			EnemySpawnRatePowerDown spawn = new EnemySpawnRatePowerDown();
-			spawn.Initialize(GraphicsDevice.Viewport, enemySpawnPowerDown, new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2), random.Next(50, GraphicsDevice.Viewport.Height - 50)));
-			invasion.Add(spawn);
+			Animation speedAnimation = new Animation();
+			speedAnimation.Initialize(speedIcon, Vector2.Zero, 40, 40, 10, 30, Color.White, 1f, true);
+
+			Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + enemyTexture.Width / 2, random.Next(50, GraphicsDevice.Viewport.Height - 50));
+
+			SpeedPower speedPower = new SpeedPower();
+			speedPower.Initialize(speedAnimation, position);
+			speed.Add(speedPower);
 		}
 
-		private void UpdateEnemySpawnPowerDown(GameTime gameTime)
+		private void UpdateSpeed(GameTime gameTime)
 		{
-			if (gameTime.TotalGameTime - previousInvasionSpawnTime > invasionSpawnTime)
+			if (gameTime.TotalGameTime - previousSpeedSpawnTime > speedSpawnTime)
 			{
-				previousInvasionSpawnTime = gameTime.TotalGameTime;
+				previousSpeedSpawnTime = gameTime.TotalGameTime;
 
-				AddEnemySpawnPowerDown();
+				AddSpeed();
 			}
 
-			for (int i = invasion.Count - 1; i >= 0; i--)
+			for (int i = speed.Count - 1; i >= 0; i--)
 			{
-				invasion[i].Update(gameTime);
+				speed[i].Update(gameTime);
 
-				if (invasion[i].Active == false)
+				if (speed[i].Active == false)
 				{
-					invasion.RemoveAt(i);
+					speed.RemoveAt(i);
+				}
+			}
+		}
+
+		private void AddHyperSpace()
+		{
+			HyperSpace flash = new HyperSpace();
+			flash.Initialize(GraphicsDevice.Viewport, hyperSpaceIcon, new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2), random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+			hyperSpace.Add(flash);
+		}
+
+		private void UpdateHyperSpace(GameTime gameTime)
+		{
+			if (gameTime.TotalGameTime - previousHyperSpaceSpawnTime > hyperSpaceSpawnTime)
+			{
+				previousHyperSpaceSpawnTime = gameTime.TotalGameTime;
+
+				AddHyperSpace();
+			}
+
+			for (int i = hyperSpace.Count - 1; i >= 0; i--)
+			{
+				hyperSpace[i].Update(gameTime);
+
+				if (hyperSpace[i].Active == false)
+				{
+					hyperSpace.RemoveAt(i);
 				}
 			}
 		}
@@ -457,23 +595,18 @@ namespace SpaceUnicorn
 			// Only create the rectangle once for the player
 			rectangle1 = new Rectangle((int)player.Position.X, (int)player.Position.Y, player.Width - 100, player.Height);
 
-			// Do the collision between the player and the enemies
+			// Player vs enemy
 			for (int i = 0; i < enemies.Count; i++)
 			{
 				rectangle2 = new Rectangle((int)enemies[i].Position.X, (int)enemies[i].Position.Y, enemies[i].Width, enemies[i].Height);
 
-				// Determine if the two objects collided with each other
+
 				if (rectangle1.Intersects(rectangle2))
 				{
-					// Subtract the health from the player based on
-					// the enemy damage
 					player.Health -= enemies[i].Damage;
 
-					// Since the enemy collided with the player
-					// destroy it
 					enemies[i].Health = 0;
 
-					// If the player health is less than zero we died
 					if (player.Health <= 0)
 					{
 						player.Active = false;
@@ -481,29 +614,10 @@ namespace SpaceUnicorn
 				}
 			}
 
-			// Player vs Enemy Spawn Rate power down collision
-			for (int i = 0; i < invasion.Count; i++)
-			{
-				rectangle2 = new Rectangle((int)invasion[i].Position.X, (int)invasion[i].Position.Y, invasion[i].Width, invasion[i].Height);
-
-				if (rectangle1.Intersects(rectangle2))
-				{
-					if (gameTime.TotalGameTime - endPowerTime > powerTime)
-					{
-						endPowerTime = gameTime.TotalGameTime;
-
-						enemySpawnTime = TimeSpan.FromSeconds(.15f);
-
-						fireTime = TimeSpan.FromSeconds(.00001f);
-					}
-						
-					invasion[i].Health = 0;
-				}
-			}
-
-			// Player vs Health power up Collision 
+			// Player vs Health power up 
 			for (int i = 0; i < healthy.Count; i++)
 			{
+				// Create the health power up rectangle
 				rectangle2 = new Rectangle((int)healthy[i].Position.X, (int)healthy[i].Position.Y, healthy[i].Width, healthy[i].Height);
 
 				if (rectangle1.Intersects(rectangle2))
@@ -514,20 +628,60 @@ namespace SpaceUnicorn
 				}
 			}
 
+			//Player vs Speed Power
+			for (int i = 0; i < speed.Count; i++)
+			{
+				// Create slow motion power rectangle
+				rectangle2 = new Rectangle((int)speed[i].Position.X, (int)speed[i].Position.Y, speed[i].Width, speed[i].Height);
+
+				if (rectangle1.Intersects(rectangle2))
+				{
+					var power = random.Next(1, 100);
+
+					if (power > 50)
+					{
+						isInvading = true;
+					}
+					else
+					{
+						isSlowingDown = true;
+					}
+
+					speed[i].Health = 0;
+				}
+
+			}
+
+			// Player vs Hyper Space
+			for (int i = 0; i < hyperSpace.Count; i++)
+			{
+				rectangle2 = new Rectangle((int)hyperSpace[i].Position.X, (int)hyperSpace[i].Position.Y, hyperSpace[i].Width, hyperSpace[i].Height);
+
+				if (rectangle1.Intersects(rectangle2))
+				{
+					powerTimer.Stop();
+					powerTimer.Start();
+
+					hyperSpace[i].Health = 0;
+				}
+			}
+
 			// Projectile vs Enemy Collision
 			for (int i = 0; i < marshmallows.Count; i++)
 			{
 				for (int j = 0; j < enemies.Count; j++)
 				{
-					// Create the rectangles we need to determine if we collided with each other
+					// Create the mashmallow rectangle
 					rectangle1 = new Rectangle((int)marshmallows[i].Position.X - marshmallows[i].Width / 2, (int)marshmallows[i].Position.Y -
 											   marshmallows[i].Height / 2, marshmallows[i].Width, marshmallows[i].Height);
 
+					// Create the enemy rectangle
 					rectangle2 = new Rectangle((int)enemies[j].Position.X - enemies[j].Width / 2, (int)enemies[j].Position.Y - enemies[j].Height / 2, enemies[j].Width, enemies[j].Height);
 
 					// Determine if the two objects collided with each other
 					if (rectangle1.Intersects(rectangle2))
 					{
+						//Enemies take damage and mashmallows disapear
 						enemies[j].Health -= marshmallows[i].Damage;
 						marshmallows[i].Active = false;
 					}
@@ -538,7 +692,7 @@ namespace SpaceUnicorn
 		private void AddExplosion(Vector2 position)
 		{
 			Animation explosion = new Animation();
-			explosion.Initialize(explosionTexture, position, 134, 134, 12, 45, Color.White, 1f, false);
+			explosion.Initialize(explosionTexture, position, 134, 134, 100, 75, Color.White, 1f, false);
 			explosions.Add(explosion);
 		}
 
@@ -551,6 +705,20 @@ namespace SpaceUnicorn
 				{
 					explosions.RemoveAt(i);
 				}
+			}
+		}
+
+		private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			countSeconds--;
+
+			isJumping = true;
+			if (countSeconds == 0)
+			{
+				powerTimer.Stop();
+				powerTimer.Close();
+				isJumping = false;
+				enemySpawnTime = TimeSpan.FromSeconds(1.0f);
 			}
 		}
 	}

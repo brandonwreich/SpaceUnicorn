@@ -28,3 +28,8 @@
 /Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Animation/healthPowerUp.xnb
 /Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/enemySpawnRateIncrease.xnb
 /Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/healthPowerUp.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/slowMotion.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Fonts/File.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Fonts/gameFont.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/hyperSpace.xnb
+/Users/brei8876/Documents/GameDev/SpaceUnicorn/SpaceUnicorn/bin/Debug/Content/Powers/speedIncrease.xnb
