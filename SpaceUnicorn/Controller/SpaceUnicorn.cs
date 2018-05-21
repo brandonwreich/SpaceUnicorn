@@ -8,8 +8,6 @@ using System.Timers;
 
 using SpaceUnicorn.Model;
 using SpaceUnicorn.View;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace SpaceUnicorn
 {
@@ -71,7 +69,7 @@ namespace SpaceUnicorn
 
 		/* Power Ups/Downs */
 
-		private static System.Timers.Timer powerTimer;
+		private static Timer powerTimer;
 		private int countSeconds;
 
 		// Health power up
@@ -146,7 +144,7 @@ namespace SpaceUnicorn
 
 			/* Power ups/downs */
 
-			powerTimer = new System.Timers.Timer();
+			powerTimer = new Timer();
 			powerTimer.Interval = 1;
 			powerTimer.Elapsed += OnTimedEvent;
 			powerTimer.Enabled = false;
@@ -254,7 +252,7 @@ namespace SpaceUnicorn
 			UpdateEnemies(gameTime);
 
 			// Update collisions
-			UpdateCollisions(gameTime);
+			UpdateCollisions();
 
 			// Update background
 			bgLayer1.Update();
@@ -585,7 +583,7 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void UpdateCollisions(GameTime gameTime)
+		private void UpdateCollisions()
 		{
 			// Use the Rectangle's built-in intersect function to 
 			// determine if two objects are overlapping
@@ -708,7 +706,7 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
+		private void OnTimedEvent(object sender, ElapsedEventArgs e)
 		{
 			countSeconds--;
 
