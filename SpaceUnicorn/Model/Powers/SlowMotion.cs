@@ -32,7 +32,7 @@ namespace SpaceUnicorn.Model
 		}
 
 		// Represents the viewable boundary of the game
-		private Viewport viewport;
+		Viewport viewport;
 
 		// Get the width of the powerup
 		public int Width

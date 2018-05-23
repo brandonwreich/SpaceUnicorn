@@ -70,7 +70,7 @@ namespace SpaceUnicorn
 		/* Power Ups/Downs */
 
 		private static Timer powerTimer;
-		private int countSeconds;
+		private int invasionCountSeconds;
 
 		// Health power up
 		private Texture2D healthBoostIcon;
@@ -149,7 +149,7 @@ namespace SpaceUnicorn
 			powerTimer.Elapsed += OnTimedEvent;
 			powerTimer.Enabled = false;
 			powerTimer.AutoReset = true;
-			countSeconds = 10000;
+			invasionCountSeconds = 3000;
 
 			// Time power
 			powerTime = TimeSpan.FromSeconds(10f);
@@ -708,10 +708,10 @@ namespace SpaceUnicorn
 
 		private void OnTimedEvent(object sender, ElapsedEventArgs e)
 		{
-			countSeconds--;
+			invasionCountSeconds--;
 
 			isJumping = true;
-			if (countSeconds == 0)
+			if (invasionCountSeconds == 0)
 			{
 				powerTimer.Stop();
 				powerTimer.Close();
