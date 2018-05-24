@@ -67,7 +67,6 @@ namespace SpaceUnicorn
 			health = 10;
 
 			speedPowerMoveSpeed = 6f;
-
 		}
 
 		public void Update(GameTime gameTime)

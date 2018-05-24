@@ -50,6 +50,7 @@
     <Compile Include="Model\Powers\SlowMotion.cs" />
     <Compile Include="Model\Powers\HyperSpace.cs" />
     <Compile Include="Model\Powers\SpeedPower.cs" />
+    <Compile Include="Model\Meteors.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />

@@ -47,9 +47,6 @@ namespace SpaceUnicorn
 		// Parallaxing Layer
 		private ParallaxingBackground bgLayer1;
 
-		private TimeSpan powerTime;
-		private TimeSpan endPowerTime;
-
 		// Background Song
 		private Song gameMusic;
 
@@ -69,9 +66,6 @@ namespace SpaceUnicorn
 
 		/* Power Ups/Downs */
 
-		private static Timer powerTimer;
-		private int invasionCountSeconds;
-
 		// Health power up
 		private Texture2D healthBoostIcon;
 		private List<HealthBoost> healthy;
@@ -83,6 +77,8 @@ namespace SpaceUnicorn
 		private List<SpeedPower> speed;
 		private TimeSpan speedSpawnTime;
 		private TimeSpan previousSpeedSpawnTime;
+		private static Timer speedTimer;
+		private int speedCountSeconds;
 
 		// Enemy Spawn Rate power down
 		private bool isInvading;
@@ -96,6 +92,8 @@ namespace SpaceUnicorn
 		private TimeSpan hyperSpaceSpawnTime;
 		private TimeSpan previousHyperSpaceSpawnTime;
 		private bool isJumping;
+		private static Timer hyperSpaceTimer;
+		private int hyperSpaceCountSeconds;
 
 		public SpaceUnicorn()
 		{
@@ -144,17 +142,6 @@ namespace SpaceUnicorn
 
 			/* Power ups/downs */
 
-			powerTimer = new Timer();
-			powerTimer.Interval = 1;
-			powerTimer.Elapsed += OnTimedEvent;
-			powerTimer.Enabled = false;
-			powerTimer.AutoReset = true;
-			invasionCountSeconds = 3000;
-
-			// Time power
-			powerTime = TimeSpan.FromSeconds(10f);
-			endPowerTime = TimeSpan.Zero;
-
 			// Health power up
 			healthy = new List<HealthBoost>();
 			previousHealthSpawnTime = TimeSpan.Zero;
@@ -165,7 +152,14 @@ namespace SpaceUnicorn
 			previousSpeedSpawnTime = TimeSpan.Zero;
 			speedSpawnTime = TimeSpan.FromMinutes(random.Next(1, 3));
 
-			// Enemy spawn power down
+			speedTimer = new Timer();
+			speedTimer.Interval = 1;
+			speedTimer.Elapsed += OnSpeedTimedEvent;
+			speedTimer.Enabled = false;
+
+			speedCountSeconds = 10000;
+
+			// Invasion
 			isInvading = false;
 
 			// Slow motion
@@ -176,6 +170,13 @@ namespace SpaceUnicorn
 			previousHyperSpaceSpawnTime = TimeSpan.Zero;
 			hyperSpaceSpawnTime = TimeSpan.FromMinutes(random.Next(1, 1));
 			isJumping = false;
+
+			hyperSpaceTimer = new Timer();
+			hyperSpaceTimer.Interval = 1;
+			hyperSpaceTimer.Elapsed += OnInvasionTimedEvent;
+			hyperSpaceTimer.Enabled = false;
+
+			hyperSpaceCountSeconds = 3000;
 
 			base.Initialize();
 		}
@@ -312,6 +313,7 @@ namespace SpaceUnicorn
 				healthy[i].Draw(spriteBatch);
 			}
 
+			// Draw speed icon
 			for (int i = 0; i < speed.Count; i++)
 			{
 				speed[i].Draw(spriteBatch);
@@ -405,21 +407,22 @@ namespace SpaceUnicorn
 
 		private void AddEnemy()
 		{
+			// Initalize enemy animation
 			Animation enemyAnimation = new Animation();
-
 			enemyAnimation.Initialize(enemyTexture, Vector2.Zero, 80, 40, 6, 50, Color.White, 1f, true);
-
 			Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + enemyTexture.Width / 2, random.Next(50, GraphicsDevice.Viewport.Height - 50));
 
+			// Initalize enemy
 			Enemy enemy = new Enemy();
-
 			enemy.Initialize(enemyAnimation, position);
 
+			// Add enemy
 			enemies.Add(enemy);
 		}
 
 		private void UpdateEnemies(GameTime gameTime)
 		{
+			// Adds enemy every enemySpawnTime
 			if (gameTime.TotalGameTime - previousEnemySpawnTime > enemySpawnTime)
 			{
 				previousEnemySpawnTime = gameTime.TotalGameTime;
@@ -427,26 +430,31 @@ namespace SpaceUnicorn
 				AddEnemy();
 			}
 
+			// If hyper space is true
 			if (isJumping == true)
 			{
 				for (int j = 0; j < enemies.Count; j++)
 				{
+					// Increase spawn time and move speed
 					enemies[j].EnemyMoveSpeed = 50f;
 					enemySpawnTime = TimeSpan.FromSeconds(.000001);
 				}
 			}
 
+			// If invading is true
 			if (isInvading == true)
 			{
+				// Increase enemy and marshmallow spawn time
 				enemySpawnTime = TimeSpan.FromSeconds(.15f);
-
 				fireTime = TimeSpan.FromSeconds(.00001f);
 			}
 
+			// If slow motion is true
 			if (isSlowingDown == true)
 			{
 				for (int i = 0; i < enemies.Count; i++)
 				{
+					// Decrease move speed
 					enemies[i].EnemyMoveSpeed = 3f;
 				}
 			}
@@ -462,8 +470,11 @@ namespace SpaceUnicorn
 					{
 						// Add an explosion
 						AddExplosion(enemies[i].Position);
+
+						// If enemies leave the screen still active
 						if (enemies[i].Position.X <= 0)
 						{
+							// Subtract scorevalue
 							score -= enemies[i].ScoreValue;
 						}
 						else
@@ -479,6 +490,7 @@ namespace SpaceUnicorn
 
 		private void AddMarshmallow(Vector2 position)
 		{
+			// Initalize marshmallows
 			MarshmallowLaser marshmallow = new MarshmallowLaser();
 			marshmallow.Initialize(GraphicsDevice.Viewport, marshmallowPic, position);
 			marshmallows.Add(marshmallow);
@@ -490,6 +502,7 @@ namespace SpaceUnicorn
 			{
 				marshmallows[i].Update();
 
+				// If marshmallows hit something or leave the screen
 				if (marshmallows[i].Active == false)
 				{
 					marshmallows.RemoveAt(i);
@@ -634,20 +647,11 @@ namespace SpaceUnicorn
 
 				if (rectangle1.Intersects(rectangle2))
 				{
-					var power = random.Next(1, 100);
-
-					if (power > 50)
-					{
-						isInvading = true;
-					}
-					else
-					{
-						isSlowingDown = true;
-					}
+					speedTimer.Stop();
+					speedTimer.Start();
 
 					speed[i].Health = 0;
 				}
-
 			}
 
 			// Player vs Hyper Space
@@ -657,8 +661,8 @@ namespace SpaceUnicorn
 
 				if (rectangle1.Intersects(rectangle2))
 				{
-					powerTimer.Stop();
-					powerTimer.Start();
+					hyperSpaceTimer.Stop();
+					hyperSpaceTimer.Start();
 
 					hyperSpace[i].Health = 0;
 				}
@@ -706,17 +710,43 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void OnTimedEvent(object sender, ElapsedEventArgs e)
+		private void OnInvasionTimedEvent(object sender, ElapsedEventArgs e)
 		{
-			invasionCountSeconds--;
+			hyperSpaceCountSeconds--;
 
 			isJumping = true;
-			if (invasionCountSeconds == 0)
+			if (hyperSpaceCountSeconds == 0)
 			{
-				powerTimer.Stop();
-				powerTimer.Close();
+				hyperSpaceTimer.Stop();
+				hyperSpaceTimer.Close();
 				isJumping = false;
 				enemySpawnTime = TimeSpan.FromSeconds(1.0f);
+			}
+		}
+
+		private void OnSpeedTimedEvent(object sender, ElapsedEventArgs e)
+		{
+			speedCountSeconds--;
+
+			var power = random.Next(1, 100);
+
+			if (power > 50)
+			{
+				isInvading = true;
+			}
+			else
+			{
+				isSlowingDown = true;
+			}
+
+			if (speedCountSeconds == 0)
+			{
+				isInvading = false;
+				isSlowingDown = false;
+
+				speedTimer.Stop();
+				enemySpawnTime = TimeSpan.FromSeconds(1.0f);
+				fireTime = TimeSpan.FromSeconds(.15f);
 			}
 		}
 	}
