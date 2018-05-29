@@ -26,7 +26,7 @@ namespace SpaceUnicorn.Model
 			set { active = value; }
 		}
 
-		//Player health
+		// Player health
 		private int health;
 		public int Health
 		{
@@ -54,11 +54,8 @@ namespace SpaceUnicorn.Model
 		public void Initialize(Animation animation, Vector2 position)
 		{
 			playerAnimation = animation;
-
 			Position = position;
-
 			Active = true;
-
 			Health = 100;
 		}
 

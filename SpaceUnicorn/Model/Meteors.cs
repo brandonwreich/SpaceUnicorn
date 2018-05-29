@@ -7,6 +7,9 @@ namespace SpaceUnicorn.Model
 {
 	public class Meteors
 	{
+		/* Initalize data members */
+
+		// Meteor animation
 		public Animation meteorAnimation;
 		public Animation MeteorAnimation
 		{
@@ -14,8 +17,10 @@ namespace SpaceUnicorn.Model
 			set { meteorAnimation = value; }
 		}
 
+		// Meteor position
 		public Vector2 Position;
 
+		// Meteor is on screen
 		private bool active;
 		public bool Active
 		{
@@ -23,6 +28,7 @@ namespace SpaceUnicorn.Model
 			set { active = value; }
 		}
 
+		// Meteor health
 		private int health;
 		public int Health
 		{
@@ -30,6 +36,7 @@ namespace SpaceUnicorn.Model
 			set { health = value; }
 		}
 
+		// Meteor damage
 		private int damage;
 		public int Damage
 		{
@@ -37,50 +44,48 @@ namespace SpaceUnicorn.Model
 			set { damage = value; }
 		}
 
+		// Width of animation
 		public int Width
 		{
 			get { return MeteorAnimation.FrameWidth; }
 		}
 
+		// Height of animation
 		public int Height
 		{
 			get { return MeteorAnimation.FrameHeight; }
 		}
 
+		// Meteor speed
 		private float meteorMoveSpeed;
 		public float MeteorMoveSpeed
 		{
-			get { return MeteorMoveSpeed; }
-			set { MeteorMoveSpeed = value; }
+			get { return meteorMoveSpeed; }
+			set { meteorMoveSpeed = value; }
 		}
 
+		// Random number generator
 		private Random random;
 
 		public Meteors()
 		{
+			
 		}
 
 		public void Initialize(Animation animation, Vector2 position)
 		{
 			meteorAnimation = animation;
-
 			Position = position;
-
 			active = true;
-
 			health = 20;
-
-			damage = random.Next(1, 100);
-
+			damage = 69;
 			meteorMoveSpeed = 5f;
-
 			random = new Random();
 		}
 
 		public void Update(GameTime gameTime)
 		{
 			Position.X -= meteorMoveSpeed;
-			Position.Y += meteorMoveSpeed;
 
 			meteorAnimation.Position = Position;
 			meteorAnimation.Update(gameTime);

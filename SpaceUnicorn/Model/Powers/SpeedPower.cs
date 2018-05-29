@@ -6,7 +6,7 @@ namespace SpaceUnicorn
 {
 	public class SpeedPower
 	{
-		// Animation representing the enemy
+		// Animation representing the power
 		public Animation speedAnimation;
 		public Animation SpeedAnimation
 		{
@@ -14,10 +14,10 @@ namespace SpaceUnicorn
 			set { speedAnimation = value; }
 		}
 
-		// Position of the powerup relative to the upper left side of the screen
+		// Position of the power relative to the upper left side of the screen
 		public Vector2 Position;
 
-		// State of the powerup
+		// State of the power
 		private bool active;
 		public bool Active
 		{
@@ -25,30 +25,22 @@ namespace SpaceUnicorn
 			set { active = value; }
 		}
 
-		// Health of power up
-		private int health;
-		public int Health
-		{
-			get { return health; }
-			set { health = value; }
-		}
-
 		// Represents the viewable boundary of the game
-		Viewport viewport;
+		private Viewport viewport;
 
-		// Get the width of the powerup
+		// Get the width of the power
 		public int Width
 		{
 			get { return SpeedAnimation.FrameWidth; }
 		}
 
-		// Get the height of the powerup
+		// Get the height of the power
 		public int Height
 		{
 			get { return SpeedAnimation.FrameHeight; }
 		}
 
-		// Determines how fast the powerup moves
+		// Determines how fast the power moves
 		private float speedPowerMoveSpeed;
 
 		public SpeedPower()
@@ -64,8 +56,6 @@ namespace SpaceUnicorn
 
 			active = true;
 
-			health = 10;
-
 			speedPowerMoveSpeed = 6f;
 		}
 
@@ -77,10 +67,9 @@ namespace SpaceUnicorn
 
 			speedAnimation.Update(gameTime);
 
-			if (Position.X < -Width || Health <= 0)
+			if (Position.X < -Width)
 			{
 				Active = false;
-				health = 0;
 			}
 		}
 

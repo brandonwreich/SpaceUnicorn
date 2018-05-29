@@ -17,7 +17,7 @@ namespace SpaceUnicorn.Model
 		// The position of the enemy ship relative to the top left corner of the screen
 		public Vector2 Position;
 
-		// The state of the Enemy Ship
+		// The state of the Enemy Ships
 		private bool active;
 		public bool Active
 		{
@@ -25,7 +25,7 @@ namespace SpaceUnicorn.Model
 			set { active = value; }
 		}
 
-		// The hit points of the enemy, if this goes to zero the enemy dies
+		// Health of the enemy
 		private int health;
 		public int Health
 		{
@@ -33,7 +33,7 @@ namespace SpaceUnicorn.Model
 			set { health = value; }
 		}
 
-		// The amount of damage the enemy inflicts on the player ship
+		// The amount of damage the enemy inflicts on the player
 		private int damage;
 		public int Damage
 		{
@@ -77,17 +77,11 @@ namespace SpaceUnicorn.Model
 		public void Initialize(Animation animation, Vector2 position)
 		{
 			enemyAnimation = animation;
-
 			Position = position;
-
 			active = true;
-
 			health = 10;
-
 			damage = 10;
-
 			enemyMoveSpeed = 6f;
-
 			scoreValue = 100;
 		}
 

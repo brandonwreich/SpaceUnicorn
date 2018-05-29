@@ -5,7 +5,7 @@ namespace SpaceUnicorn.Model
 {
 	public class MarshmallowLaser
 	{
-		// Image representing the Marhmallow
+		// Image representing the Marshmallow
 		private Texture2D texture;
 		public Texture2D Texture
 		{

@@ -19,35 +19,27 @@ namespace SpaceUnicorn
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
-		// Init player
+		// Player
 		private Player player;
+		private float playerMoveSpeed;
 
-		// Init enemy
+		// Enemy
 		private Texture2D enemyTexture;
 		private List<Enemy> enemies;
-
-		// Enemy spawn rate
 		private TimeSpan enemySpawnTime;
 		private TimeSpan previousEnemySpawnTime;
 
 		// Random number generator
 		private Random random;
 
-		// Keyboard states
+		// Keyboard/Gamepad states
 		private KeyboardState currentKeyboardState;
 		private KeyboardState previousKeyboardState;
-
-		// Gamepad states
 		private GamePadState currentGamePadState;
 		private GamePadState previousGamePadState;
 
-		// Speed of player
-		private float playerMoveSpeed;
-
-		// Parallaxing Layer
+		// Background Stuff
 		private ParallaxingBackground bgLayer1;
-
-		// Background Song
 		private Song gameMusic;
 
 		// Laser
@@ -59,6 +51,12 @@ namespace SpaceUnicorn
 		// Expolsions
 		private Texture2D explosionTexture;
 		private List<Animation> explosions;
+
+		// Meteors
+		private Texture2D meteorTexture;
+		private List<Meteors> meteors;
+		private TimeSpan meteorSpawnRate;
+		private TimeSpan previousMeteorSpawnRate;
 
 		// Fonts
 		private int score;
@@ -109,73 +107,68 @@ namespace SpaceUnicorn
 		/// </summary>
 		protected override void Initialize()
 		{
-			// Init player class
+			// Initalize player
 			player = new Player();
-
-			// Constant player speed
 			playerMoveSpeed = 8.0f;
 
-			// Init enemy class
+			// Initalize enemies
 			enemies = new List<Enemy>();
-
-			// Enemy spawn time
 			previousEnemySpawnTime = TimeSpan.Zero;
 			enemySpawnTime = TimeSpan.FromSeconds(1.0f);
 
-			// Random number generator
+			// Initalize random number generator
 			random = new Random();
 
-			// Init background
+			// Initalize background
 			bgLayer1 = new ParallaxingBackground();
 
-			// Init marshmallows
+			// Initalize weapons
 			marshmallows = new List<MarshmallowLaser>();
-
-			// Fire time
 			fireTime = TimeSpan.FromSeconds(.15f);
 
-			// Explosions
+			// Initalize explosions
 			explosions = new List<Animation>();
 
-			// Score
+			// Initalize score
 			score = 0;
+
+			// Meteors
+			meteors = new List<Meteors>();
+			previousMeteorSpawnRate = TimeSpan.Zero;
+			meteorSpawnRate = TimeSpan.FromSeconds(random.Next(1, 30));
 
 			/* Power ups/downs */
 
-			// Health power up
+			// Initalize health power up
 			healthy = new List<HealthBoost>();
 			previousHealthSpawnTime = TimeSpan.Zero;
 			healthSpawnTime = TimeSpan.FromMinutes(random.Next(1, 5));
 
-			// Speed Power
+			// Initalize speed Power
 			speed = new List<SpeedPower>();
 			previousSpeedSpawnTime = TimeSpan.Zero;
 			speedSpawnTime = TimeSpan.FromMinutes(random.Next(1, 3));
-
 			speedTimer = new Timer();
 			speedTimer.Interval = 1;
 			speedTimer.Elapsed += OnSpeedTimedEvent;
 			speedTimer.Enabled = false;
-
 			speedCountSeconds = 10000;
 
-			// Invasion
+			// Initalize invasion
 			isInvading = false;
 
-			// Slow motion
+			// Initalize slow motion
 			isSlowingDown = false;
 
-			// Hyper space
+			// Initalize hyper space
 			hyperSpace = new List<HyperSpace>();
 			previousHyperSpaceSpawnTime = TimeSpan.Zero;
 			hyperSpaceSpawnTime = TimeSpan.FromMinutes(random.Next(1, 1));
 			isJumping = false;
-
 			hyperSpaceTimer = new Timer();
 			hyperSpaceTimer.Interval = 1;
 			hyperSpaceTimer.Elapsed += OnInvasionTimedEvent;
 			hyperSpaceTimer.Enabled = false;
-
 			hyperSpaceCountSeconds = 3000;
 
 			base.Initialize();
@@ -194,7 +187,6 @@ namespace SpaceUnicorn
 			Animation playerAnimation = new Animation();
 			Texture2D playerTexture = Content.Load<Texture2D>("Animation/Space Unicorn");
 			playerAnimation.Initialize(playerTexture, Vector2.Zero, 166, 100, 1, 5, Color.White, 1f, true);
-
 			Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 2);
 			player.Initialize(playerAnimation, playerPosition);
 
@@ -216,7 +208,10 @@ namespace SpaceUnicorn
 			// Load font
 			font = Content.Load<SpriteFont>("Fonts/gameFont");
 
-			// Powers
+			// Load meteors
+			meteorTexture = Content.Load<Texture2D>("Animation/meteor");
+
+			// Load powers
 			healthBoostIcon = Content.Load<Texture2D>("Powers/healthPowerUp");
 			speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
 			hyperSpaceIcon = Content.Load<Texture2D>("Powers/hyperSpace");
@@ -264,6 +259,9 @@ namespace SpaceUnicorn
 			// Update the explosions
 			UpdateExplosions(gameTime);
 
+			//Update meteors
+			UpdateMeteors(gameTime);
+
 			// Update powers
 			UpdateHealthBoost(gameTime);
 			UpdateSpeed(gameTime);
@@ -305,6 +303,12 @@ namespace SpaceUnicorn
 			for (int i = 0; i < explosions.Count; i++)
 			{
 				explosions[i].Draw(spriteBatch);
+			}
+
+			// Draw the meteors
+			for (int i = 0; i < meteors.Count; i++)
+			{
+				meteors[i].Draw(spriteBatch);
 			}
 
 			// Draw health boost
@@ -488,6 +492,43 @@ namespace SpaceUnicorn
 			}
 		}
 
+		private void AddMeteors()
+		{
+			Animation meteorAnimation = new Animation();
+			meteorAnimation.Initialize(meteorTexture, Vector2.Zero, 100, 100, 9, 50, Color.White, 1f, true);
+			Vector2 postion = new Vector2(GraphicsDevice.Viewport.Width + meteorTexture.Width / 2, random.Next(50, GraphicsDevice.Viewport.Height - 50));
+
+			Meteors meteor = new Meteors();
+			meteor.Initialize(meteorAnimation, postion);
+
+			meteors.Add(meteor);
+		}
+
+		private void UpdateMeteors(GameTime gameTime)
+		{
+			// Adds enemy every enemySpawnTime
+			if (gameTime.TotalGameTime - previousMeteorSpawnRate > meteorSpawnRate)
+			{
+				previousMeteorSpawnRate = gameTime.TotalGameTime;
+
+				AddMeteors();
+			}
+
+			for (int i = meteors.Count - 1; i >= 0; i--)
+			{
+				meteors[i].Update(gameTime);
+
+				if (meteors[i].Active == false)
+				{
+					if (meteors[i].Health <= 0)
+					{
+						AddExplosion(meteors[i].Position);
+					}
+					meteors.RemoveAt(i);
+				}
+			}
+		}
+
 		private void AddMarshmallow(Vector2 position)
 		{
 			// Initalize marshmallows
@@ -611,12 +652,29 @@ namespace SpaceUnicorn
 			{
 				rectangle2 = new Rectangle((int)enemies[i].Position.X, (int)enemies[i].Position.Y, enemies[i].Width, enemies[i].Height);
 
-
 				if (rectangle1.Intersects(rectangle2))
 				{
 					player.Health -= enemies[i].Damage;
 
 					enemies[i].Health = 0;
+
+					if (player.Health <= 0)
+					{
+						player.Active = false;
+					}
+				}
+			}
+
+			// Player vs Meteor
+			for (int i = 0; i < meteors.Count; i++)
+			{
+				rectangle2 = new Rectangle((int)meteors[i].Position.X, (int)meteors[i].Position.Y, meteors[i].Width, meteors[i].Height);
+
+				if (rectangle1.Intersects(rectangle2))
+				{
+					player.Health -= meteors[i].Damage;
+
+					meteors[i].Health = 0;
 
 					if (player.Health <= 0)
 					{
@@ -634,8 +692,7 @@ namespace SpaceUnicorn
 				if (rectangle1.Intersects(rectangle2))
 				{
 					player.Health = 100;
-
-					healthy[i].Health = 0;
+					healthy.RemoveAt(i);
 				}
 			}
 
@@ -649,8 +706,7 @@ namespace SpaceUnicorn
 				{
 					speedTimer.Stop();
 					speedTimer.Start();
-
-					speed[i].Health = 0;
+					speed.RemoveAt(i);
 				}
 			}
 
@@ -663,8 +719,7 @@ namespace SpaceUnicorn
 				{
 					hyperSpaceTimer.Stop();
 					hyperSpaceTimer.Start();
-
-					hyperSpace[i].Health = 0;
+					hyperSpace.RemoveAt(i);
 				}
 			}
 
@@ -694,7 +749,7 @@ namespace SpaceUnicorn
 		private void AddExplosion(Vector2 position)
 		{
 			Animation explosion = new Animation();
-			explosion.Initialize(explosionTexture, position, 134, 134, 12, 45, Color.White, 1f, false);
+			explosion.Initialize(explosionTexture, position, 134, 134, 12, 35, Color.White, 1f, false);
 			explosions.Add(explosion);
 		}
 
