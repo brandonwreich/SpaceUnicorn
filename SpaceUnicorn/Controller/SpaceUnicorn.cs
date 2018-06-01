@@ -19,6 +19,14 @@ namespace SpaceUnicorn
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		KeyboardState keyboardState;
+		KeyboardState oldKeyboardState;
+
+		// Screens
+		GameScreen activeScreen;
+		StartScreen startScreen;
+		ActionScreen actionScreen;
+
 		// Player
 		private Player player;
 		private float playerMoveSpeed;
@@ -183,6 +191,20 @@ namespace SpaceUnicorn
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
+			// Menu
+			string[] menuItems = { "Start Game", "High Score", "End Game" };
+
+			startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"), Content.Load<Texture2D>("Background/startScreen"));
+			Components.Add(startScreen);
+			startScreen.Hide();
+
+			actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("Background/spaceBackground"));
+			Components.Add(actionScreen);
+			actionScreen.Hide();
+
+			activeScreen = startScreen;
+			activeScreen.Show();
+
 			// Load player
 			Animation playerAnimation = new Animation();
 			Texture2D playerTexture = Content.Load<Texture2D>("Animation/Space Unicorn");
@@ -233,42 +255,75 @@ namespace SpaceUnicorn
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 #endif
-			// Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
-			previousGamePadState = currentGamePadState;
-			previousKeyboardState = currentKeyboardState;
 
-			// Read the current state of the keyboard and gamepad and store it
-			currentKeyboardState = Keyboard.GetState();
-			currentGamePadState = GamePad.GetState(PlayerIndex.One);
+			keyboardState = Keyboard.GetState();
 
-			// Update player
-			UpdatePlayer(gameTime);
+			if (activeScreen == startScreen)
+			{
+				if (CheckKey(Keys.Enter))
+				{
+					if (startScreen.SelectedIndex == 0)
+					{
+						activeScreen.Hide();
+						activeScreen = actionScreen;
+						activeScreen.Show();
+					}
+					if (startScreen.SelectedIndex == 1)
+					{
+						this.Exit();
+					}
+				}
+			}
 
-			// Update enemies
-			UpdateEnemies(gameTime);
+			oldKeyboardState = keyboardState;
 
-			// Update collisions
-			UpdateCollisions();
 
-			// Update background
-			bgLayer1.Update();
+			if (activeScreen == actionScreen)
+			{
+				// Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
+				previousGamePadState = currentGamePadState;
+				previousKeyboardState = currentKeyboardState;
 
-			// Update marshmallows
-			UpdateMarshallows();
+				// Read the current state of the keyboard and gamepad and store it
+				currentKeyboardState = Keyboard.GetState();
+				currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
-			// Update the explosions
-			UpdateExplosions(gameTime);
+				// Update player
+				UpdatePlayer(gameTime);
 
-			//Update meteors
-			UpdateMeteors(gameTime);
+				// Update enemies
+				UpdateEnemies(gameTime);
 
-			// Update powers
-			UpdateHealthBoost(gameTime);
-			UpdateSpeed(gameTime);
-			UpdateHyperSpace(gameTime);
+				// Update collisions
+				UpdateCollisions();
+
+				// Update background
+				bgLayer1.Update();
+
+				// Update marshmallows
+				UpdateMarshallows();
+
+				// Update the explosions
+				UpdateExplosions(gameTime);
+
+				//Update meteors
+				UpdateMeteors(gameTime);
+
+				// Update powers
+				UpdateHealthBoost(gameTime);
+				UpdateSpeed(gameTime);
+				UpdateHyperSpace(gameTime);
+			}
 
 			base.Update(gameTime);
 		}
+
+		private bool CheckKey(Keys theKey)
+		{
+			return keyboardState.IsKeyUp(theKey) &&
+				oldKeyboardState.IsKeyDown(theKey);
+		}
+
 
 		/// <summary>
 		/// This is called when the game should draw itself.
@@ -281,63 +336,68 @@ namespace SpaceUnicorn
 			//Start drawing
 			spriteBatch.Begin();
 
-			// Draw background
-			bgLayer1.Draw(spriteBatch);
+			base.Draw(gameTime);
 
-			//Draw the player
-			player.Draw(spriteBatch);
-
-			// Draw enemies
-			for (int i = 0; i < enemies.Count; i++)
+			if (activeScreen == actionScreen)
 			{
-				enemies[i].Draw(spriteBatch);
-			}
+				// Draw background
+				bgLayer1.Draw(spriteBatch);
 
-			// Draw mashmallows
-			for (int i = 0; i < marshmallows.Count; i++)
-			{
-				marshmallows[i].Draw(spriteBatch);
-			}
+				//Draw the player
+				player.Draw(spriteBatch);
 
-			// Draw the explosions
-			for (int i = 0; i < explosions.Count; i++)
-			{
-				explosions[i].Draw(spriteBatch);
-			}
+				// Draw enemies
+				for (int i = 0; i < enemies.Count; i++)
+				{
+					enemies[i].Draw(spriteBatch);
+				}
 
-			// Draw the meteors
-			for (int i = 0; i < meteors.Count; i++)
-			{
-				meteors[i].Draw(spriteBatch);
-			}
+				// Draw mashmallows
+				for (int i = 0; i < marshmallows.Count; i++)
+				{
+					marshmallows[i].Draw(spriteBatch);
+				}
 
-			// Draw health boost
-			for (int i = 0; i < healthy.Count; i++)
-			{
-				healthy[i].Draw(spriteBatch);
-			}
+				// Draw the explosions
+				for (int i = 0; i < explosions.Count; i++)
+				{
+					explosions[i].Draw(spriteBatch);
+				}
 
-			// Draw speed icon
-			for (int i = 0; i < speed.Count; i++)
-			{
-				speed[i].Draw(spriteBatch);
-			}
+				// Draw the meteors
+				for (int i = 0; i < meteors.Count; i++)
+				{
+					meteors[i].Draw(spriteBatch);
+				}
 
-			// Draw hyper space power
-			for (int i = 0; i < hyperSpace.Count; i++)
-			{
-				hyperSpace[i].Draw(spriteBatch);
-			}
+				// Draw health boost
+				for (int i = 0; i < healthy.Count; i++)
+				{
+					healthy[i].Draw(spriteBatch);
+				}
 
-			// Draw the score
-			spriteBatch.DrawString(font, "Score: " + score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
-			// Draw the player health
-			spriteBatch.DrawString(font, "Health: " + player.Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+				// Draw speed icon
+				for (int i = 0; i < speed.Count; i++)
+				{
+					speed[i].Draw(spriteBatch);
+				}
+
+				// Draw hyper space power
+				for (int i = 0; i < hyperSpace.Count; i++)
+				{
+					hyperSpace[i].Draw(spriteBatch);
+				}
+
+				// Draw the score
+				spriteBatch.DrawString(font, "Score: " + score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+				// Draw the player health
+				spriteBatch.DrawString(font, "Health: " + player.Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+			}
 
 			//Stop drawing
 			spriteBatch.End();
 
-			base.Draw(gameTime);
+
 		}
 
 		public void UpdatePlayer(GameTime gameTime)
@@ -393,6 +453,10 @@ namespace SpaceUnicorn
 			{
 				player.Health = 100;
 				score = 0;
+
+				activeScreen.Hide();
+				activeScreen = startScreen;
+				activeScreen.Show();
 			}
 		}
 

@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{9A4D983E-9298-4F5D-9691-D3BEC3B12B86}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceUnicorn/Model/Powers/HealthBoost.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceUnicorn/Controller/SpaceUnicorn.cs">
     <Files>
-      <File FileName="SpaceUnicorn/Controller/SpaceUnicorn.cs" Line="801" Column="5" />
-      <File FileName="SpaceUnicorn/Model/Powers/HealthBoost.cs" Line="64" Column="4" />
-      <File FileName="SpaceUnicorn/Model/Enemy.cs" Line="84" Column="24" />
-      <File FileName="SpaceUnicorn/Model/Powers/HyperSpace.cs" Line="65" Column="27" />
+      <File FileName="SpaceUnicorn/Controller/SpaceUnicorn.cs" Line="197" Column="144" />
+      <File FileName="SpaceUnicorn/ScreenManager.cs" Line="9" Column="37" />
+      <File FileName="SpaceUnicorn/Screens/StartScreen.cs" Line="42" Column="2" />
+      <File FileName="SpaceUnicorn/Screens/GameScreen.cs" Line="1" Column="1" />
+      <File FileName="SpaceUnicorn/Screens/ActionScreen.cs" Line="41" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
