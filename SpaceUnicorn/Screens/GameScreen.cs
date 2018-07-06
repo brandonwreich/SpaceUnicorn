@@ -5,24 +5,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 
 namespace SpaceUnicorn
 {
 	public abstract class GameScreen : Microsoft.Xna.Framework.DrawableGameComponent
 	{
-		List<GameComponent> components = new List<GameComponent>();
+        #region Variables
+
+        List<GameComponent> components = new List<GameComponent>();
 		protected Game game;
 		protected SpriteBatch spriteBatch;
 
-		public List<GameComponent> Components
+        public List<GameComponent> Components
 		{
 			get{ return components; }
 		}
 
-		public GameScreen(Game game, SpriteBatch spriteBatch) : base(game)
+        #endregion
+
+        public GameScreen(Game game, SpriteBatch spriteBatch) : base(game)
 		{
 			this.game = game;
 			this.spriteBatch = spriteBatch;
@@ -33,7 +35,9 @@ namespace SpaceUnicorn
 			base.Initialize();
 		}
 
-		public override void Update(GameTime gameTime)
+        #region Update
+
+        public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
 
@@ -46,7 +50,11 @@ namespace SpaceUnicorn
 			}
 		}
 
-		public override void Draw(GameTime gameTime)
+        #endregion
+
+        #region Draw
+
+        public override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
 			foreach (GameComponent component in components)
@@ -58,7 +66,11 @@ namespace SpaceUnicorn
 			}
 		}
 
-		public virtual void Show()
+        #endregion
+
+        #region Show/Hide
+
+        public virtual void Show()
 		{
 			this.Visible = true;
 			this.Enabled = true;
@@ -87,5 +99,7 @@ namespace SpaceUnicorn
 				}
 			}
 		}
-	}
+
+        #endregion
+    }
 }

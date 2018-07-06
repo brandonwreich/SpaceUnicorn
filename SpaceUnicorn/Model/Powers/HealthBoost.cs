@@ -5,8 +5,10 @@ namespace SpaceUnicorn.Model
 {
 	public class HealthBoost
 	{
-		// Image representing the power
-		private Texture2D texture;
+        #region Variables
+
+        // Image representing the power
+        private Texture2D texture;
 		public Texture2D Texture
 		{
 			get { return texture; }
@@ -41,12 +43,16 @@ namespace SpaceUnicorn.Model
 		// Determines how fast the power moves
 		private float healthPowerUpMoveSpeed;
 
-		public HealthBoost()
+        #endregion
+
+        public HealthBoost()
 		{
 
 		}
 
-		public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
+        #region Initialize
+
+        public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
 			this.texture = texture;
 			Position = position;
@@ -57,7 +63,11 @@ namespace SpaceUnicorn.Model
 			healthPowerUpMoveSpeed = 6f;
 		}
 
-		public void Update(GameTime gameTime)
+        #endregion
+
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			Position.X -= healthPowerUpMoveSpeed;
 
@@ -67,9 +77,15 @@ namespace SpaceUnicorn.Model
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
 		}
-	}
+
+        #endregion
+    }
 }

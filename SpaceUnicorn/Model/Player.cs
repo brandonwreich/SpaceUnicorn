@@ -7,8 +7,10 @@ namespace SpaceUnicorn.Model
 {
 	public class Player
 	{
-		// Animation representing the player
-		private Animation playerAnimation;
+        #region Variables
+
+        // Animation representing the player
+        private Animation playerAnimation;
 		public Animation PlayerAnimation
 		{
 			get { return playerAnimation; }
@@ -46,12 +48,16 @@ namespace SpaceUnicorn.Model
 			get { return PlayerAnimation.FrameHeight; }
 		}
 
-		public Player()
+        #endregion
+
+        public Player()
 		{
 
 		}
 
-		public void Initialize(Animation animation, Vector2 position)
+        #region Initialize
+
+        public void Initialize(Animation animation, Vector2 position)
 		{
 			playerAnimation = animation;
 			Position = position;
@@ -59,15 +65,25 @@ namespace SpaceUnicorn.Model
 			Health = 100;
 		}
 
-		public void Update(GameTime gameTime)
+        #endregion
+
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			playerAnimation.Position = Position;
 			playerAnimation.Update(gameTime);
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			playerAnimation.Draw(spriteBatch);
 		}
-	}
+
+        #endregion
+    }
 }

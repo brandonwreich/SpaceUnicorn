@@ -1,14 +1,14 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceUnicorn.View
 {
 	public class Animation
 	{
-		// The image representing the collection of images used for animation
-		private Texture2D spriteStrip;
+        #region Variables
+
+        // The image representing the collection of images used for animation
+        private Texture2D spriteStrip;
 
 		// The scale used to display the sprite strip
 		private float scale;
@@ -69,12 +69,16 @@ namespace SpaceUnicorn.View
 		// Width of a given frame
 		public Vector2 Position;
 
-		public Animation()
+        #endregion
+
+        public Animation()
 		{
 
 		}
 
-		public void Initialize(Texture2D texture, Vector2 position, int frameWidth, int frameHeight, int frameCount, int frametime, Color color, float scale, bool looping)
+        #region Initialize
+
+        public void Initialize(Texture2D texture, Vector2 position, int frameWidth, int frameHeight, int frameCount, int frametime, Color color, float scale, bool looping)
 		{
 			// Keep a local copy of the values passed in
 			this.color = color;
@@ -96,7 +100,11 @@ namespace SpaceUnicorn.View
 			Active = true;
 		}
 
-		public void Update(GameTime gameTime)
+        #endregion
+
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			// Do not update the game if we are not active
 			if (Active == false)
@@ -135,7 +143,11 @@ namespace SpaceUnicorn.View
 			destinationRect = new Rectangle((int)Position.X - (int)(FrameWidth * scale) / 2, (int)Position.Y - (int)(FrameHeight * scale) / 2, (int)(FrameWidth * scale), (int)(FrameHeight * scale));
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			// Only draw the animation when we are active
 			if (Active)
@@ -143,5 +155,7 @@ namespace SpaceUnicorn.View
 				spriteBatch.Draw(spriteStrip, destinationRect, sourceRect, color);
 			}
 		}
-	}
+
+        #endregion
+    }
 }

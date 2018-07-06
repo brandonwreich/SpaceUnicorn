@@ -5,8 +5,10 @@ namespace SpaceUnicorn.Model
 {
 	public class MarshmallowLaser
 	{
-		// Image representing the Marshmallow
-		private Texture2D texture;
+        #region Variables
+
+        // Image representing the Marshmallow
+        private Texture2D texture;
 		public Texture2D Texture
 		{
 			get { return texture; }
@@ -50,12 +52,16 @@ namespace SpaceUnicorn.Model
 		// Determines how fast the marshmallow moves
 		private float marshmallowMoveSpeed;
 
-		public MarshmallowLaser()
+        #endregion
+
+        public MarshmallowLaser()
 		{
 
 		}
 
-		public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
+        #region Initialize
+
+        public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
 			this.texture = texture;
 			this.Position = position;
@@ -68,7 +74,11 @@ namespace SpaceUnicorn.Model
 			marshmallowMoveSpeed = 20f;
 		}
 
-		public void Update()
+        #endregion
+
+        #region Update
+
+        public void Update()
 		{
 			// Projectiles always move to the right
 			Position.X += marshmallowMoveSpeed;
@@ -80,9 +90,15 @@ namespace SpaceUnicorn.Model
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
 		}
-	}
+
+        #endregion
+    }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Music/Space Unicorn.mp3</SourceFile>
+  <SourceTime>2018-07-06T15:21:22.1243541-06:00</SourceTime>
+  <DestFile>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/bin/DesktopGL/Music/Space Unicorn.xnb</DestFile>
+  <DestTime>2018-07-06T15:30:46.8531732-06:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2017-03-01T08:05:36-07:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/bin/DesktopGL/Music/Space Unicorn.ogg</string>
+  </BuildOutput>
+</PipelineBuildEvent>

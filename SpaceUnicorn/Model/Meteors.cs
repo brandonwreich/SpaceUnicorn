@@ -7,10 +7,10 @@ namespace SpaceUnicorn.Model
 {
 	public class Meteors
 	{
-		/* Initalize data members */
+        #region Variables
 
-		// Meteor animation
-		public Animation meteorAnimation;
+        // Meteor animation
+        public Animation meteorAnimation;
 		public Animation MeteorAnimation
 		{
 			get { return meteorAnimation; }
@@ -67,12 +67,16 @@ namespace SpaceUnicorn.Model
 		// Random number generator
 		private Random random;
 
-		public Meteors()
+        #endregion
+
+        public Meteors()
 		{
 			
 		}
 
-		public void Initialize(Animation animation, Vector2 position)
+        #region Initialize
+
+        public void Initialize(Animation animation, Vector2 position)
 		{
 			meteorAnimation = animation;
 			Position = position;
@@ -82,8 +86,11 @@ namespace SpaceUnicorn.Model
 			meteorMoveSpeed = 5f;
 			random = new Random();
 		}
+        #endregion
 
-		public void Update(GameTime gameTime)
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			Position.X -= meteorMoveSpeed;
 
@@ -97,9 +104,15 @@ namespace SpaceUnicorn.Model
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			meteorAnimation.Draw(spriteBatch);
 		}
-	}
+
+        #endregion
+    }
 }

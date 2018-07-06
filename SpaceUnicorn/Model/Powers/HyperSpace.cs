@@ -1,13 +1,14 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceUnicorn
 {
 	public class HyperSpace
 	{
-		// Image representing the power
-		private Texture2D texture;
+        #region Variables
+
+        // Image representing the power
+        private Texture2D texture;
 		public Texture2D Texture
 		{
 			get { return texture; }
@@ -42,12 +43,16 @@ namespace SpaceUnicorn
 		// Determines how fast the power moves
 		private float hyperSpaceMoveSpeed;
 
-		public HyperSpace()
+        #endregion
+
+        public HyperSpace()
 		{
 
 		}
 
-		public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
+        #region Initalize
+
+        public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
 			this.texture = texture;
 			this.Position = position;
@@ -58,7 +63,11 @@ namespace SpaceUnicorn
 			hyperSpaceMoveSpeed = 6f;
 		}
 
-		public void Update(GameTime gameTime)
+        #endregion
+
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			Position.X -= hyperSpaceMoveSpeed;
 
@@ -68,9 +77,15 @@ namespace SpaceUnicorn
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
 		}
-	}
+
+        #endregion
+    }
 }

@@ -7,8 +7,10 @@ namespace SpaceUnicorn.View
 {
 	public class ParallaxingBackground
 	{
-		// The image representing the parallaxing background
-		private Texture2D texture;
+        #region Variables
+
+        // The image representing the parallaxing background
+        private Texture2D texture;
 
 		// An array of positions of the parallaxing background
 		private Vector2[] positions;
@@ -16,12 +18,16 @@ namespace SpaceUnicorn.View
 		// The speed which the background is moving
 		private int speed;
 
-		public ParallaxingBackground()
+        #endregion
+
+        public ParallaxingBackground()
 		{
 
 		}
 
-		public void Initialize(ContentManager content, String texturePath, int screenWidth, int speed)
+        #region Initialize
+
+        public void Initialize(ContentManager content, String texturePath, int screenWidth, int speed)
 		{
 			// Load background
 			texture = content.Load<Texture2D>(texturePath);
@@ -37,7 +43,11 @@ namespace SpaceUnicorn.View
 			}
 		}
 
-		public void Update()
+        #endregion
+
+        #region Update
+
+        public void Update()
 		{
 			for (int i = 0; i < positions.Length; i++)
 			{
@@ -60,12 +70,18 @@ namespace SpaceUnicorn.View
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			for (int i = 0; i < positions.Length; i++)
 			{
 				spriteBatch.Draw(texture, positions[i], Color.White);
 			}
 		}
-	}
+
+        #endregion
+    }
 }

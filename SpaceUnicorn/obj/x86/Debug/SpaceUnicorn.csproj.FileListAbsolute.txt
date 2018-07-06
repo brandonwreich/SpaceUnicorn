@@ -1,0 +1,48 @@
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x64\libopenal.so.1
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x64\soft_oal.dll
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x64\libSDL2-2.0.so.0
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x64\SDL2.dll
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x86\libopenal.so.1
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x86\soft_oal.dll
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x86\libSDL2-2.0.so.0
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\x86\SDL2.dll
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\MonoGame.Framework.dll.config
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\libopenal.1.dylib
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\libSDL2-2.0.0.dylib
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Powers\healthPowerUp.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Powers\hyperSpace.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Powers\speedIncrease.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Music\Space Unicorn.ogg
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Music\Space Unicorn.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Fonts\File.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Fonts\gameFont.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Background\spaceBackground.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Background\startScreen.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Animation\enemy.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Animation\explosion.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Animation\glitterExplosion.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Animation\marshmallowLaser.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Animation\meteor.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Content\Animation\Space Unicorn.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Powers\healthPowerUp.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Powers\hyperSpace.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Powers\speedIncrease.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Background\spaceBackground.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Background\startScreen.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Music\Space Unicorn.ogg
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Music\Space Unicorn.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Animation\enemy.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Animation\explosion.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Animation\glitterExplosion.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Animation\marshmallowLaser.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Animation\meteor.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Animation\Space Unicorn.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Fonts\gameFont.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\SpaceUnicorn.exe
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\SpaceUnicorn.pdb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\MonoGame.Framework.dll
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.csprojAssemblyReference.cache
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.csproj.CoreCompileInputs.cache
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.csproj.CopyComplete
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.exe
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.pdb

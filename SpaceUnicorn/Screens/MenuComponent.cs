@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace SpaceUnicorn
 {
 	public class MenuComponent : Microsoft.Xna.Framework.DrawableGameComponent
 	{
-		string[] menuItems;
+        #region Variables
+
+        string[] menuItems;
 		int selectedIndex;
 
 		Color normal = Color.White;
@@ -29,7 +25,7 @@ namespace SpaceUnicorn
 		float width = 0f;
 		float height = 0f;
 
-		public int SelectedIndex
+        public int SelectedIndex
 		{
 			get { return selectedIndex; }
 			set
@@ -47,7 +43,9 @@ namespace SpaceUnicorn
 			}
 		}
 
-		public MenuComponent(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, string[] menuItems) : base(game)
+        #endregion
+
+        public MenuComponent(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, string[] menuItems) : base(game)
 		{
 			this.spriteBatch = spriteBatch;
 			this.spriteFont = spriteFont;
@@ -56,37 +54,14 @@ namespace SpaceUnicorn
 			MeasureMenu();
 		}
 
-		private void MeasureMenu()
-		{
-			height = 0;
-			width = 0;
-
-			foreach (string item in menuItems)
-			{
-				Vector2 size = spriteFont.MeasureString(item);
-
-				if (size.X > width)
-				{
-					width = size.X;
-				}
-
-				height += spriteFont.LineSpacing + 5;
-			}
-
-			position = new Vector2((Game.Window.ClientBounds.Width - width) / 2, (Game.Window.ClientBounds.Height - height) / 2);
-		}
-
 		public override void Initialize()
 		{
 			base.Initialize();
 		}
 
-		private bool CheckKey(Keys theKey)
-		{
-			return keyboardState.IsKeyUp(theKey) && previousKeyboardState.IsKeyDown(theKey);
-		}
+        #region Update
 
-		public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
 		{
 			keyboardState = Keyboard.GetState();
 
@@ -115,7 +90,11 @@ namespace SpaceUnicorn
 			previousKeyboardState = keyboardState;
 		}
 
-		public override void Draw(GameTime gameTime)
+        #endregion
+
+        #region Draw
+
+        public override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
 			Vector2 location = position;
@@ -136,7 +115,38 @@ namespace SpaceUnicorn
 				}
 			}
 		}
-	}
+
+        #endregion
+
+        #region Helper Methods
+
+	    private bool CheckKey(Keys theKey)
+	    {
+	        return keyboardState.IsKeyUp(theKey) && previousKeyboardState.IsKeyDown(theKey);
+	    }
+
+	    private void MeasureMenu()
+	    {
+	        height = 0;
+	        width = 0;
+
+	        foreach (string item in menuItems)
+	        {
+	            Vector2 size = spriteFont.MeasureString(item);
+
+	            if (size.X > width)
+	            {
+	                width = size.X;
+	            }
+
+	            height += spriteFont.LineSpacing + 5;
+	        }
+
+	        position = new Vector2((Game.Window.ClientBounds.Width - width) / 2, (Game.Window.ClientBounds.Height - height) / 2);
+	    }
+
+        #endregion
+    }
 }
 
 

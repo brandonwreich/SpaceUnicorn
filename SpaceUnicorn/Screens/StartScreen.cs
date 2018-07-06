@@ -5,7 +5,9 @@ namespace SpaceUnicorn
 {
 	public class StartScreen : GameScreen
 	{
-		MenuComponent menuComponent;
+        #region Variables 
+
+        MenuComponent menuComponent;
 		Texture2D image;
 		Rectangle imageRectangle;
 
@@ -15,7 +17,9 @@ namespace SpaceUnicorn
 			set{ menuComponent.SelectedIndex = value; }
 		}
 
-		public StartScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, Texture2D image) : base(game, spriteBatch)
+        #endregion
+
+        public StartScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, Texture2D image) : base(game, spriteBatch)
 		{
 			string[] menuItems = { "End Game", "Press Enter to Start" };
 			menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
@@ -29,10 +33,14 @@ namespace SpaceUnicorn
 			base.Update(gameTime);
 		}
 
-		public override void Draw(GameTime gameTime)
+        #region Draw
+
+        public override void Draw(GameTime gameTime)
 		{
 			spriteBatch.Draw(image, imageRectangle, Color.White);
 			base.Draw(gameTime);
 		}
-	}
+
+        #endregion
+    }
 }

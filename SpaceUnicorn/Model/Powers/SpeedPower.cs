@@ -6,8 +6,10 @@ namespace SpaceUnicorn
 {
 	public class SpeedPower
 	{
-		// Animation representing the power
-		public Animation speedAnimation;
+        #region Variables
+
+        // Animation representing the power
+        public Animation speedAnimation;
 		public Animation SpeedAnimation
 		{
 			get { return speedAnimation; }
@@ -43,12 +45,16 @@ namespace SpaceUnicorn
 		// Determines how fast the power moves
 		private float speedPowerMoveSpeed;
 
-		public SpeedPower()
+        #endregion
+
+        public SpeedPower()
 		{
 
 		}
 
-		public void Initialize(Animation animation, Vector2 position)
+        #region Initialize
+
+        public void Initialize(Animation animation, Vector2 position)
 		{
 			speedAnimation = animation;
 
@@ -59,7 +65,11 @@ namespace SpaceUnicorn
 			speedPowerMoveSpeed = 6f;
 		}
 
-		public void Update(GameTime gameTime)
+        #endregion
+
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			Position.X -= speedPowerMoveSpeed;
 
@@ -73,9 +83,15 @@ namespace SpaceUnicorn
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			speedAnimation.Draw(spriteBatch);
 		}
-	}
+
+        #endregion
+    }
 }

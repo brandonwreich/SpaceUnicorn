@@ -16,7 +16,9 @@ namespace SpaceUnicorn
 	/// </summary>
 	public class SpaceUnicorn : Game
 	{
-		GraphicsDeviceManager graphics;
+        #region Variables
+
+        GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
 		KeyboardState keyboardState;
@@ -101,7 +103,11 @@ namespace SpaceUnicorn
 		private static Timer hyperSpaceTimer;
 		private int hyperSpaceCountSeconds;
 
-		public SpaceUnicorn()
+        #endregion
+
+        #region Game Start
+
+        public SpaceUnicorn()
 		{
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
@@ -175,7 +181,7 @@ namespace SpaceUnicorn
 			isJumping = false;
 			hyperSpaceTimer = new Timer();
 			hyperSpaceTimer.Interval = 1;
-			hyperSpaceTimer.Elapsed += OnInvasionTimedEvent;
+			hyperSpaceTimer.Elapsed += OnHyperSpaceTimedEvent;
 			hyperSpaceTimer.Enabled = false;
 			hyperSpaceCountSeconds = 3000;
 
@@ -255,7 +261,6 @@ namespace SpaceUnicorn
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 #endif
-
 			keyboardState = Keyboard.GetState();
 
 			if (activeScreen == startScreen)
@@ -276,7 +281,6 @@ namespace SpaceUnicorn
 			}
 
 			oldKeyboardState = keyboardState;
-
 
 			if (activeScreen == actionScreen)
 			{
@@ -323,7 +327,6 @@ namespace SpaceUnicorn
 			return keyboardState.IsKeyUp(theKey) &&
 				oldKeyboardState.IsKeyDown(theKey);
 		}
-
 
 		/// <summary>
 		/// This is called when the game should draw itself.
@@ -396,11 +399,13 @@ namespace SpaceUnicorn
 
 			//Stop drawing
 			spriteBatch.End();
-
-
 		}
 
-		public void UpdatePlayer(GameTime gameTime)
+        #endregion
+
+        #region Player
+
+        public void UpdatePlayer(GameTime gameTime)
 		{
 			player.Update(gameTime);
 
@@ -460,7 +465,11 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void PlayMusic(Song song)
+        #endregion
+
+        #region Music
+
+        private void PlayMusic(Song song)
 		{
 			try
 			{
@@ -473,7 +482,11 @@ namespace SpaceUnicorn
 			catch { }
 		}
 
-		private void AddEnemy()
+        #endregion
+
+        #region Enemy
+
+        private void AddEnemy()
 		{
 			// Initalize enemy animation
 			Animation enemyAnimation = new Animation();
@@ -556,7 +569,11 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void AddMeteors()
+        #endregion
+
+        #region Meteors
+
+        private void AddMeteors()
 		{
 			Animation meteorAnimation = new Animation();
 			meteorAnimation.Initialize(meteorTexture, Vector2.Zero, 100, 100, 9, 50, Color.White, 1f, true);
@@ -570,7 +587,7 @@ namespace SpaceUnicorn
 
 		private void UpdateMeteors(GameTime gameTime)
 		{
-			// Adds enemy every enemySpawnTime
+			// Adds meteor every meteorSpawnTime
 			if (gameTime.TotalGameTime - previousMeteorSpawnRate > meteorSpawnRate)
 			{
 				previousMeteorSpawnRate = gameTime.TotalGameTime;
@@ -578,6 +595,7 @@ namespace SpaceUnicorn
 				AddMeteors();
 			}
 
+            // Loop through list of meteors
 			for (int i = meteors.Count - 1; i >= 0; i--)
 			{
 				meteors[i].Update(gameTime);
@@ -593,11 +611,17 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void AddMarshmallow(Vector2 position)
+        #endregion
+
+        #region Marshmallows
+
+        private void AddMarshmallow(Vector2 position)
 		{
 			// Initalize marshmallows
 			MarshmallowLaser marshmallow = new MarshmallowLaser();
 			marshmallow.Initialize(GraphicsDevice.Viewport, marshmallowPic, position);
+
+            // Add mashmallow
 			marshmallows.Add(marshmallow);
 		}
 
@@ -610,39 +634,56 @@ namespace SpaceUnicorn
 				// If marshmallows hit something or leave the screen
 				if (marshmallows[i].Active == false)
 				{
-					marshmallows.RemoveAt(i);
+                    // Remove marshmallows
+				    marshmallows.RemoveAt(i);
 				}
 			}
 		}
 
-		private void AddHealthBoost()
+        #endregion
+
+        #region Health Boost
+
+        private void AddHealthBoost()
 		{
-			HealthBoost health = new HealthBoost();
-			health.Initialize(GraphicsDevice.Viewport, healthBoostIcon, new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2), random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+            // Initalize health boost
+		    HealthBoost health = new HealthBoost();
+		    health.Initialize(GraphicsDevice.Viewport, healthBoostIcon,
+		        new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2),
+		            random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+
+            // Add health boost
 			healthy.Add(health);
 		}
 
 		private void UpdateHealthBoost(GameTime gameTime)
 		{
-			if (gameTime.TotalGameTime - previousHealthSpawnTime > healthSpawnTime)
+            // Adds helath boost every healthSpawnTime
+		    if (gameTime.TotalGameTime - previousHealthSpawnTime > healthSpawnTime)
 			{
 				previousHealthSpawnTime = gameTime.TotalGameTime;
 
 				AddHealthBoost();
 			}
 
+            // Loop through health boost list
 			for (int i = healthy.Count - 1; i >= 0; i--)
 			{
-				healthy[i].Update(gameTime);
+                // Update each boost
+			    healthy[i].Update(gameTime);
 
-				if (healthy[i].Active == false)
+			    if (healthy[i].Active == false)
 				{
-					healthy.RemoveAt(i);
+				    healthy.RemoveAt(i);
 				}
 			}
 		}
 
-		private void AddSpeed()
+        #endregion
+
+        #region Speed
+
+        private void AddSpeed()
 		{
 			Animation speedAnimation = new Animation();
 			speedAnimation.Initialize(speedIcon, Vector2.Zero, 40, 40, 10, 30, Color.White, 1f, true);
@@ -674,7 +715,37 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void AddHyperSpace()
+        private void OnSpeedTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            speedCountSeconds--;
+
+            var power = random.Next(1, 100);
+
+            if (power > 50)
+            {
+                isInvading = true;
+            }
+            else
+            {
+                isSlowingDown = true;
+            }
+
+            if (speedCountSeconds == 0)
+            {
+                isInvading = false;
+                isSlowingDown = false;
+
+                speedTimer.Stop();
+                enemySpawnTime = TimeSpan.FromSeconds(1.0f);
+                fireTime = TimeSpan.FromSeconds(.15f);
+            }
+        }
+  
+        #endregion
+
+        #region Hyper Space
+
+        private void AddHyperSpace()
 		{
 			HyperSpace flash = new HyperSpace();
 			flash.Initialize(GraphicsDevice.Viewport, hyperSpaceIcon, new Vector2((GraphicsDevice.Viewport.Width + enemyTexture.Width / 2), random.Next(50, GraphicsDevice.Viewport.Height - 50)));
@@ -701,7 +772,25 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void UpdateCollisions()
+	    private void OnHyperSpaceTimedEvent(object sender, ElapsedEventArgs e)
+	    {
+	        hyperSpaceCountSeconds--;
+
+	        isJumping = true;
+	        if (hyperSpaceCountSeconds == 0)
+	        {
+	            hyperSpaceTimer.Stop();
+	            hyperSpaceTimer.Close();
+	            isJumping = false;
+	            enemySpawnTime = TimeSpan.FromSeconds(1.0f);
+	        }
+	    }
+
+        #endregion
+
+        #region Collisions
+
+        private void UpdateCollisions()
 		{
 			// Use the Rectangle's built-in intersect function to 
 			// determine if two objects are overlapping
@@ -829,44 +918,8 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void OnInvasionTimedEvent(object sender, ElapsedEventArgs e)
-		{
-			hyperSpaceCountSeconds--;
-
-			isJumping = true;
-			if (hyperSpaceCountSeconds == 0)
-			{
-				hyperSpaceTimer.Stop();
-				hyperSpaceTimer.Close();
-				isJumping = false;
-				enemySpawnTime = TimeSpan.FromSeconds(1.0f);
-			}
-		}
-
-		private void OnSpeedTimedEvent(object sender, ElapsedEventArgs e)
-		{
-			speedCountSeconds--;
-
-			var power = random.Next(1, 100);
-
-			if (power > 50)
-			{
-				isInvading = true;
-			}
-			else
-			{
-				isSlowingDown = true;
-			}
-
-			if (speedCountSeconds == 0)
-			{
-				isInvading = false;
-				isSlowingDown = false;
-
-				speedTimer.Stop();
-				enemySpawnTime = TimeSpan.FromSeconds(1.0f);
-				fireTime = TimeSpan.FromSeconds(.15f);
-			}
-		}
-	}
+        #endregion 
+     }
 }
+
+		

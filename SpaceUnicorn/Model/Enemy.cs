@@ -6,8 +6,10 @@ namespace SpaceUnicorn.Model
 {
 	public class Enemy
 	{
-		// Animation representing the enemy
-		public Animation enemyAnimation;
+        #region Variables
+
+        // Animation representing the enemy
+        public Animation enemyAnimation;
 		public Animation EnemyAnimation
 		{
 			get { return enemyAnimation; }
@@ -69,12 +71,16 @@ namespace SpaceUnicorn.Model
 			set { enemyMoveSpeed = value; }
 		}
 
-		public Enemy()
+        #endregion
+
+        public Enemy()
 		{
 
 		}
 
-		public void Initialize(Animation animation, Vector2 position)
+        #region Initailize
+
+        public void Initialize(Animation animation, Vector2 position)
 		{
 			enemyAnimation = animation;
 			Position = position;
@@ -85,7 +91,11 @@ namespace SpaceUnicorn.Model
 			scoreValue = 100;
 		}
 
-		public void Update(GameTime gameTime)
+        #endregion
+
+        #region Update
+
+        public void Update(GameTime gameTime)
 		{
 			Position.X -= enemyMoveSpeed;
 
@@ -100,9 +110,15 @@ namespace SpaceUnicorn.Model
 			}
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+        #endregion
+
+        #region Draw
+
+        public void Draw(SpriteBatch spriteBatch)
 		{
 			enemyAnimation.Draw(spriteBatch);
 		}
-	}
+
+        #endregion
+    }
 }
