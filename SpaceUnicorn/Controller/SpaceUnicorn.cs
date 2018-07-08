@@ -248,7 +248,7 @@ namespace SpaceUnicorn
 			// Load powers
 			_healthBoostIcon = Content.Load<Texture2D>("Powers/healthPowerUp");
 			_speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
-			_hyperSpaceIcon = Content.Load<Texture2D>("Powers/_hyperSpace");
+			_hyperSpaceIcon = Content.Load<Texture2D>("Powers/hyperSpace");
 
 			// Play music
 			PlayMusic(_gameMusic);
