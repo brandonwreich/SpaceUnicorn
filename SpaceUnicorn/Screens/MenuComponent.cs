@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Specialized;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,37 +9,37 @@ namespace SpaceUnicorn
 	{
         #region Variables
 
-        string[] menuItems;
-		int selectedIndex;
+        private string[] _menuItems;
+		private int _selectedIndex;
 
-		Color normal = Color.White;
-		Color hilite = Color.Yellow;
+		private Color _normal = Color.LightBlue;
+		private Color _hilite = Color.Yellow;
 
-		KeyboardState keyboardState;
-		KeyboardState previousKeyboardState;
+		private KeyboardState _keyboardState;
+		private KeyboardState _previousKeyboardState;
 
-		SpriteBatch spriteBatch;
-		SpriteFont spriteFont;
+		private SpriteBatch _spriteBatch;
+		private SpriteFont _spriteFont;
 
-		Vector2 position;
+		private Vector2 _position;
 
-		float width = 0f;
-		float height = 0f;
+		private float _width = 0f;
+		private float _height = 0f;
 
         public int SelectedIndex
 		{
-			get { return selectedIndex; }
+			get { return _selectedIndex; }
 			set
 			{
-				selectedIndex = value;
+				_selectedIndex = value;
 
-				if (selectedIndex < 0)
+				if (_selectedIndex < 0)
 				{
-					selectedIndex = 0;
+					_selectedIndex = 0;
 				}
-				if (selectedIndex >= menuItems.Length)
+				if (_selectedIndex >= _menuItems.Length)
 				{
-					selectedIndex = menuItems.Length - 1;
+					_selectedIndex = _menuItems.Length - 1;
 				}
 			}
 		}
@@ -47,9 +48,9 @@ namespace SpaceUnicorn
 
         public MenuComponent(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, string[] menuItems) : base(game)
 		{
-			this.spriteBatch = spriteBatch;
-			this.spriteFont = spriteFont;
-			this.menuItems = menuItems;
+			this._spriteBatch = spriteBatch;
+			this._spriteFont = spriteFont;
+			this._menuItems = menuItems;
 
 			MeasureMenu();
 		}
@@ -63,31 +64,31 @@ namespace SpaceUnicorn
 
         public override void Update(GameTime gameTime)
 		{
-			keyboardState = Keyboard.GetState();
+			_keyboardState = Keyboard.GetState();
 
 			if (CheckKey(Keys.Down))
 			{
-				selectedIndex++;
+				_selectedIndex++;
 
-				if (selectedIndex == menuItems.Length)
+				if (_selectedIndex == _menuItems.Length)
 				{
-					selectedIndex = 0;
+					_selectedIndex = 0;
 				}
 			}
 
 			if (CheckKey(Keys.Up))
 			{
-				selectedIndex--;
+				_selectedIndex--;
 
-				if (selectedIndex < 0)
+				if (_selectedIndex < 0)
 				{
-					selectedIndex = menuItems.Length - 1;
+					_selectedIndex = _menuItems.Length - 1;
 				}
 			}
 
 			base.Update(gameTime);
 
-			previousKeyboardState = keyboardState;
+			_previousKeyboardState = _keyboardState;
 		}
 
         #endregion
@@ -97,21 +98,21 @@ namespace SpaceUnicorn
         public override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
-			Vector2 location = position;
+			Vector2 location = _position;
 			Color tint;
 
-			for (int i = 0; i < menuItems.Length; i++)
+			for (int i = 0; i < _menuItems.Length; i++)
 			{
-				if (i == selectedIndex)
+				if (i == _selectedIndex)
 				{
-					tint = hilite;
+					tint = _hilite;
 				}
 				else
 				{
-					tint = normal;
-					spriteBatch.DrawString(spriteFont, menuItems[i], location, tint);
+					tint = _normal;
+					_spriteBatch.DrawString(_spriteFont, _menuItems[i], location, tint);
 
-					location.Y += spriteFont.LineSpacing + 5;
+					location.Y += _spriteFont.LineSpacing + 5;
 				}
 			}
 		}
@@ -122,31 +123,29 @@ namespace SpaceUnicorn
 
 	    private bool CheckKey(Keys theKey)
 	    {
-	        return keyboardState.IsKeyUp(theKey) && previousKeyboardState.IsKeyDown(theKey);
+	        return _keyboardState.IsKeyUp(theKey) && _previousKeyboardState.IsKeyDown(theKey);
 	    }
 
 	    private void MeasureMenu()
 	    {
-	        height = 0;
-	        width = 0;
+	        _height = 0;
+	        _width = 0;
 
-	        foreach (string item in menuItems)
+	        foreach (string item in _menuItems)
 	        {
-	            Vector2 size = spriteFont.MeasureString(item);
+	            Vector2 size = _spriteFont.MeasureString(item);
 
-	            if (size.X > width)
+	            if (size.X > _width)
 	            {
-	                width = size.X;
+	                _width = size.X;
 	            }
 
-	            height += spriteFont.LineSpacing + 5;
+	            _height += _spriteFont.LineSpacing + 5;
 	        }
 
-	        position = new Vector2((Game.Window.ClientBounds.Width - width) / 2, (Game.Window.ClientBounds.Height - height) / 2);
+	        _position = new Vector2((Game.Window.ClientBounds.Width - _width) / 2, (Game.Window.ClientBounds.Height - _height) / 2);
 	    }
 
         #endregion
     }
 }
-
-

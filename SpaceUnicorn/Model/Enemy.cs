@@ -9,66 +9,66 @@ namespace SpaceUnicorn.Model
         #region Variables
 
         // Animation representing the enemy
-        public Animation enemyAnimation;
-		public Animation EnemyAnimation
+        public Animation _enemyAnimation;
+		public Animation _EnemyAnimation
 		{
-			get { return enemyAnimation; }
-			set { enemyAnimation = value; }
+			get { return _enemyAnimation; }
+			set { _enemyAnimation = value; }
 		}
 
 		// The position of the enemy ship relative to the top left corner of the screen
-		public Vector2 Position;
+		public Vector2 _Position;
 
 		// The state of the Enemy Ships
-		private bool active;
-		public bool Active
+		private bool _active;
+		public bool _Active
 		{
-			get { return active; }
-			set { active = value; }
+			get { return _active; }
+			set { _active = value; }
 		}
 
 		// Health of the enemy
-		private int health;
-		public int Health
+		private int _health;
+		public int _Health
 		{
-			get { return health; }
-			set { health = value; }
+			get { return _health; }
+			set { _health = value; }
 		}
 
 		// The amount of damage the enemy inflicts on the player
-		private int damage;
-		public int Damage
+		private int _damage;
+		public int _Damage
 		{
-			get { return damage; }
-			set { damage = value; }
+			get { return _damage; }
+			set { _damage = value; }
 		}
 
 		// The amount of score the enemy will give to the player
-		private int scoreValue;
-		public int ScoreValue
+		private int _scoreValue;
+		public int _ScoreValue
 		{
-			get { return scoreValue; }
-			set { scoreValue = value; }
+			get { return _scoreValue; }
+			set { _scoreValue = value; }
 		}
 
 		// Get the width of the enemy ship
-		public int Width
+		public int _Width
 		{
-			get { return EnemyAnimation.FrameWidth; }
+			get { return _EnemyAnimation._FrameWidth; }
 		}
 
 		// Get the height of the enemy ship
-		public int Height
+		public int _Height
 		{
-			get { return EnemyAnimation.FrameHeight; }
+			get { return _EnemyAnimation._FrameHeight; }
 		}
 
 		// The speed at which the enemy moves
-		private float enemyMoveSpeed;
-		public float EnemyMoveSpeed
+		private float _enemyMoveSpeed;
+		public float _EnemyMoveSpeed
 		{
-			get { return enemyMoveSpeed; }
-			set { enemyMoveSpeed = value; }
+			get { return _enemyMoveSpeed; }
+			set { _enemyMoveSpeed = value; }
 		}
 
         #endregion
@@ -82,13 +82,13 @@ namespace SpaceUnicorn.Model
 
         public void Initialize(Animation animation, Vector2 position)
 		{
-			enemyAnimation = animation;
-			Position = position;
-			active = true;
-			health = 10;
-			damage = 10;
-			enemyMoveSpeed = 6f;
-			scoreValue = 100;
+			_enemyAnimation = animation;
+			_Position = position;
+			_active = true;
+			_health = 10;
+			_damage = 10;
+			_enemyMoveSpeed = 6f;
+			_scoreValue = 100;
 		}
 
         #endregion
@@ -97,16 +97,16 @@ namespace SpaceUnicorn.Model
 
         public void Update(GameTime gameTime)
 		{
-			Position.X -= enemyMoveSpeed;
+			_Position.X -= _enemyMoveSpeed;
 
-			enemyAnimation.Position = Position;
+			_enemyAnimation._Position = _Position;
 
-			enemyAnimation.Update(gameTime);
+			_enemyAnimation.Update(gameTime);
 
-			if (Position.X < -Width || Health <= 0)
+			if (_Position.X < -_Width || _Health <= 0)
 			{
-				Active = false;
-				health = 0;
+				_Active = false;
+				_health = 0;
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace SpaceUnicorn.Model
 
         public void Draw(SpriteBatch spriteBatch)
 		{
-			enemyAnimation.Draw(spriteBatch);
+			_enemyAnimation.Draw(spriteBatch);
 		}
 
         #endregion

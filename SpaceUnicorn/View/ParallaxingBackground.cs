@@ -10,13 +10,13 @@ namespace SpaceUnicorn.View
         #region Variables
 
         // The image representing the parallaxing background
-        private Texture2D texture;
+        private Texture2D _texture;
 
 		// An array of positions of the parallaxing background
-		private Vector2[] positions;
+		private Vector2[] _positions;
 
 		// The speed which the background is moving
-		private int speed;
+		private int _speed;
 
         #endregion
 
@@ -30,16 +30,16 @@ namespace SpaceUnicorn.View
         public void Initialize(ContentManager content, String texturePath, int screenWidth, int speed)
 		{
 			// Load background
-			texture = content.Load<Texture2D>(texturePath);
+			_texture = content.Load<Texture2D>(texturePath);
 
 			// Set speed
-			this.speed = speed;
+			this._speed = speed;
 
-			positions = new Vector2[screenWidth / texture.Width + 1];
+			_positions = new Vector2[screenWidth / _texture.Width + 1];
 
-			for (int i = 0; i < positions.Length; i++)
+			for (int i = 0; i < _positions.Length; i++)
 			{
-				positions[i] = new Vector2(i * texture.Width, 0);
+				_positions[i] = new Vector2(i * _texture.Width, 0);
 			}
 		}
 
@@ -49,22 +49,22 @@ namespace SpaceUnicorn.View
 
         public void Update()
 		{
-			for (int i = 0; i < positions.Length; i++)
+			for (int i = 0; i < _positions.Length; i++)
 			{
-				positions[i].X += speed;
+				_positions[i].X += _speed;
 
-				if (speed <= 0)
+				if (_speed <= 0)
 				{
-					if (positions[i].X <= -texture.Width)
+					if (_positions[i].X <= -_texture.Width)
 					{
-						positions[i].X = texture.Width * (positions.Length - 1);
+						_positions[i].X = _texture.Width * (_positions.Length - 1);
 					}
 				}
 				else
 				{
-					if (positions[i].X >= texture.Width * (positions.Length - 1))
+					if (_positions[i].X >= _texture.Width * (_positions.Length - 1))
 					{
-						positions[i].X = -texture.Width;
+						_positions[i].X = -_texture.Width;
 					}
 				}
 			}
@@ -76,9 +76,9 @@ namespace SpaceUnicorn.View
 
         public void Draw(SpriteBatch spriteBatch)
 		{
-			for (int i = 0; i < positions.Length; i++)
+			for (int i = 0; i < _positions.Length; i++)
 			{
-				spriteBatch.Draw(texture, positions[i], Color.White);
+				spriteBatch.Draw(_texture, _positions[i], Color.White);
 			}
 		}
 

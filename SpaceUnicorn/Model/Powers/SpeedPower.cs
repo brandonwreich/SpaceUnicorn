@@ -2,48 +2,48 @@
 using Microsoft.Xna.Framework.Graphics;
 using SpaceUnicorn.View;
 
-namespace SpaceUnicorn
+namespace SpaceUnicorn.Model.Powers
 {
 	public class SpeedPower
 	{
         #region Variables
 
         // Animation representing the power
-        public Animation speedAnimation;
-		public Animation SpeedAnimation
+        public Animation _speedAnimation;
+		public Animation _SpeedAnimation
 		{
-			get { return speedAnimation; }
-			set { speedAnimation = value; }
+			get { return _speedAnimation; }
+			set { _speedAnimation = value; }
 		}
 
 		// Position of the power relative to the upper left side of the screen
-		public Vector2 Position;
+		public Vector2 _Position;
 
 		// State of the power
-		private bool active;
-		public bool Active
+		private bool _active;
+		public bool _Active
 		{
-			get { return active; }
-			set { active = value; }
+			get { return _active; }
+			set { _active = value; }
 		}
 
 		// Represents the viewable boundary of the game
-		private Viewport viewport;
+		private Viewport _viewport;
 
 		// Get the width of the power
-		public int Width
+		public int _Width
 		{
-			get { return SpeedAnimation.FrameWidth; }
+			get { return _SpeedAnimation._FrameWidth; }
 		}
 
 		// Get the height of the power
-		public int Height
+		public int _Height
 		{
-			get { return SpeedAnimation.FrameHeight; }
+			get { return _SpeedAnimation._FrameHeight; }
 		}
 
 		// Determines how fast the power moves
-		private float speedPowerMoveSpeed;
+		private float _speedPowerMoveSpeed;
 
         #endregion
 
@@ -56,13 +56,13 @@ namespace SpaceUnicorn
 
         public void Initialize(Animation animation, Vector2 position)
 		{
-			speedAnimation = animation;
+			_speedAnimation = animation;
 
-			Position = position;
+			_Position = position;
 
-			active = true;
+			_active = true;
 
-			speedPowerMoveSpeed = 6f;
+			_speedPowerMoveSpeed = 6f;
 		}
 
         #endregion
@@ -71,15 +71,15 @@ namespace SpaceUnicorn
 
         public void Update(GameTime gameTime)
 		{
-			Position.X -= speedPowerMoveSpeed;
+			_Position.X -= _speedPowerMoveSpeed;
 
-			speedAnimation.Position = Position;
+			_speedAnimation._Position = _Position;
 
-			speedAnimation.Update(gameTime);
+			_speedAnimation.Update(gameTime);
 
-			if (Position.X < -Width)
+			if (_Position.X < -_Width)
 			{
-				Active = false;
+				_Active = false;
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace SpaceUnicorn
 
         public void Draw(SpriteBatch spriteBatch)
 		{
-			speedAnimation.Draw(spriteBatch);
+			_speedAnimation.Draw(spriteBatch);
 		}
 
         #endregion

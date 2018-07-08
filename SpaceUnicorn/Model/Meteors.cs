@@ -10,62 +10,62 @@ namespace SpaceUnicorn.Model
         #region Variables
 
         // Meteor animation
-        public Animation meteorAnimation;
-		public Animation MeteorAnimation
+        private Animation _meteorAnimation;
+		public Animation _MeteorAnimation
 		{
-			get { return meteorAnimation; }
-			set { meteorAnimation = value; }
+			get { return _meteorAnimation; }
+			set { _meteorAnimation = value; }
 		}
 
 		// Meteor position
-		public Vector2 Position;
+		public Vector2 _Position;
 
 		// Meteor is on screen
-		private bool active;
-		public bool Active
+		private bool _active;
+		public bool _Active
 		{
-			get { return active; }
-			set { active = value; }
+			get { return _active; }
+			set { _active = value; }
 		}
 
 		// Meteor health
-		private int health;
-		public int Health
+		private int _health;
+		public int _Health
 		{
-			get { return health; }
-			set { health = value; }
+			get { return _health; }
+			set { _health = value; }
 		}
 
 		// Meteor damage
-		private int damage;
-		public int Damage
+		private int _damage;
+		public int _Damage
 		{
-			get { return damage; }
-			set { damage = value; }
+			get { return _damage; }
+			set { _damage = value; }
 		}
 
 		// Width of animation
-		public int Width
+		public int _Width
 		{
-			get { return MeteorAnimation.FrameWidth; }
+			get { return _MeteorAnimation._FrameWidth; }
 		}
 
 		// Height of animation
-		public int Height
+		public int _Height
 		{
-			get { return MeteorAnimation.FrameHeight; }
+			get { return _MeteorAnimation._FrameHeight; }
 		}
 
 		// Meteor speed
-		private float meteorMoveSpeed;
-		public float MeteorMoveSpeed
+		private float _meteorMoveSpeed;
+		public float _MeteorMoveSpeed
 		{
-			get { return meteorMoveSpeed; }
-			set { meteorMoveSpeed = value; }
+			get { return _meteorMoveSpeed; }
+			set { _meteorMoveSpeed = value; }
 		}
 
 		// Random number generator
-		private Random random;
+		private Random _random;
 
         #endregion
 
@@ -78,13 +78,13 @@ namespace SpaceUnicorn.Model
 
         public void Initialize(Animation animation, Vector2 position)
 		{
-			meteorAnimation = animation;
-			Position = position;
-			active = true;
-			health = 20;
-			damage = 69;
-			meteorMoveSpeed = 5f;
-			random = new Random();
+			_meteorAnimation = animation;
+			_Position = position;
+			_active = true;
+			_health = 20;
+			_damage = 69;
+			_meteorMoveSpeed = 5f;
+			_random = new Random();
 		}
         #endregion
 
@@ -92,15 +92,15 @@ namespace SpaceUnicorn.Model
 
         public void Update(GameTime gameTime)
 		{
-			Position.X -= meteorMoveSpeed;
+			_Position.X -= _meteorMoveSpeed;
 
-			meteorAnimation.Position = Position;
-			meteorAnimation.Update(gameTime);
+			_meteorAnimation._Position = _Position;
+			_meteorAnimation.Update(gameTime);
 
-			if (Position.X < -Width || Health <= 0)
+			if (_Position.X < -_Width || _Health <= 0)
 			{
-				Active = false;
-				health = 0;
+				_Active = false;
+				_health = 0;
 			}
 		}
 
@@ -110,7 +110,7 @@ namespace SpaceUnicorn.Model
 
         public void Draw(SpriteBatch spriteBatch)
 		{
-			meteorAnimation.Draw(spriteBatch);
+			_meteorAnimation.Draw(spriteBatch);
 		}
 
         #endregion

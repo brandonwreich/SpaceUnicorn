@@ -13,21 +13,21 @@ namespace SpaceUnicorn
 	{
         #region Variables
 
-        List<GameComponent> components = new List<GameComponent>();
-		protected Game game;
-		protected SpriteBatch spriteBatch;
+        List<GameComponent> _components = new List<GameComponent>();
+		protected Game _game;
+		protected SpriteBatch _spriteBatch;
 
-        public List<GameComponent> Components
+        public List<GameComponent> _Components
 		{
-			get{ return components; }
+			get{ return _components; }
 		}
 
         #endregion
 
         public GameScreen(Game game, SpriteBatch spriteBatch) : base(game)
 		{
-			this.game = game;
-			this.spriteBatch = spriteBatch;
+			this._game = game;
+			this._spriteBatch = spriteBatch;
 		}
 
 		public override void Initialize()
@@ -41,7 +41,7 @@ namespace SpaceUnicorn
 		{
 			base.Update(gameTime);
 
-			foreach (GameComponent component in components)
+			foreach (GameComponent component in _components)
 			{
 				if (component.Enabled == true)
 				{
@@ -57,7 +57,7 @@ namespace SpaceUnicorn
         public override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
-			foreach (GameComponent component in components)
+			foreach (GameComponent component in _components)
 			{
 				if (component is DrawableGameComponent && ((DrawableGameComponent)component).Visible)
 				{
@@ -75,7 +75,7 @@ namespace SpaceUnicorn
 			this.Visible = true;
 			this.Enabled = true;
 
-			foreach (GameComponent component in components)
+			foreach (GameComponent component in _components)
 			{
 				component.Enabled = true;
 				if (component is DrawableGameComponent)
@@ -90,7 +90,7 @@ namespace SpaceUnicorn
 			this.Visible = false;
 			this.Enabled = false;
 
-			foreach (GameComponent component in components)
+			foreach (GameComponent component in _components)
 			{
 				component.Enabled = false;
 				if (component is DrawableGameComponent)

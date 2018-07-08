@@ -1,47 +1,47 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceUnicorn.Model
+namespace SpaceUnicorn.Model.Powers
 {
 	public class Invasion
 	{
         #region Variables
 
         // Image representing the power
-        private Texture2D texture;
-		public Texture2D Texture
+        private Texture2D _texture;
+		public Texture2D _Texture
 		{
-			get { return texture; }
-			set { texture = value; }
+			get { return _texture; }
+			set { _texture = value; }
 		}
 		// Position of the power relative to the upper left side of the screen
-		public Vector2 Position;
+		public Vector2 _Position;
 
 		// State of the power
-		private bool active;
-		public bool Active
+		private bool _active;
+		public bool _Active
 		{
-			get { return active; }
-			set { active = value; }
+			get { return _active; }
+			set { _active = value; }
 		}
 
 		// Represents the viewable boundary of the game
-		private Viewport viewport;
+		private Viewport _viewport;
 
 		// Get the width of the power
-		public int Width
+		public int _Width
 		{
-			get { return Texture.Width; }
+			get { return _Texture.Width; }
 		}
 
 		// Get the height of the power
-		public int Height
+		public int _Height
 		{
-			get { return Texture.Height; }
+			get { return _Texture.Height; }
 		}
 
 		// Determines how fast the power moves
-		private float enemySpawnRatePowerDownMoveSpeed;
+		private float _enemySpawnRatePowerDownMoveSpeed;
 
         #endregion
 
@@ -54,13 +54,13 @@ namespace SpaceUnicorn.Model
 
         public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
-			this.texture = texture;
-			this.Position = position;
-			this.viewport = viewport;
+			this._texture = texture;
+			this._Position = position;
+			this._viewport = viewport;
 
-			active = true;
+			_active = true;
 
-			enemySpawnRatePowerDownMoveSpeed = 6f;
+			_enemySpawnRatePowerDownMoveSpeed = 6f;
 		}
 
         #endregion
@@ -69,11 +69,11 @@ namespace SpaceUnicorn.Model
 
         public void Update(GameTime gameTime)
 		{
-			Position.X -= enemySpawnRatePowerDownMoveSpeed;
+			_Position.X -= _enemySpawnRatePowerDownMoveSpeed;
 
-			if (Position.X < -Width)
+			if (_Position.X < -_Width)
 			{
-				Active = false;
+				_Active = false;
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace SpaceUnicorn.Model
 
         public void Draw(SpriteBatch spriteBatch)
 		{
-			spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f, SpriteEffects.None, 0f);
+			spriteBatch.Draw(_Texture, _Position, null, Color.White, 0f, new Vector2(_Width / 2, _Height / 2), 1f, SpriteEffects.None, 0f);
 		}
 
         #endregion
