@@ -18,16 +18,16 @@ namespace SpaceUnicorn
 	{
         #region Variables
 
-        GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+        GraphicsDeviceManager _graphics;
+		SpriteBatch _spriteBatch;
 
-		KeyboardState keyboardState;
-		KeyboardState oldKeyboardState;
+		KeyboardState _keyboardState;
+		KeyboardState _oldKeyboardState;
 
 		// Screens
-		GameScreen activeScreen;
-		StartScreen startScreen;
-		ActionScreen actionScreen;
+		GameScreen _activeScreen;
+		StartScreen _startScreen;
+		ActionScreen _actionScreen;
 
 		// Player
 		private Player _player;
@@ -72,6 +72,11 @@ namespace SpaceUnicorn
 		private int _score;
 		private SpriteFont _font;
 
+        // GameTime Variables
+	    private TimeSpan _gameUpdate;
+	    private TimeSpan _previousGameRate;
+	    private TimeSpan _increase;
+
 		/* Power Ups/Downs */
 
 		// Health power up
@@ -99,9 +104,9 @@ namespace SpaceUnicorn
 		private List<HyperSpace> _hyperSpace;
 		private TimeSpan _hyperSpaceSpawnTime;
 		private TimeSpan _previousHyperSpaceSpawnTime;
-		private bool isJumping;
-		private static Timer hyperSpaceTimer;
-		private int hyperSpaceCountSeconds;
+		private bool _isJumping;
+		private static Timer _hyperSpaceTimer;
+		private int _hyperSpaceCountSeconds;
 
         #endregion
 
@@ -109,7 +114,7 @@ namespace SpaceUnicorn
 
         public SpaceUnicorn()
 		{
-			graphics = new GraphicsDeviceManager(this);
+			_graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 		}
 
@@ -153,6 +158,11 @@ namespace SpaceUnicorn
 			_previousMeteorSpawnRate = TimeSpan.Zero;
 			_meteorSpawnRate = TimeSpan.FromSeconds(_random.Next(1, 30));
 
+            // GameTime Variables
+		    _gameUpdate = TimeSpan.FromSeconds(20f);
+            _previousGameRate = TimeSpan.Zero;
+            _increase = TimeSpan.FromSeconds(0.01f);
+
 			/* Power ups/downs */
 
 			// Initalize health power up
@@ -180,12 +190,12 @@ namespace SpaceUnicorn
 			_hyperSpace = new List<HyperSpace>();
 			_previousHyperSpaceSpawnTime = TimeSpan.Zero;
 			_hyperSpaceSpawnTime = TimeSpan.FromMinutes(_random.Next(1, 1));
-			isJumping = false;
-			hyperSpaceTimer = new Timer();
-			hyperSpaceTimer.Interval = 1;
-			hyperSpaceTimer.Elapsed += OnHyperSpaceTimedEvent;
-			hyperSpaceTimer.Enabled = false;
-			hyperSpaceCountSeconds = 3000;
+			_isJumping = false;
+			_hyperSpaceTimer = new Timer();
+			_hyperSpaceTimer.Interval = 1;
+			_hyperSpaceTimer.Elapsed += OnHyperSpaceTimedEvent;
+			_hyperSpaceTimer.Enabled = false;
+			_hyperSpaceCountSeconds = 3000;
 
 			base.Initialize();
 		}
@@ -201,21 +211,21 @@ namespace SpaceUnicorn
         protected override void LoadContent()
 		{
 			// Create a new SpriteBatch, which can be used to draw textures.
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// Menu
 			string[] menuItems = { "Start Game", "High Score", "End Game" };
 
-			startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"), Content.Load<Texture2D>("Background/startScreen"));
-			Components.Add(startScreen);
-			startScreen.Hide();
+			_startScreen = new StartScreen(this, _spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"), Content.Load<Texture2D>("Background/startScreen"));
+			Components.Add(_startScreen);
+			_startScreen.Hide();
 
-			actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("Background/spaceBackground"));
-			Components.Add(actionScreen);
-			actionScreen.Hide();
+			_actionScreen = new ActionScreen(this, _spriteBatch, Content.Load<Texture2D>("Background/spaceBackground"));
+			Components.Add(_actionScreen);
+			_actionScreen.Hide();
 
-			activeScreen = startScreen;
-			activeScreen.Show();
+			_activeScreen = _startScreen;
+			_activeScreen.Show();
 
 			// Load _player
 			Animation playerAnimation = new Animation();
@@ -271,28 +281,28 @@ namespace SpaceUnicorn
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 #endif
-			keyboardState = Keyboard.GetState();
+			_keyboardState = Keyboard.GetState();
 
-			if (activeScreen == startScreen)
+			if (_activeScreen == _startScreen)
 			{
 				if (CheckKey(Keys.Enter))
 				{
-					if (startScreen._SelectedIndex == 0)
+					if (_startScreen._SelectedIndex == 0)
 					{
-						activeScreen.Hide();
-						activeScreen = actionScreen;
-						activeScreen.Show();
+						_activeScreen.Hide();
+						_activeScreen = _actionScreen;
+						_activeScreen.Show();
 					}
-					if (startScreen._SelectedIndex == 1)
+					if (_startScreen._SelectedIndex == 1)
 					{
 						this.Exit();
 					}
 				}
 			}
 
-			oldKeyboardState = keyboardState;
+			_oldKeyboardState = _keyboardState;
 
-			if (activeScreen == actionScreen)
+			if (_activeScreen == _actionScreen)
 			{
 				// Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
 				_previousGamePadState = _currentGamePadState;
@@ -321,12 +331,22 @@ namespace SpaceUnicorn
 				UpdateExplosions(gameTime);
 
 				//Update _meteors
-				UpdateMeteors(gameTime);
+		//		UpdateMeteors(gameTime);
 
 				// Update powers
 				UpdateHealthBoost(gameTime);
 				UpdateSpeed(gameTime);
 				UpdateHyperSpace(gameTime);
+
+			    if (gameTime.TotalGameTime - _previousGameRate > _gameUpdate)
+			    {
+			        _previousGameRate = gameTime.TotalGameTime;
+
+			        _enemySpawnTime = _enemySpawnTime - (_increase + TimeSpan.FromSeconds(0.1f));
+			        _fireTime = _fireTime - _increase;
+
+                    Console.WriteLine(_enemySpawnTime + "  " + _fireTime);
+			    }
 			}
 
 			base.Update(gameTime);
@@ -342,71 +362,71 @@ namespace SpaceUnicorn
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
 		{
-			graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+			_graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			//Start drawing
-			spriteBatch.Begin();
+			_spriteBatch.Begin();
 
 			base.Draw(gameTime);
 
-			if (activeScreen == actionScreen)
+			if (_activeScreen == _actionScreen)
 			{
 				// Draw background
-				_bgLayer1.Draw(spriteBatch);
+				_bgLayer1.Draw(_spriteBatch);
 
 				//Draw the _player
-				_player.Draw(spriteBatch);
+				_player.Draw(_spriteBatch);
 
 				// Draw _enemies
 				for (int i = 0; i < _enemies.Count; i++)
 				{
-					_enemies[i].Draw(spriteBatch);
+					_enemies[i].Draw(_spriteBatch);
 				}
 
 				// Draw mashmallows
 				for (int i = 0; i < _marshmallows.Count; i++)
 				{
-					_marshmallows[i].Draw(spriteBatch);
+					_marshmallows[i].Draw(_spriteBatch);
 				}
 
 				// Draw the _explosions
 				for (int i = 0; i < _explosions.Count; i++)
 				{
-					_explosions[i].Draw(spriteBatch);
+					_explosions[i].Draw(_spriteBatch);
 				}
 
 				// Draw the _meteors
 				for (int i = 0; i < _meteors.Count; i++)
 				{
-					_meteors[i].Draw(spriteBatch);
+					_meteors[i].Draw(_spriteBatch);
 				}
 
 				// Draw health boost
 				for (int i = 0; i < _healthy.Count; i++)
 				{
-					_healthy[i].Draw(spriteBatch);
+					_healthy[i].Draw(_spriteBatch);
 				}
 
 				// Draw _speed icon
 				for (int i = 0; i < _speed.Count; i++)
 				{
-					_speed[i].Draw(spriteBatch);
+					_speed[i].Draw(_spriteBatch);
 				}
 
 				// Draw hyper space power
 				for (int i = 0; i < _hyperSpace.Count; i++)
 				{
-					_hyperSpace[i].Draw(spriteBatch);
+					_hyperSpace[i].Draw(_spriteBatch);
 				}
 
 				// Draw the _score
-				spriteBatch.DrawString(_font, "Score: " + _score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+				_spriteBatch.DrawString(_font, "Score: " + _score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
 				// Draw the _player health
-				spriteBatch.DrawString(_font, "Health: " + _player._Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+				_spriteBatch.DrawString(_font, "Health: " + _player._Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
 			}
 
 			//Stop drawing
-			spriteBatch.End();
+			_spriteBatch.End();
 		}
 
         #endregion
@@ -417,8 +437,8 @@ namespace SpaceUnicorn
 
         private bool CheckKey(Keys theKey)
 	    {
-	        return keyboardState.IsKeyUp(theKey) &&
-	               oldKeyboardState.IsKeyDown(theKey);
+	        return _keyboardState.IsKeyUp(theKey) &&
+	               _oldKeyboardState.IsKeyDown(theKey);
 	    }
 
 	    #endregion
@@ -479,9 +499,9 @@ namespace SpaceUnicorn
 				_player._Health = 100;
 				_score = 0;
 
-				activeScreen.Hide();
-				activeScreen = startScreen;
-				activeScreen.Show();
+				_activeScreen.Hide();
+				_activeScreen = _startScreen;
+				_activeScreen.Show();
 			}
 		}
 
@@ -532,7 +552,7 @@ namespace SpaceUnicorn
 			}
 
 			// If hyper space is true
-			if (isJumping == true)
+			if (_isJumping == true)
 			{
 				for (int j = 0; j < _enemies.Count; j++)
 				{
@@ -794,14 +814,14 @@ namespace SpaceUnicorn
 
 	    private void OnHyperSpaceTimedEvent(object sender, ElapsedEventArgs e)
 	    {
-	        hyperSpaceCountSeconds--;
+	        _hyperSpaceCountSeconds--;
 
-	        isJumping = true;
-	        if (hyperSpaceCountSeconds == 0)
+	        _isJumping = true;
+	        if (_hyperSpaceCountSeconds == 0)
 	        {
-	            hyperSpaceTimer.Stop();
-	            hyperSpaceTimer.Close();
-	            isJumping = false;
+	            _hyperSpaceTimer.Stop();
+	            _hyperSpaceTimer.Close();
+	            _isJumping = false;
 	            _enemySpawnTime = TimeSpan.FromSeconds(1.0f);
 	        }
 	    }
@@ -890,8 +910,8 @@ namespace SpaceUnicorn
 
 				if (rectangle1.Intersects(rectangle2))
 				{
-					hyperSpaceTimer.Stop();
-					hyperSpaceTimer.Start();
+					_hyperSpaceTimer.Stop();
+					_hyperSpaceTimer.Start();
 					_hyperSpace.RemoveAt(i);
 				}
 			}
