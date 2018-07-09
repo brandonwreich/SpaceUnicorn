@@ -62,12 +62,6 @@ namespace SpaceUnicorn
 		private Texture2D _explosionTexture;
 		private List<Animation> _explosions;
 
-		// Meteors
-		private Texture2D _meteorTexture;
-		private List<Meteors> _meteors;
-		private TimeSpan _meteorSpawnRate;
-		private TimeSpan _previousMeteorSpawnRate;
-
 		// Fonts
 		private int _score;
 		private SpriteFont _font;
@@ -152,11 +146,6 @@ namespace SpaceUnicorn
 
 			// Initalize _score
 			_score = 0;
-
-			// Meteors
-			_meteors = new List<Meteors>();
-			_previousMeteorSpawnRate = TimeSpan.Zero;
-			_meteorSpawnRate = TimeSpan.FromSeconds(_random.Next(1, 30));
 
             // GameTime Variables
 		    _gameUpdate = TimeSpan.FromSeconds(20f);
@@ -252,9 +241,6 @@ namespace SpaceUnicorn
 			// Load _font
 			_font = Content.Load<SpriteFont>("Fonts/gameFont");
 
-			// Load _meteors
-			_meteorTexture = Content.Load<Texture2D>("Animation/meteor");
-
 			// Load powers
 			_healthBoostIcon = Content.Load<Texture2D>("Powers/healthPowerUp");
 			_speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
@@ -330,9 +316,6 @@ namespace SpaceUnicorn
 				// Update the _explosions
 				UpdateExplosions(gameTime);
 
-				//Update _meteors
-		//		UpdateMeteors(gameTime);
-
 				// Update powers
 				UpdateHealthBoost(gameTime);
 				UpdateSpeed(gameTime);
@@ -395,12 +378,6 @@ namespace SpaceUnicorn
 					_explosions[i].Draw(_spriteBatch);
 				}
 
-				// Draw the _meteors
-				for (int i = 0; i < _meteors.Count; i++)
-				{
-					_meteors[i].Draw(_spriteBatch);
-				}
-
 				// Draw health boost
 				for (int i = 0; i < _healthy.Count; i++)
 				{
@@ -432,16 +409,6 @@ namespace SpaceUnicorn
         #endregion
 
         #endregion
-
-        #region Helper Methods
-
-        private bool CheckKey(Keys theKey)
-	    {
-	        return _keyboardState.IsKeyUp(theKey) &&
-	               _oldKeyboardState.IsKeyDown(theKey);
-	    }
-
-	    #endregion
 
         #region Player
 
@@ -575,7 +542,6 @@ namespace SpaceUnicorn
 			{
 				for (int i = 0; i < _enemies.Count; i++)
 				{
-					// Decrease move _speed
 					_enemies[i]._EnemyMoveSpeed = 3f;
 				}
 			}
@@ -589,7 +555,6 @@ namespace SpaceUnicorn
 					// If not active and health <= 0
 					if (_enemies[i]._Health <= 0)
 					{
-						// Add an explosion
 						AddExplosion(_enemies[i]._Position);
 
 						// If _enemies leave the screen still active
@@ -605,48 +570,6 @@ namespace SpaceUnicorn
 					}
 
 					_enemies.RemoveAt(i);
-				}
-			}
-		}
-
-        #endregion
-
-        #region Meteors
-
-        private void AddMeteors()
-		{
-			Animation meteorAnimation = new Animation();
-			meteorAnimation.Initialize(_meteorTexture, Vector2.Zero, 100, 100, 9, 50, Color.White, 1f, true);
-			Vector2 postion = new Vector2(GraphicsDevice.Viewport.Width + _meteorTexture.Width / 2, _random.Next(50, GraphicsDevice.Viewport.Height - 50));
-
-			Meteors meteor = new Meteors();
-			meteor.Initialize(meteorAnimation, postion);
-
-			_meteors.Add(meteor);
-		}
-
-		private void UpdateMeteors(GameTime gameTime)
-		{
-			// Adds meteor every meteorSpawnTime
-			if (gameTime.TotalGameTime - _previousMeteorSpawnRate > _meteorSpawnRate)
-			{
-				_previousMeteorSpawnRate = gameTime.TotalGameTime;
-
-				AddMeteors();
-			}
-
-            // Loop through list of _meteors
-			for (int i = _meteors.Count - 1; i >= 0; i--)
-			{
-				_meteors[i].Update(gameTime);
-
-				if (_meteors[i]._Active == false)
-				{
-					if (_meteors[i]._Health <= 0)
-					{
-						AddExplosion(_meteors[i]._Position);
-					}
-					_meteors.RemoveAt(i);
 				}
 			}
 		}
@@ -858,24 +781,6 @@ namespace SpaceUnicorn
 				}
 			}
 
-			// Player vs Meteor
-			for (int i = 0; i < _meteors.Count; i++)
-			{
-				rectangle2 = new Rectangle((int)_meteors[i]._Position.X, (int)_meteors[i]._Position.Y, _meteors[i]._Width, _meteors[i]._Height);
-
-				if (rectangle1.Intersects(rectangle2))
-				{
-					_player._Health -= _meteors[i]._Damage;
-
-					_meteors[i]._Health = 0;
-
-					if (_player._Health <= 0)
-					{
-						_player._Active = false;
-					}
-				}
-			}
-
 			// Player vs Health power up 
 			for (int i = 0; i < _healthy.Count; i++)
 			{
@@ -958,6 +863,16 @@ namespace SpaceUnicorn
 			}
 		}
 
-        #endregion 
-     }
+        #endregion
+
+	    #region Helper Methods
+
+	    private bool CheckKey(Keys theKey)
+	    {
+	        return _keyboardState.IsKeyUp(theKey) &&
+	               _oldKeyboardState.IsKeyDown(theKey);
+	    }
+
+	    #endregion
+    }
 }	

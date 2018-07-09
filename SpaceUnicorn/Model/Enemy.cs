@@ -97,9 +97,16 @@ namespace SpaceUnicorn.Model
 
         public void Update(GameTime gameTime)
 		{
-			_Position.X -= _enemyMoveSpeed;
+		    if (_Position.X <= 0)
+		    {
+		        _Position.X += _enemyMoveSpeed;
+		    }
+		    else
+		    {
+		        _Position.X -= _enemyMoveSpeed;
+		    }
 
-			_enemyAnimation._Position = _Position;
+		    _enemyAnimation._Position = _Position;
 
 			_enemyAnimation.Update(gameTime);
 
