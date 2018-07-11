@@ -472,9 +472,24 @@ namespace SpaceUnicorn
 
 			if (_player._Health <= 0)
 			{
+                // Reset game
 				_player._Health = 100;
 				_score = 0;
+                _enemies.Clear();
+                _healthy.Clear();
+                _speed.Clear();
+                _hyperSpace.Clear();
+                _marshmallows.Clear();
+                _explosions.Clear();
 
+			    _isJumping = false;
+			    _isInvading = false;
+			    _isSlowingDown = false;
+
+                _enemySpawnTime = TimeSpan.FromSeconds(1.0f);
+			    _fireTime = TimeSpan.FromSeconds(.15f);
+                
+                // Show menu screen
 				_activeScreen.Hide();
 				_activeScreen = _startScreen;
 				_activeScreen.Show();
@@ -576,16 +591,7 @@ namespace SpaceUnicorn
 					{
 						AddExplosion(_enemies[i]._Position);
 
-						// If _enemies leave the screen still active
-						if (_enemies[i]._Position.X <= 0)
-						{
-							// Subtract scorevalue
-							_score -= _enemies[i]._ScoreValue;
-						}
-						else
-						{
-							_score += _enemies[i]._ScoreValue;
-						}
+						_score += _enemies[i]._ScoreValue;
 					}
 
 					_enemies.RemoveAt(i);
