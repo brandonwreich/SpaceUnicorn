@@ -205,7 +205,7 @@ namespace SpaceUnicorn
             // Savior
             _saveMe = new List<Savior>();
             _wasSaving = TimeSpan.Zero;
-		    _isSaving = TimeSpan.FromSeconds(20f);
+		    _isSaving = TimeSpan.FromSeconds(10f);
 
 
 			base.Initialize();
@@ -297,13 +297,13 @@ namespace SpaceUnicorn
 			{
 				if (CheckKey(Keys.Enter))
 				{
-					if (_startScreen._SelectedIndex == 0)
+					if (_startScreen.SelectedIndex == 0)
 					{
 						_activeScreen.Hide();
 						_activeScreen = _actionScreen;
 						_activeScreen.Show();
 					}
-					if (_startScreen._SelectedIndex == 1)
+					if (_startScreen.SelectedIndex == 1)
 					{
 						this.Exit();
 					}
@@ -346,6 +346,7 @@ namespace SpaceUnicorn
 				UpdateHealthBoost(gameTime);
 				UpdateSpeed(gameTime);
 				UpdateHyperSpace(gameTime);
+                UpdateSavior(gameTime);
 
 			    if (gameTime.TotalGameTime - _previousGameUpdate > _gameUpdate)
 			    {
@@ -417,15 +418,15 @@ namespace SpaceUnicorn
 				}
 
 				// Draw hyper space power
-				foreach(HyperSpace hyperSpace in _hyperSpace)
+				for (int i = 0; i < _hyperSpace.Count; i++)
 				{
-					hyperSpace.Draw(_spriteBatch);
+					_hyperSpace[i].Draw(_spriteBatch);
 				}
 
                 // Draw Savior power up
-			    foreach (Savior savior in _saveMe)
+			    for (int i = 0; i < _saveMe.Count; i++)
 			    {
-                    savior.Draw(_spriteBatch);
+                    _saveMe[i].Draw(_spriteBatch);
 			    }
 
 				// Draw the _score
@@ -812,7 +813,7 @@ namespace SpaceUnicorn
 	    public void AddSavior()
 	    {
             Animation saviorAnimation = new Animation();
-            saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 40, 40, 10, 30, Color.White, 1f, true);
+            saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 32, 32, 10, 30, Color.White, 1f, true);
 
 	        Vector2 postion = new Vector2(GraphicsDevice.Viewport.Width + _saviorIcon.Width / 2,
 	            _random.Next(50, GraphicsDevice.Viewport.Height - 50));
@@ -824,15 +825,15 @@ namespace SpaceUnicorn
 
 	    public void UpdateSavior(GameTime gameTime)
 	    {
-	        if (_enemies.Count >= 10)
-	        {
-	            if (gameTime.TotalGameTime - _wasSaving > _isSaving)
-	            {
-	                _wasSaving = gameTime.TotalGameTime;
+	        if (gameTime.TotalGameTime - _wasSaving > _isSaving)
+            { 
+	         //   if (_enemies.Count >= 1)
+	         //   {
+                   _wasSaving = gameTime.TotalGameTime;
 
-                    AddSavior();
-	            }
-	        }
+                   AddSavior();
+	         //   }
+            }
 
 	        for(int i = _saveMe.Count - 1; i >= 0; i--)
 	        {
@@ -931,8 +932,12 @@ namespace SpaceUnicorn
 
 		        if (rectangle1.Intersects(rectangle2))
 		        {
-                    _enemies.Clear();
-                    _saveMe.RemoveAt(i);
+		            for (int j = 0; j < _enemies.Count; j++)
+		            {
+		                _enemies[j].Active = false;
+                        AddExplosion(_enemies[j].Position);
+		            }
+                    _saveMe.Clear();
 		        }
 		    }
 
