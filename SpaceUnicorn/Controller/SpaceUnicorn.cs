@@ -9,6 +9,15 @@ using SpaceUnicorn.Model;
 using SpaceUnicorn.Model.Powers;
 using SpaceUnicorn.View;
 
+
+/**
+ * Level with Snowman
+ * When killed breakes into 3 and have to rekill
+ */
+
+/*
+ * Fairy's that come to help
+ */
 namespace SpaceUnicorn
 {
 	/// <summary>
@@ -68,7 +77,7 @@ namespace SpaceUnicorn
 
         // GameTime Variables
 	    private TimeSpan _gameUpdate;
-	    private TimeSpan _previousGameRate;
+	    private TimeSpan _previousGameUpdate;
 	    private TimeSpan _increase;
 
 		/* Power Ups/Downs */
@@ -148,8 +157,8 @@ namespace SpaceUnicorn
 			_score = 0;
 
             // GameTime Variables
-		    _gameUpdate = TimeSpan.FromSeconds(20f);
-            _previousGameRate = TimeSpan.Zero;
+		    _gameUpdate = TimeSpan.FromSeconds(10f);
+            _previousGameUpdate = TimeSpan.Zero;
             _increase = TimeSpan.FromSeconds(0.01f);
 
 			/* Power ups/downs */
@@ -321,9 +330,9 @@ namespace SpaceUnicorn
 				UpdateSpeed(gameTime);
 				UpdateHyperSpace(gameTime);
 
-			    if (gameTime.TotalGameTime - _previousGameRate > _gameUpdate)
+			    if (gameTime.TotalGameTime - _previousGameUpdate > _gameUpdate)
 			    {
-			        _previousGameRate = gameTime.TotalGameTime;
+			        _previousGameUpdate = gameTime.TotalGameTime;
 
 			        _enemySpawnTime = _enemySpawnTime - (_increase + TimeSpan.FromSeconds(0.1f));
 			        _fireTime = _fireTime - _increase;
@@ -549,6 +558,16 @@ namespace SpaceUnicorn
 			for (int i = _enemies.Count - 1; i >= 0; i--)
 			{
 				_enemies[i].Update(gameTime);
+
+			    if (_enemies[i]._Position.X >= GraphicsDevice.Viewport.Width)
+			    {
+			        _enemies[i]._reverse = false;
+			    }
+
+			    if (_enemies[i]._Position.X <= 0)
+			    {
+			        _enemies[i]._reverse = true;
+			    }
 
 				if (_enemies[i]._Active == false)
 				{

@@ -1,5 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpenGL;
 using SpaceUnicorn.View;
 
 namespace SpaceUnicorn.Model
@@ -71,6 +74,8 @@ namespace SpaceUnicorn.Model
 			set { _enemyMoveSpeed = value; }
 		}
 
+	    public Boolean _reverse { get; set; }
+
         #endregion
 
         public Enemy()
@@ -89,6 +94,7 @@ namespace SpaceUnicorn.Model
 			_damage = 10;
 			_enemyMoveSpeed = 6f;
 			_scoreValue = 100;
+		    _reverse = false;
 		}
 
         #endregion
@@ -96,21 +102,23 @@ namespace SpaceUnicorn.Model
         #region Update
 
         public void Update(GameTime gameTime)
-		{
-		    if (_Position.X <= 0)
-		    {
-		        _Position.X += _enemyMoveSpeed;
-		    }
-		    else
-		    {
-		        _Position.X -= _enemyMoveSpeed;
-		    }
-
+        {
 		    _enemyAnimation._Position = _Position;
 
-			_enemyAnimation.Update(gameTime);
+            _enemyAnimation.Update(gameTime);
 
-			if (_Position.X < -_Width || _Health <= 0)
+            if (_reverse == false)
+            {
+                _Position.X -= _enemyMoveSpeed;
+            }
+
+            if (_reverse)
+            {
+                _Position.X += _enemyMoveSpeed;
+               Console.WriteLine(_Position.X);
+            }
+
+            if (_Health <= 0)
 			{
 				_Active = false;
 				_health = 0;
