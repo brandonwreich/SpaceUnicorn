@@ -10,13 +10,14 @@ using SpaceUnicorn.Model.Powers;
 using SpaceUnicorn.View;
 
 
-/**
+/** TODO Think about
  * Level with Snowman
  * When killed breakes into 3 and have to rekill
  */
 
-/*
+/* TODO NOW!!!!
  * Fairy's that come to help
+ * Power up that kills all ships on screen
  */
 namespace SpaceUnicorn
 {
