@@ -11,18 +11,18 @@ namespace SpaceUnicorn.Model
 
         // Animation representing the player
         private Animation _playerAnimation;
-		public Animation _PlayerAnimation
+		public Animation PlayerAnimation
 		{
 			get { return _playerAnimation; }
 			set { _playerAnimation = value; }
 		}
 
 		// Position of player
-		public Vector2 _Position;
+		public Vector2 Position;
 
 		// State of player
 		private bool _active;
-		public bool _Active
+		public bool Active
 		{
 			get { return _active; }
 			set { _active = value; }
@@ -30,22 +30,22 @@ namespace SpaceUnicorn.Model
 
 		// Player health
 		private int _health;
-		public int _Health
+		public int Health
 		{
 			get { return _health; }
 			set { _health = value; }
 		}
 
 		// Width of player
-		public int _Width
+		public int Width
 		{
-			get { return _PlayerAnimation._FrameWidth; }
+			get { return PlayerAnimation.FrameWidth; }
 		}
 
 		// Height of player
-		public int _Height
+		public int Height
 		{
-			get { return _PlayerAnimation._FrameHeight; }
+			get { return PlayerAnimation.FrameHeight; }
 		}
 
         #endregion
@@ -60,9 +60,9 @@ namespace SpaceUnicorn.Model
         public void Initialize(Animation animation, Vector2 position)
 		{
 			_playerAnimation = animation;
-			_Position = position;
-			_Active = true;
-			_Health = 100;
+			Position = position;
+			Active = true;
+			Health = 100;
 		}
 
         #endregion
@@ -71,7 +71,7 @@ namespace SpaceUnicorn.Model
 
         public void Update(GameTime gameTime)
 		{
-			_playerAnimation._Position = _Position;
+			_playerAnimation.Position = Position;
 			_playerAnimation.Update(gameTime);
 		}
 

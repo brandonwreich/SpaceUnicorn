@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace SpaceUnicorn
+namespace SpaceUnicorn.Screens
 {
 	public class ActionScreen : GameScreen
 	{

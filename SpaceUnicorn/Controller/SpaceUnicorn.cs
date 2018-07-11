@@ -7,8 +7,8 @@ using Microsoft.Xna.Framework.Media;
 using System.Timers;
 using SpaceUnicorn.Model;
 using SpaceUnicorn.Model.Powers;
+using SpaceUnicorn.Screens;
 using SpaceUnicorn.View;
-
 
 /** TODO Think about
  * Level with Snowman
@@ -107,10 +107,16 @@ namespace SpaceUnicorn
 		private Texture2D _hyperSpaceIcon;
 		private List<HyperSpace> _hyperSpace;
 		private TimeSpan _hyperSpaceSpawnTime;
-		private TimeSpan _previousHyperSpaceSpawnTime;
+		private TimeSpan _wasJumping;
 		private bool _isJumping;
 		private static Timer _hyperSpaceTimer;
 		private int _hyperSpaceCountSeconds;
+
+        // Savior
+	    private Texture2D _saviorIcon;
+	    private List<Savior> _saveMe;
+	    private TimeSpan _isSaving;
+	    private TimeSpan _wasSaving;
 
         #endregion
 
@@ -187,7 +193,7 @@ namespace SpaceUnicorn
 
 			// Initalize hyper space
 			_hyperSpace = new List<HyperSpace>();
-			_previousHyperSpaceSpawnTime = TimeSpan.Zero;
+			_wasJumping = TimeSpan.Zero;
 			_hyperSpaceSpawnTime = TimeSpan.FromMinutes(_random.Next(1, 1));
 			_isJumping = false;
 			_hyperSpaceTimer = new Timer();
@@ -195,6 +201,12 @@ namespace SpaceUnicorn
 			_hyperSpaceTimer.Elapsed += OnHyperSpaceTimedEvent;
 			_hyperSpaceTimer.Enabled = false;
 			_hyperSpaceCountSeconds = 3000;
+
+            // Savior
+            _saveMe = new List<Savior>();
+            _wasSaving = TimeSpan.Zero;
+		    _isSaving = TimeSpan.FromSeconds(20f);
+
 
 			base.Initialize();
 		}
@@ -215,11 +227,12 @@ namespace SpaceUnicorn
 			// Menu
 			string[] menuItems = { "Start Game", "High Score", "End Game" };
 
-			_startScreen = new StartScreen(this, _spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"), Content.Load<Texture2D>("Background/startScreen"));
+		    _startScreen = new StartScreen(this, _spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"),
+		        Content.Load<Texture2D>("Background/startScreen"));
 			Components.Add(_startScreen);
 			_startScreen.Hide();
 
-			_actionScreen = new ActionScreen(this, _spriteBatch, Content.Load<Texture2D>("Background/spaceBackground"));
+		    _actionScreen = new ActionScreen(this, _spriteBatch, Content.Load<Texture2D>("Background/spaceBackground"));
 			Components.Add(_actionScreen);
 			_actionScreen.Hide();
 
@@ -230,7 +243,7 @@ namespace SpaceUnicorn
 			Animation playerAnimation = new Animation();
 			Texture2D playerTexture = Content.Load<Texture2D>("Animation/Space Unicorn");
 			playerAnimation.Initialize(playerTexture, Vector2.Zero, 166, 100, 1, 5, Color.White, 1f, true);
-			Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 2);
+		    Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height / 2);
 			_player.Initialize(playerAnimation, playerPosition);
 
 			// Load enemy
@@ -255,6 +268,7 @@ namespace SpaceUnicorn
 			_healthBoostIcon = Content.Load<Texture2D>("Powers/healthPowerUp");
 			_speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
 			_hyperSpaceIcon = Content.Load<Texture2D>("Powers/hyperSpace");
+		    _saviorIcon = Content.Load<Texture2D>("Powers/CubeOfRubux");
 
 			// Play music
 			PlayMusic(_gameMusic);
@@ -300,11 +314,13 @@ namespace SpaceUnicorn
 
 			if (_activeScreen == _actionScreen)
 			{
-				// Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
+				// Save the previous state of the keyboard and
+				// game pad so we can determinesingle key/button presses
 				_previousGamePadState = _currentGamePadState;
 				_previousKeyboardState = _currentKeyboardState;
 
-				// Read the current state of the keyboard and gamepad and store it
+				// Read the current state of the keyboard and gamepad
+				// and store it
 				_currentKeyboardState = Keyboard.GetState();
 				_currentGamePadState = GamePad.GetState(PlayerIndex.One);
 
@@ -401,15 +417,25 @@ namespace SpaceUnicorn
 				}
 
 				// Draw hyper space power
-				for (int i = 0; i < _hyperSpace.Count; i++)
+				foreach(HyperSpace hyperSpace in _hyperSpace)
 				{
-					_hyperSpace[i].Draw(_spriteBatch);
+					hyperSpace.Draw(_spriteBatch);
 				}
 
+                // Draw Savior power up
+			    foreach (Savior savior in _saveMe)
+			    {
+                    savior.Draw(_spriteBatch);
+			    }
+
 				// Draw the _score
-				_spriteBatch.DrawString(_font, "Score: " + _score, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+			    _spriteBatch.DrawString(_font, "Score: " + _score,
+			        new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + 2, GraphicsDevice.Viewport.TitleSafeArea.Y),
+			        Color.Yellow);
 				// Draw the _player health
-				_spriteBatch.DrawString(_font, "Health: " + _player._Health, new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145, GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
+			    _spriteBatch.DrawString(_font, "Health: " + _player.Health,
+			        new Vector2(GraphicsDevice.Viewport.TitleSafeArea.Width - 145,
+			            GraphicsDevice.Viewport.TitleSafeArea.Y), Color.Yellow);
 			}
 
 			//Stop drawing
@@ -427,33 +453,33 @@ namespace SpaceUnicorn
 			_player.Update(gameTime);
 
 			// Get Thumbstick Controls
-			_player._Position.X += _currentGamePadState.ThumbSticks.Left.X * _playerMoveSpeed;
-			_player._Position.Y -= _currentGamePadState.ThumbSticks.Left.Y * _playerMoveSpeed;
+			_player.Position.X += _currentGamePadState.ThumbSticks.Left.X * _playerMoveSpeed;
+			_player.Position.Y -= _currentGamePadState.ThumbSticks.Left.Y * _playerMoveSpeed;
 
 			// Use the Keyboard / Dpad
 
 			// Move left
 			if (_currentKeyboardState.IsKeyDown(Keys.Left) || _currentGamePadState.DPad.Left == ButtonState.Pressed)
 			{
-				_player._Position.X -= _playerMoveSpeed;
+				_player.Position.X -= _playerMoveSpeed;
 			}
 
 			// Move right
 			if (_currentKeyboardState.IsKeyDown(Keys.Right) || _currentGamePadState.DPad.Right == ButtonState.Pressed)
 			{
-				_player._Position.X += _playerMoveSpeed;
+				_player.Position.X += _playerMoveSpeed;
 			}
 
 			// Move up
 			if (_currentKeyboardState.IsKeyDown(Keys.Up) || _currentGamePadState.DPad.Up == ButtonState.Pressed)
 			{
-				_player._Position.Y -= _playerMoveSpeed;
+				_player.Position.Y -= _playerMoveSpeed;
 			}
 
 			// Move down
 			if (_currentKeyboardState.IsKeyDown(Keys.Down) || _currentGamePadState.DPad.Down == ButtonState.Pressed)
 			{
-				_player._Position.Y += _playerMoveSpeed;
+				_player.Position.Y += _playerMoveSpeed;
 			}
 
 			// Fire _marshmallows
@@ -463,18 +489,18 @@ namespace SpaceUnicorn
 				{
 					_previousFireTime = gameTime.TotalGameTime;
 
-					AddMarshmallow(_player._Position - new Vector2(-1 * (_player._Width / 2), _player._Height / 3));
+				    AddMarshmallow(_player.Position - new Vector2(-1 * (_player.Width / 2), _player.Height / 3));
 				}
 			}
 
 			// Make sure that the _player does not go out of bounds
-			_player._Position.X = MathHelper.Clamp(_player._Position.X, 10, 790);
-			_player._Position.Y = MathHelper.Clamp(_player._Position.Y, 10, 470);
+			_player.Position.X = MathHelper.Clamp(_player.Position.X, 10, 790);
+			_player.Position.Y = MathHelper.Clamp(_player.Position.Y, 10, 470);
 
-			if (_player._Health <= 0)
+			if (_player.Health <= 0)
 			{
                 // Reset game
-				_player._Health = 100;
+				_player.Health = 100;
 				_score = 0;
                 _enemies.Clear();
                 _healthy.Clear();
@@ -523,7 +549,8 @@ namespace SpaceUnicorn
 			// Initalize enemy animation
 			Animation enemyAnimation = new Animation();
 			enemyAnimation.Initialize(_enemyTexture, Vector2.Zero, 80, 40, 6, 50, Color.White, 1f, true);
-			Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + _enemyTexture.Width / 2, _random.Next(50, GraphicsDevice.Viewport.Height - 50));
+		    Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + _enemyTexture.Width / 2,
+		        _random.Next(50, GraphicsDevice.Viewport.Height - 50));
 
 			// Initalize enemy
 			Enemy enemy = new Enemy();
@@ -549,7 +576,7 @@ namespace SpaceUnicorn
 				for (int j = 0; j < _enemies.Count; j++)
 				{
 					// Increase spawn time and move _speed
-					_enemies[j]._EnemyMoveSpeed = 50f;
+					_enemies[j].EnemyMoveSpeed = 50f;
 					_enemySpawnTime = TimeSpan.FromSeconds(.000001);
 				}
 			}
@@ -567,7 +594,7 @@ namespace SpaceUnicorn
 			{
 				for (int i = 0; i < _enemies.Count; i++)
 				{
-					_enemies[i]._EnemyMoveSpeed = 3f;
+					_enemies[i].EnemyMoveSpeed = 3f;
 				}
 			}
 
@@ -575,24 +602,24 @@ namespace SpaceUnicorn
 			{
 				_enemies[i].Update(gameTime);
 
-			    if (_enemies[i]._Position.X >= GraphicsDevice.Viewport.Width)
+			    if (_enemies[i].Position.X >= GraphicsDevice.Viewport.Width)
 			    {
-			        _enemies[i]._reverse = false;
+			        _enemies[i].Reverse = false;
 			    }
 
-			    if (_enemies[i]._Position.X <= 0)
+			    if (_enemies[i].Position.X <= 0)
 			    {
-			        _enemies[i]._reverse = true;
+			        _enemies[i].Reverse = true;
 			    }
 
-				if (_enemies[i]._Active == false)
+				if (_enemies[i].Active == false)
 				{
 					// If not active and health <= 0
-					if (_enemies[i]._Health <= 0)
+					if (_enemies[i].Health <= 0)
 					{
-						AddExplosion(_enemies[i]._Position);
+						AddExplosion(_enemies[i].Position);
 
-						_score += _enemies[i]._ScoreValue;
+						_score += _enemies[i].ScoreValue;
 					}
 
 					_enemies.RemoveAt(i);
@@ -621,7 +648,7 @@ namespace SpaceUnicorn
 				_marshmallows[i].Update();
 
 				// If _marshmallows hit something or leave the screen
-				if (_marshmallows[i]._Active == false)
+				if (_marshmallows[i].Active == false)
 				{
                     // Remove _marshmallows
 				    _marshmallows.RemoveAt(i);
@@ -661,7 +688,7 @@ namespace SpaceUnicorn
                 // Update each boost
 			    _healthy[i].Update(gameTime);
 
-			    if (_healthy[i]._Active == false)
+			    if (_healthy[i].Active == false)
 				{
 				    _healthy.RemoveAt(i);
 				}
@@ -677,7 +704,8 @@ namespace SpaceUnicorn
 			Animation speedAnimation = new Animation();
 			speedAnimation.Initialize(_speedIcon, Vector2.Zero, 40, 40, 10, 30, Color.White, 1f, true);
 
-			Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + _enemyTexture.Width / 2, _random.Next(50, GraphicsDevice.Viewport.Height - 50));
+		    Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + _speedIcon.Width / 2,
+		        _random.Next(50, GraphicsDevice.Viewport.Height - 50));
 
 			SpeedPower speedPower = new SpeedPower();
 			speedPower.Initialize(speedAnimation, position);
@@ -697,7 +725,7 @@ namespace SpaceUnicorn
 			{
 				_speed[i].Update(gameTime);
 
-				if (_speed[i]._Active == false || _hyperSpace.Count > 0)
+				if (_speed[i].Active == false || _hyperSpace.Count > 0)
 				{
 					_speed.RemoveAt(i);
 				}
@@ -737,15 +765,17 @@ namespace SpaceUnicorn
         private void AddHyperSpace()
 		{
 			HyperSpace flash = new HyperSpace();
-			flash.Initialize(GraphicsDevice.Viewport, _hyperSpaceIcon, new Vector2((GraphicsDevice.Viewport.Width + _enemyTexture.Width / 2), _random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+		    flash.Initialize(GraphicsDevice.Viewport, _hyperSpaceIcon,
+		        new Vector2((GraphicsDevice.Viewport.Width + _hyperSpaceIcon.Width / 2),
+		            _random.Next(50, GraphicsDevice.Viewport.Height - 50)));
 			_hyperSpace.Add(flash);
 		}
 
 		private void UpdateHyperSpace(GameTime gameTime)
 		{
-			if (gameTime.TotalGameTime - _previousHyperSpaceSpawnTime > _hyperSpaceSpawnTime)
+			if (gameTime.TotalGameTime - _wasJumping > _hyperSpaceSpawnTime)
 			{
-				_previousHyperSpaceSpawnTime = gameTime.TotalGameTime;
+				_wasJumping = gameTime.TotalGameTime;
 
 				AddHyperSpace();
 			}
@@ -754,7 +784,7 @@ namespace SpaceUnicorn
 			{
 				_hyperSpace[i].Update(gameTime);
 
-				if (_hyperSpace[i]._Active == false)
+				if (_hyperSpace[i].Active == false)
 				{
 					_hyperSpace.RemoveAt(i);
 				}
@@ -777,6 +807,47 @@ namespace SpaceUnicorn
 
         #endregion
 
+        #region Savior
+
+	    public void AddSavior()
+	    {
+            Animation saviorAnimation = new Animation();
+            saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 40, 40, 10, 30, Color.White, 1f, true);
+
+	        Vector2 postion = new Vector2(GraphicsDevice.Viewport.Width + _saviorIcon.Width / 2,
+	            _random.Next(50, GraphicsDevice.Viewport.Height - 50));
+
+            Savior save = new Savior();
+            save.Initialize(saviorAnimation, postion);
+            _saveMe.Add(save);
+	    }
+
+	    public void UpdateSavior(GameTime gameTime)
+	    {
+	        if (_enemies.Count >= 10)
+	        {
+	            if (gameTime.TotalGameTime - _wasSaving > _isSaving)
+	            {
+	                _wasSaving = gameTime.TotalGameTime;
+
+                    AddSavior();
+	            }
+	        }
+
+	        for(int i = _saveMe.Count - 1; i >= 0; i--)
+	        {
+                _saveMe[i].Update(gameTime);
+
+	            if (_saveMe[i].Active == false)
+	            {
+                    _saveMe.RemoveAt(i);
+	            }
+	            
+	        }
+	    }
+
+        #endregion
+
         #region Collisions
 
         private void UpdateCollisions()
@@ -787,22 +858,24 @@ namespace SpaceUnicorn
 			Rectangle rectangle2;
 
 			// Only create the rectangle once for the _player
-			rectangle1 = new Rectangle((int)_player._Position.X, (int)_player._Position.Y, _player._Width - 100, _player._Height);
+		    rectangle1 = new Rectangle((int) _player.Position.X, (int) _player.Position.Y, _player.Width - 100,
+		        _player.Height);
 
 			// Player vs enemy
 			for (int i = 0; i < _enemies.Count; i++)
 			{
-				rectangle2 = new Rectangle((int)_enemies[i]._Position.X, (int)_enemies[i]._Position.Y, _enemies[i]._Width, _enemies[i]._Height);
+			    rectangle2 = new Rectangle((int) _enemies[i].Position.X, (int) _enemies[i].Position.Y,
+			        _enemies[i].Width, _enemies[i].Height);
 
 				if (rectangle1.Intersects(rectangle2))
 				{
-					_player._Health -= _enemies[i]._Damage;
+					_player.Health -= _enemies[i].Damage;
 
-					_enemies[i]._Health = 0;
+					_enemies[i].Health = 0;
 
-					if (_player._Health <= 0)
+					if (_player.Health <= 0)
 					{
-						_player._Active = false;
+						_player.Active = false;
 					}
 				}
 			}
@@ -811,11 +884,12 @@ namespace SpaceUnicorn
 			for (int i = 0; i < _healthy.Count; i++)
 			{
 				// Create the health power up rectangle
-				rectangle2 = new Rectangle((int)_healthy[i]._Position.X, (int)_healthy[i]._Position.Y, _healthy[i]._Width, _healthy[i]._Height);
+			    rectangle2 = new Rectangle((int) _healthy[i].Position.X, (int) _healthy[i].Position.Y,
+			        _healthy[i].Width, _healthy[i].Height);
 
 				if (rectangle1.Intersects(rectangle2))
 				{
-					_player._Health = 100;
+					_player.Health = 100;
 					_healthy.RemoveAt(i);
 				}
 			}
@@ -824,7 +898,8 @@ namespace SpaceUnicorn
 			for (int i = 0; i < _speed.Count; i++)
 			{
 				// Create slow motion power rectangle
-				rectangle2 = new Rectangle((int)_speed[i]._Position.X, (int)_speed[i]._Position.Y, _speed[i]._Width, _speed[i]._Height);
+			    rectangle2 = new Rectangle((int) _speed[i].Position.X, (int) _speed[i].Position.Y, _speed[i].Width,
+			        _speed[i].Height);
 
 				if (rectangle1.Intersects(rectangle2))
 				{
@@ -837,7 +912,8 @@ namespace SpaceUnicorn
 			// Player vs Hyper Space
 			for (int i = 0; i < _hyperSpace.Count; i++)
 			{
-				rectangle2 = new Rectangle((int)_hyperSpace[i]._Position.X, (int)_hyperSpace[i]._Position.Y, _hyperSpace[i]._Width, _hyperSpace[i]._Height);
+			    rectangle2 = new Rectangle((int) _hyperSpace[i].Position.X, (int) _hyperSpace[i].Position.Y,
+			        _hyperSpace[i].Width, _hyperSpace[i].Height);
 
 				if (rectangle1.Intersects(rectangle2))
 				{
@@ -847,24 +923,39 @@ namespace SpaceUnicorn
 				}
 			}
 
+            // Player vs Savior
+		    for (int i = 0; i < _saveMe.Count; i++)
+		    {
+		        rectangle2 = new Rectangle((int) _saveMe[i].Position.X, (int) _saveMe[i].Position.Y,
+		            _saveMe[i].Width, _saveMe[i].Height);
+
+		        if (rectangle1.Intersects(rectangle2))
+		        {
+                    _enemies.Clear();
+                    _saveMe.RemoveAt(i);
+		        }
+		    }
+
 			// Projectile vs Enemy Collision
 			for (int i = 0; i < _marshmallows.Count; i++)
 			{
 				for (int j = 0; j < _enemies.Count; j++)
 				{
 					// Create the mashmallow rectangle
-					rectangle1 = new Rectangle((int)_marshmallows[i]._Position.X - _marshmallows[i]._Width / 2, (int)_marshmallows[i]._Position.Y -
-											   _marshmallows[i]._Height / 2, _marshmallows[i]._Width, _marshmallows[i]._Height);
+					rectangle1 = new Rectangle((int)_marshmallows[i].Position.X - _marshmallows[i].Width / 2, (int)_marshmallows[i].Position.Y -
+											   _marshmallows[i].Height / 2, _marshmallows[i].Width, _marshmallows[i].Height);
 
 					// Create the enemy rectangle
-					rectangle2 = new Rectangle((int)_enemies[j]._Position.X - _enemies[j]._Width / 2, (int)_enemies[j]._Position.Y - _enemies[j]._Height / 2, _enemies[j]._Width, _enemies[j]._Height);
+				    rectangle2 = new Rectangle((int) _enemies[j].Position.X - _enemies[j].Width / 2,
+				        (int) _enemies[j].Position.Y - _enemies[j].Height / 2, _enemies[j].Width,
+				        _enemies[j].Height);
 
 					// Determine if the two objects collided with each other
 					if (rectangle1.Intersects(rectangle2))
 					{
 						//Enemies take damage and mashmallows disapear
-						_enemies[j]._Health -= _marshmallows[i]._Damage;
-						_marshmallows[i]._Active = false;
+						_enemies[j].Health -= _marshmallows[i].Damage;
+						_marshmallows[i].Active = false;
 					}
 				}
 			}
@@ -873,7 +964,7 @@ namespace SpaceUnicorn
 		private void AddExplosion(Vector2 position)
 		{
 			Animation explosion = new Animation();
-			explosion.Initialize(_explosionTexture, position, 134, 134, 12, 35, Color.White, 1f, false);
+		    explosion.Initialize(_explosionTexture, position, 134, 134, 12, 35, Color.White, 1f, false);
 			_explosions.Add(explosion);
 		}
 
@@ -882,7 +973,7 @@ namespace SpaceUnicorn
 			for (int i = _explosions.Count - 1; i >= 0; i--)
 			{
 				_explosions[i].Update(gameTime);
-				if (_explosions[i]._Active == false)
+				if (_explosions[i].Active == false)
 				{
 					_explosions.RemoveAt(i);
 				}

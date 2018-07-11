@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-
-namespace SpaceUnicorn
+namespace SpaceUnicorn.Screens
 {
 	public abstract class GameScreen : Microsoft.Xna.Framework.DrawableGameComponent
 	{
@@ -17,7 +12,7 @@ namespace SpaceUnicorn
 		protected Game _game;
 		protected SpriteBatch _spriteBatch;
 
-        public List<GameComponent> _Components
+        public List<GameComponent> Components
 		{
 			get{ return _components; }
 		}

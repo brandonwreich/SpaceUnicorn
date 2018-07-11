@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceUnicorn
+namespace SpaceUnicorn.Screens
 {
 	public class StartScreen : GameScreen
 	{
@@ -11,7 +11,7 @@ namespace SpaceUnicorn
 		Texture2D _image;
 		Rectangle _imageRectangle;
 
-		public int _SelectedIndex
+		public int SelectedIndex
 		{
 			get{ return _menuComponent.SelectedIndex; }
 			set{ _menuComponent.SelectedIndex = value; }
@@ -23,7 +23,7 @@ namespace SpaceUnicorn
 		{
 			string[] menuItems = { "End Game", "Press Enter to Start", "Press Space For Game Conrols" };
 			_menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
-			_Components.Add(_menuComponent);
+			Components.Add(_menuComponent);
 			this._image = image;
 			_imageRectangle = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
 		}

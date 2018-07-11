@@ -9,17 +9,17 @@ namespace SpaceUnicorn.Model.Powers
 
         // Image representing the power
         private Texture2D _texture;
-		public Texture2D _Texture
+		public Texture2D Texture
 		{
 			get { return _texture; }
 			set { _texture = value; }
 		}
 		// Position of the power relative to the upper left side of the screen
-		public Vector2 _Position;
+		public Vector2 Position;
 
 		// State of the power
 		private bool _active;
-		public bool _Active
+		public bool Active
 		{
 			get { return _active; }
 			set { _active = value; }
@@ -29,15 +29,15 @@ namespace SpaceUnicorn.Model.Powers
 		private Viewport _viewport;
 
 		// Get the width of the power
-		public int _Width
+		public int Width
 		{
-			get { return _Texture.Width; }
+			get { return Texture.Width; }
 		}
 
 		// Get the height of the power
-		public int _Height
+		public int Height
 		{
-			get { return _Texture.Height; }
+			get { return Texture.Height; }
 		}
 
 		// Determines how fast the power moves
@@ -55,7 +55,7 @@ namespace SpaceUnicorn.Model.Powers
         public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
 			this._texture = texture;
-			_Position = position;
+			Position = position;
 			this._viewport = viewport;
 
 			_active = true;
@@ -69,11 +69,11 @@ namespace SpaceUnicorn.Model.Powers
 
         public void Update(GameTime gameTime)
 		{
-			_Position.X -= _healthPowerUpMoveSpeed;
+			Position.X -= _healthPowerUpMoveSpeed;
 
-			if(_Position.X < -_Width)
+			if(Position.X < -Width)
 			{
-				_Active = false;
+				Active = false;
 			}
 		}
 
@@ -82,9 +82,10 @@ namespace SpaceUnicorn.Model.Powers
         #region Draw
 
         public void Draw(SpriteBatch spriteBatch)
-		{
-			spriteBatch.Draw(_Texture, _Position, null, Color.White, 0f, new Vector2(_Width / 2, _Height / 2), 1f, SpriteEffects.None, 0f);
-		}
+        {
+            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f,
+                SpriteEffects.None, 0f);
+        }
 
         #endregion
     }

@@ -10,18 +10,18 @@ namespace SpaceUnicorn.Model.Powers
 
         // Animation representing the power
         public Animation _speedAnimation;
-		public Animation _SpeedAnimation
+		public Animation SpeedAnimation
 		{
 			get { return _speedAnimation; }
 			set { _speedAnimation = value; }
 		}
 
 		// Position of the power relative to the upper left side of the screen
-		public Vector2 _Position;
+		public Vector2 Position;
 
 		// State of the power
 		private bool _active;
-		public bool _Active
+		public bool Active
 		{
 			get { return _active; }
 			set { _active = value; }
@@ -31,15 +31,15 @@ namespace SpaceUnicorn.Model.Powers
 		private Viewport _viewport;
 
 		// Get the width of the power
-		public int _Width
+		public int Width
 		{
-			get { return _SpeedAnimation._FrameWidth; }
+			get { return SpeedAnimation.FrameWidth; }
 		}
 
 		// Get the height of the power
-		public int _Height
+		public int Height
 		{
-			get { return _SpeedAnimation._FrameHeight; }
+			get { return SpeedAnimation.FrameHeight; }
 		}
 
 		// Determines how fast the power moves
@@ -58,7 +58,7 @@ namespace SpaceUnicorn.Model.Powers
 		{
 			_speedAnimation = animation;
 
-			_Position = position;
+			Position = position;
 
 			_active = true;
 
@@ -71,15 +71,15 @@ namespace SpaceUnicorn.Model.Powers
 
         public void Update(GameTime gameTime)
 		{
-			_Position.X -= _speedPowerMoveSpeed;
+			Position.X -= _speedPowerMoveSpeed;
 
-			_speedAnimation._Position = _Position;
+			_speedAnimation.Position = Position;
 
 			_speedAnimation.Update(gameTime);
 
-			if (_Position.X < -_Width)
+			if (Position.X < -Width)
 			{
-				_Active = false;
+				Active = false;
 			}
 		}
 

@@ -36,7 +36,7 @@ namespace SpaceUnicorn.View
 
 		// Width of a given frame
 		private int _frameWidth;
-		public int _FrameWidth
+		public int FrameWidth
 		{
 			get { return _frameWidth; }
 			set { _frameWidth = value; }
@@ -44,7 +44,7 @@ namespace SpaceUnicorn.View
 
 		// Height of a given frame
 		private int _frameHeight;
-		public int _FrameHeight
+		public int FrameHeight
 		{
 			get { return _frameHeight; }
 			set { _frameHeight = value; }
@@ -52,7 +52,7 @@ namespace SpaceUnicorn.View
 
 		// The state of the Animation
 		private bool _active;
-		public bool _Active
+		public bool Active
 		{
 			get { return _active; }
 			set { _active = value; }
@@ -60,14 +60,14 @@ namespace SpaceUnicorn.View
 
 		// Determines if the animation will keep playing or deactivate after one run
 		private bool _looping;
-		public bool _Looping
+		public bool Looping
 		{
 			get { return _looping; }
 			set { _looping = value; }
 		}
 
 		// Width of a given frame
-		public Vector2 _Position;
+		public Vector2 Position;
 
         #endregion
 
@@ -82,14 +82,14 @@ namespace SpaceUnicorn.View
 		{
 			// Keep a local copy of the values passed in
 			this._color = color;
-			this._FrameWidth = frameWidth;
-			this._FrameHeight = frameHeight;
+			this.FrameWidth = frameWidth;
+			this.FrameHeight = frameHeight;
 			this._frameCount = frameCount;
 			this._frameTime = frametime;
 			this._scale = scale;
 
-			_Looping = looping;
-			_Position = position;
+			Looping = looping;
+			Position = position;
 			_spriteStrip = texture;
 
 			// Set the time to zero
@@ -97,7 +97,7 @@ namespace SpaceUnicorn.View
 			_currentFrame = 0;
 
 			// Set the Animation to active by default
-			_Active = true;
+			Active = true;
 		}
 
         #endregion
@@ -107,7 +107,7 @@ namespace SpaceUnicorn.View
         public void Update(GameTime gameTime)
 		{
 			// Do not update the game if we are not active
-			if (_Active == false)
+			if (Active == false)
 			{
 				return;
 			}
@@ -126,9 +126,9 @@ namespace SpaceUnicorn.View
 				{
 					_currentFrame = 0;
 					// If we are not looping deactivate the animation
-					if (_Looping == false)
+					if (Looping == false)
 					{
-						_Active = false;
+						Active = false;
 					}
 				}
 
@@ -137,10 +137,10 @@ namespace SpaceUnicorn.View
 			}
 
 			// Grab the correct frame in the image strip by multiplying the currentFrame index by the frame width
-			_sourceRect = new Rectangle(_currentFrame * _FrameWidth, 0, _FrameWidth, _FrameHeight);
+			_sourceRect = new Rectangle(_currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
 
 			// Grab the correct frame in the image strip by multiplying the currentFrame index by the frame width
-			_destinationRect = new Rectangle((int)_Position.X - (int)(_FrameWidth * _scale) / 2, (int)_Position.Y - (int)(_FrameHeight * _scale) / 2, (int)(_FrameWidth * _scale), (int)(_FrameHeight * _scale));
+			_destinationRect = new Rectangle((int)Position.X - (int)(FrameWidth * _scale) / 2, (int)Position.Y - (int)(FrameHeight * _scale) / 2, (int)(FrameWidth * _scale), (int)(FrameHeight * _scale));
 		}
 
         #endregion
@@ -150,7 +150,7 @@ namespace SpaceUnicorn.View
         public void Draw(SpriteBatch spriteBatch)
 		{
 			// Only draw the animation when we are active
-			if (_Active)
+			if (Active)
 			{
 				spriteBatch.Draw(_spriteStrip, _destinationRect, _sourceRect, _color);
 			}
