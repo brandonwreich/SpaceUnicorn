@@ -54,9 +54,7 @@ namespace SpaceUnicorn
 
 		// Keyboard/Gamepad states
 		private KeyboardState _currentKeyboardState;
-		private KeyboardState _previousKeyboardState;
 		private GamePadState _currentGamePadState;
-		private GamePadState _previousGamePadState;
 
 		// Background Stuff
 		private ParallaxingBackground _bgLayer1;
@@ -314,11 +312,6 @@ namespace SpaceUnicorn
 
 			if (_activeScreen == _actionScreen)
 			{
-				// Save the previous state of the keyboard and
-				// game pad so we can determinesingle key/button presses
-				_previousGamePadState = _currentGamePadState;
-				_previousKeyboardState = _currentKeyboardState;
-
 				// Read the current state of the keyboard and gamepad
 				// and store it
 				_currentKeyboardState = Keyboard.GetState();

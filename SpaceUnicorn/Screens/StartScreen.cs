@@ -24,13 +24,8 @@ namespace SpaceUnicorn.Screens
 			string[] menuItems = { "End Game", "Press Enter to Start", "Press Space For Game Conrols" };
 			_menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
 			Components.Add(_menuComponent);
-			this._image = image;
+			_image = image;
 			_imageRectangle = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
-		}
-
-		public override void Update(GameTime gameTime)
-		{
-			base.Update(gameTime);
 		}
 
         #region Draw

@@ -54,18 +54,13 @@ namespace SpaceUnicorn.Model
 
         #endregion
 
-        public MarshmallowLaser()
-		{
-
-		}
-
         #region Initialize
 
         public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
-			this._texture = texture;
-			this.Position = position;
-			this._viewport = viewport;
+			_texture = texture;
+			Position = position;
+			_viewport = viewport;
 
 			_active = true;
 

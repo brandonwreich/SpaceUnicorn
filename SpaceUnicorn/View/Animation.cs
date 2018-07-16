@@ -71,22 +71,17 @@ namespace SpaceUnicorn.View
 
         #endregion
 
-        public Animation()
-		{
-
-		}
-
         #region Initialize
 
         public void Initialize(Texture2D texture, Vector2 position, int frameWidth, int frameHeight, int frameCount, int frametime, Color color, float scale, bool looping)
 		{
 			// Keep a local copy of the values passed in
-			this._color = color;
-			this.FrameWidth = frameWidth;
-			this.FrameHeight = frameHeight;
-			this._frameCount = frameCount;
-			this._frameTime = frametime;
-			this._scale = scale;
+			_color = color;
+			FrameWidth = frameWidth;
+			FrameHeight = frameHeight;
+			_frameCount = frameCount;
+			_frameTime = frametime;
+			_scale = scale;
 
 			Looping = looping;
 			Position = position;

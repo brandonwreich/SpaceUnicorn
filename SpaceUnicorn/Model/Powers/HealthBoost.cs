@@ -42,18 +42,12 @@ namespace SpaceUnicorn.Model.Powers
 
         #endregion
 
-        public HealthBoost()
-		{
-
-		}
-
         #region Initialize
 
         public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
 		{
-			this._texture = texture;
+			_texture = texture;
 			Position = position;
-			this._viewport = viewport;
 
 			_active = true;
 

@@ -76,11 +76,6 @@ namespace SpaceUnicorn.Model
 
         #endregion
 
-        public Enemy()
-		{
-
-		}
-
         #region Initailize
 
         public void Initialize(Animation animation, Vector2 position)

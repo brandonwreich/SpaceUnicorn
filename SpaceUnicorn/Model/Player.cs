@@ -50,11 +50,6 @@ namespace SpaceUnicorn.Model
 
         #endregion
 
-        public Player()
-		{
-
-		}
-
         #region Initialize
 
         public void Initialize(Animation animation, Vector2 position)

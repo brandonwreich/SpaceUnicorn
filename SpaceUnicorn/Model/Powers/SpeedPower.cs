@@ -44,11 +44,6 @@ namespace SpaceUnicorn.Model.Powers
 
         #endregion
 
-        public SpeedPower()
-		{
-
-		}
-
         #region Initialize
 
         public void Initialize(Animation animation, Vector2 position)

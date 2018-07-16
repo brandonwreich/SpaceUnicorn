@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceUnicorn.Screens
 {
-	public abstract class GameScreen : Microsoft.Xna.Framework.DrawableGameComponent
-	{
+	public abstract class GameScreen : DrawableGameComponent
+    {
         #region Variables
 
         List<GameComponent> _components = new List<GameComponent>();
@@ -33,7 +33,7 @@ namespace SpaceUnicorn.Screens
 
 			foreach (GameComponent component in _components)
 			{
-				if (component.Enabled == true)
+				if (component.Enabled)
 				{
 					component.Update(gameTime);
 				}
@@ -62,8 +62,8 @@ namespace SpaceUnicorn.Screens
 
         public virtual void Show()
 		{
-			this.Visible = true;
-			this.Enabled = true;
+			Visible = true;
+			Enabled = true;
 
 			foreach (GameComponent component in _components)
 			{
@@ -77,8 +77,8 @@ namespace SpaceUnicorn.Screens
 
 		public virtual void Hide()
 		{
-			this.Visible = false;
-			this.Enabled = false;
+			Visible = false;
+			Enabled = false;
 
 			foreach (GameComponent component in _components)
 			{

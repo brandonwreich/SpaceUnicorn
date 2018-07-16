@@ -20,11 +20,6 @@ namespace SpaceUnicorn.View
 
         #endregion
 
-        public ParallaxingBackground()
-		{
-
-		}
-
         #region Initialize
 
         public void Initialize(ContentManager content, String texturePath, int screenWidth, int speed)
@@ -33,7 +28,7 @@ namespace SpaceUnicorn.View
 			_texture = content.Load<Texture2D>(texturePath);
 
 			// Set speed
-			this._speed = speed;
+			_speed = speed;
 
 			_positions = new Vector2[screenWidth / _texture.Width + 1];
 

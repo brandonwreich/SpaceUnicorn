@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpaceUnicorn.Screens
 {
-	public class MenuComponent : Microsoft.Xna.Framework.DrawableGameComponent
+	public class MenuComponent : DrawableGameComponent
 	{
         #region Variables
 
@@ -47,16 +47,11 @@ namespace SpaceUnicorn.Screens
 
         public MenuComponent(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, string[] menuItems) : base(game)
 		{
-			this._spriteBatch = spriteBatch;
-			this._spriteFont = spriteFont;
-			this._menuItems = menuItems;
+			_spriteBatch = spriteBatch;
+			_spriteFont = spriteFont;
+			_menuItems = menuItems;
 
 			MeasureMenu();
-		}
-
-		public override void Initialize()
-		{
-			base.Initialize();
 		}
 
         #region Update
