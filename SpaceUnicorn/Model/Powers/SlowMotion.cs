@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceUnicorn.Model
+namespace SpaceUnicorn.Model.Powers
 {
 	public class SlowMotion
 	{
@@ -24,9 +24,6 @@ namespace SpaceUnicorn.Model
 			get { return _active; }
 			set { _active = value; }
 		}
-
-		// Represents the viewable boundary of the game
-		private Viewport _viewport;
 
 		// Get the width of the power
 		public int Width

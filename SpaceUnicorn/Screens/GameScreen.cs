@@ -21,13 +21,8 @@ namespace SpaceUnicorn.Screens
 
         public GameScreen(Game game, SpriteBatch spriteBatch) : base(game)
 		{
-			this._game = game;
-			this._spriteBatch = spriteBatch;
-		}
-
-		public override void Initialize()
-		{
-			base.Initialize();
+			_game = game;
+			_spriteBatch = spriteBatch;
 		}
 
         #region Update

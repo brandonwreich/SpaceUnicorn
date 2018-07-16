@@ -268,7 +268,7 @@ namespace SpaceUnicorn
 			_healthBoostIcon = Content.Load<Texture2D>("Powers/healthPowerUp");
 			_speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
 			_hyperSpaceIcon = Content.Load<Texture2D>("Powers/hyperSpace");
-		    _saviorIcon = Content.Load<Texture2D>("Powers/CubeOfRubux");
+		    _saviorIcon = Content.Load<Texture2D>("Powers/bomb");
 
 			// Play music
 			PlayMusic(_gameMusic);
@@ -813,7 +813,7 @@ namespace SpaceUnicorn
 	    public void AddSavior()
 	    {
             Animation saviorAnimation = new Animation();
-            saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 32, 32, 10, 30, Color.White, 1f, true);
+            saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 47, 40, 9, 30, Color.White, 1f, true);
 
 	        Vector2 postion = new Vector2(GraphicsDevice.Viewport.Width + _saviorIcon.Width / 2,
 	            _random.Next(50, GraphicsDevice.Viewport.Height - 50));
@@ -936,6 +936,7 @@ namespace SpaceUnicorn
 		            {
 		                _enemies[j].Active = false;
                         AddExplosion(_enemies[j].Position);
+		                _score += _enemies[i].ScoreValue;
 		            }
                     _saveMe.Clear();
 		        }
@@ -966,7 +967,11 @@ namespace SpaceUnicorn
 			}
 		}
 
-		private void AddExplosion(Vector2 position)
+        #endregion
+
+        #region Explosions
+
+        private void AddExplosion(Vector2 position)
 		{
 			Animation explosion = new Animation();
 		    explosion.Initialize(_explosionTexture, position, 134, 134, 12, 35, Color.White, 1f, false);

@@ -158,7 +158,7 @@
 /processorParam:TextureFormat=Color
 /build:Powers/speedIncrease.png
 
-#begin Powers/CubeOfRubux.png
+#begin Powers/bomb.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -168,5 +168,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Powers/CubeOfRubux.png
+/build:Powers/bomb.png
 

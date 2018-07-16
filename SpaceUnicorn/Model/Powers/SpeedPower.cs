@@ -9,7 +9,7 @@ namespace SpaceUnicorn.Model.Powers
         #region Variables
 
         // Animation representing the power
-        public Animation _speedAnimation;
+        private Animation _speedAnimation;
 		public Animation SpeedAnimation
 		{
 			get { return _speedAnimation; }
@@ -26,9 +26,6 @@ namespace SpaceUnicorn.Model.Powers
 			get { return _active; }
 			set { _active = value; }
 		}
-
-		// Represents the viewable boundary of the game
-		private Viewport _viewport;
 
 		// Get the width of the power
 		public int Width

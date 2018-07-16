@@ -16,7 +16,7 @@ namespace SpaceUnicorn.Screens
 
         public ActionScreen(Game game, SpriteBatch spriteBatch, Texture2D image) : base(game, spriteBatch)
 		{
-			this._image = image;
+			_image = image;
 			_imageRectangle = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
 		}
 
