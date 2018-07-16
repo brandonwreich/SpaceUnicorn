@@ -29,10 +29,10 @@ namespace SpaceUnicorn.View
 		private Color _color;
 
 		// The area of the image strip we want to display
-		private Rectangle _sourceRect = new Rectangle();
+		private Rectangle _sourceRect;
 
 		// The area where we want to display the image strip in the game
-		private Rectangle _destinationRect = new Rectangle();
+		private Rectangle _destinationRect;
 
 		// Width of a given frame
 		private int _frameWidth;

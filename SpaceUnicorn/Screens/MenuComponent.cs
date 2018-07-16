@@ -22,8 +22,8 @@ namespace SpaceUnicorn.Screens
 
 		private Vector2 _position;
 
-		private float _width = 0f;
-		private float _height = 0f;
+		private float _width;
+		private float _height;
 
         public int SelectedIndex
 		{

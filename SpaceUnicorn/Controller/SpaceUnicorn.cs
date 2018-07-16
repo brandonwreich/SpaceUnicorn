@@ -502,6 +502,7 @@ namespace SpaceUnicorn
                 _hyperSpace.Clear();
                 _marshmallows.Clear();
                 _explosions.Clear();
+                _saveMe.Clear();
 
 			    _isJumping = false;
 			    _isInvading = false;
