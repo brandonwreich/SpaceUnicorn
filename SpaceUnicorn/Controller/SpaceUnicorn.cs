@@ -17,7 +17,7 @@ using SpaceUnicorn.View;
 
 /* TODO NOW!!!!
  * Fairy's that come to help
- * Power up that kills all ships on screen
+ * Change the bomb icon
  */
 namespace SpaceUnicorn
 {
@@ -827,12 +827,12 @@ namespace SpaceUnicorn
 	    {
 	        if (gameTime.TotalGameTime - _wasSaving > _isSaving)
             { 
-	         //   if (_enemies.Count >= 1)
-	         //   {
+	            if (_enemies.Count >= 1)
+	            {
                    _wasSaving = gameTime.TotalGameTime;
 
                    AddSavior();
-	         //   }
+	            }
             }
 
 	        for(int i = _saveMe.Count - 1; i >= 0; i--)

@@ -4,7 +4,7 @@ using SpaceUnicorn.View;
 
 namespace SpaceUnicorn.Model.Powers
 {
-    class Savior
+    public class Savior
     {
         #region Variables
 
