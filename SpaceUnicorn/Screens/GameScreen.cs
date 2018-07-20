@@ -10,7 +10,7 @@ namespace SpaceUnicorn.Screens
 
         List<GameComponent> _components = new List<GameComponent>();
 		protected Game _game;
-		protected SpriteBatch _spriteBatch;
+		protected SpriteBatch SpriteBatch;
 
         public List<GameComponent> Components
 		{
@@ -22,7 +22,7 @@ namespace SpaceUnicorn.Screens
         public GameScreen(Game game, SpriteBatch spriteBatch) : base(game)
 		{
 			_game = game;
-			_spriteBatch = spriteBatch;
+			SpriteBatch = spriteBatch;
 		}
 
         #region Update

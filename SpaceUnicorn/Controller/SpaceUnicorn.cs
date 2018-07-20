@@ -223,8 +223,6 @@ namespace SpaceUnicorn
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// Menu
-			string[] menuItems = { "Start Game", "High Score", "End Game" };
-
 		    _startScreen = new StartScreen(this, _spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"),
 		        Content.Load<Texture2D>("Background/startScreen"));
 			Components.Add(_startScreen);
@@ -303,7 +301,7 @@ namespace SpaceUnicorn
 					}
 					if (_startScreen.SelectedIndex == 1)
 					{
-						this.Exit();
+						Exit();
 					}
 				}
 			}
@@ -566,7 +564,7 @@ namespace SpaceUnicorn
 			}
 
 			// If hyper space is true
-			if (_isJumping == true)
+			if (_isJumping)
 			{
 				for (int j = 0; j < _enemies.Count; j++)
 				{
@@ -577,7 +575,7 @@ namespace SpaceUnicorn
 			}
 
 			// If invading is true
-			if (_isInvading == true)
+			if (_isInvading)
 			{
 				// Increase enemy and marshmallow spawn time
 				_enemySpawnTime = TimeSpan.FromSeconds(.15f);
@@ -585,7 +583,7 @@ namespace SpaceUnicorn
 			}
 
 			// If slow motion is true
-			if (_isSlowingDown == true)
+			if (_isSlowingDown)
 			{
 				for (int i = 0; i < _enemies.Count; i++)
 				{

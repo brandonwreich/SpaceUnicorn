@@ -40,7 +40,7 @@ namespace SpaceUnicorn.Screens
 
         public override void Draw(GameTime gameTime)
 		{
-			_spriteBatch.Draw(_image, _imageRectangle, Color.White);
+			SpriteBatch.Draw(_image, _imageRectangle, Color.White);
 			base.Draw(gameTime);
 		}
 
