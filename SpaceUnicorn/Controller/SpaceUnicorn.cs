@@ -43,6 +43,10 @@ namespace SpaceUnicorn
 		private Player _player;
 		private float _playerMoveSpeed;
 
+        // Fairy
+	    private Texture2D _fairyTexture;
+        private List<Fairy> _faries;
+
 		// Enemy
 		private Texture2D _enemyTexture;
 		private List<Enemy> _enemies;
@@ -61,7 +65,7 @@ namespace SpaceUnicorn
 		private Song _gameMusic;
 
 		// Laser
-		private Texture2D _marshmallowPic;
+		private Texture2D _marshmallowIcon;
 		private List<MarshmallowLaser> _marshmallows;
 		private TimeSpan _fireTime;
 		private TimeSpan _previousFireTime;
@@ -116,6 +120,12 @@ namespace SpaceUnicorn
 	    private TimeSpan _isSaving;
 	    private TimeSpan _wasSaving;
 
+        // Add Fairy
+	    private Texture2D _addFairyIcon;
+	    private List<AddFairy> _addFairies;
+	    private TimeSpan _isAddingFairy;
+	    private TimeSpan _wasAddingFairy;
+
         #endregion
 
         #region Game Start
@@ -139,6 +149,9 @@ namespace SpaceUnicorn
 			// Initalize _player
 			_player = new Player();
 			_playerMoveSpeed = 8.0f;
+
+            // Initalize Faries
+            _faries = new List<Fairy>();
 
 			// Initalize _enemies
 			_enemies = new List<Enemy>();
@@ -205,6 +218,11 @@ namespace SpaceUnicorn
             _wasSaving = TimeSpan.Zero;
 		    _isSaving = TimeSpan.FromSeconds(10f);
 
+            // Add Fairy
+            _addFairies = new List<AddFairy>();
+            _isAddingFairy = TimeSpan.FromSeconds(40f);
+            _wasAddingFairy = TimeSpan.Zero;
+
 
 			base.Initialize();
 		}
@@ -249,7 +267,7 @@ namespace SpaceUnicorn
 			_bgLayer1.Initialize(Content, "Background/spaceBackground", GraphicsDevice.Viewport.Width, -1);
 
 			// Load _marshmallows
-			_marshmallowPic = Content.Load<Texture2D>("Animation/marshmallowLaser");
+			_marshmallowIcon = Content.Load<Texture2D>("Animation/marshmallowLaser");
 
 			// Load music
 			_gameMusic = Content.Load<Song>("Music/Space Unicorn");
@@ -338,6 +356,7 @@ namespace SpaceUnicorn
 				UpdateSpeed(gameTime);
 				UpdateHyperSpace(gameTime);
                 UpdateSavior(gameTime);
+                UpdateFairyPower(gameTime);
 
 			    if (gameTime.TotalGameTime - _previousGameUpdate > _gameUpdate)
 			    {
@@ -440,7 +459,7 @@ namespace SpaceUnicorn
 
         #region Player
 
-        public void UpdatePlayer(GameTime gameTime)
+        private void UpdatePlayer(GameTime gameTime)
 		{
 			_player.Update(gameTime);
 
@@ -628,7 +647,7 @@ namespace SpaceUnicorn
 		{
 			// Initalize _marshmallows
 			MarshmallowLaser marshmallow = new MarshmallowLaser();
-			marshmallow.Initialize(GraphicsDevice.Viewport, _marshmallowPic, position);
+			marshmallow.Initialize(GraphicsDevice.Viewport, _marshmallowIcon, position);
 
             // Add mashmallow
 			_marshmallows.Add(marshmallow);
@@ -658,7 +677,7 @@ namespace SpaceUnicorn
             // Initalize health boost
 		    HealthBoost health = new HealthBoost();
 		    health.Initialize(GraphicsDevice.Viewport, _healthBoostIcon,
-		        new Vector2((GraphicsDevice.Viewport.Width + _enemyTexture.Width / 2),
+		        new Vector2((GraphicsDevice.Viewport.Width + _healthBoostIcon.Width / 2),
 		            _random.Next(50, GraphicsDevice.Viewport.Height - 50)));
 
             // Add health boost
@@ -802,7 +821,7 @@ namespace SpaceUnicorn
 
         #region Savior
 
-	    public void AddSavior()
+	    private void AddSavior()
 	    {
             Animation saviorAnimation = new Animation();
             saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 47, 40, 9, 30, Color.White, 1f, true);
@@ -815,11 +834,11 @@ namespace SpaceUnicorn
             _saveMe.Add(save);
 	    }
 
-	    public void UpdateSavior(GameTime gameTime)
+	    private void UpdateSavior(GameTime gameTime)
 	    {
 	        if (gameTime.TotalGameTime - _wasSaving > _isSaving)
             { 
-	            if (_enemies.Count >= 1)
+	            if (_enemies.Count >= 10)
 	            {
                    _wasSaving = gameTime.TotalGameTime;
 
@@ -836,6 +855,39 @@ namespace SpaceUnicorn
                     _saveMe.RemoveAt(i);
 	            }
 	            
+	        }
+	    }
+
+        #endregion
+
+        #region Add Fairy
+
+	    private void AddFairyPower()
+	    {
+            AddFairy fairyPower = new AddFairy();
+
+	        fairyPower.Initialize(GraphicsDevice.Viewport, _addFairyIcon,
+	            new Vector2((GraphicsDevice.Viewport.Width + _addFairyIcon.Width / 2),
+	                _random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+	    }
+
+	    private void UpdateFairyPower(GameTime gameTime)
+	    {
+	        if (gameTime.TotalGameTime - _wasAddingFairy > _isAddingFairy)
+	        {
+	            _wasSaving = gameTime.TotalGameTime;
+
+	            AddFairyPower();
+            }
+
+	        for (int i = 0; i < _addFairies.Count; i++)
+	        {
+                _addFairies[i].Update(gameTime);
+
+	            if (_addFairies[i].Active == false)
+	            {
+                    _addFairies.RemoveAt(i);
+	            }
 	        }
 	    }
 
