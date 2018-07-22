@@ -216,11 +216,11 @@ namespace SpaceUnicorn
             // Savior
             _saveMe = new List<Savior>();
             _wasSaving = TimeSpan.Zero;
-		    _isSaving = TimeSpan.FromSeconds(10f);
+		    _isSaving = TimeSpan.FromSeconds(1f);
 
             // Add Fairy
             _addFairies = new List<AddFairy>();
-            _isAddingFairy = TimeSpan.FromSeconds(40f);
+            _isAddingFairy = TimeSpan.FromSeconds(1f);
             _wasAddingFairy = TimeSpan.Zero;
 
 
@@ -283,6 +283,7 @@ namespace SpaceUnicorn
 			_speedIcon = Content.Load<Texture2D>("Powers/speedIncrease");
 			_hyperSpaceIcon = Content.Load<Texture2D>("Powers/hyperSpace");
 		    _saviorIcon = Content.Load<Texture2D>("Powers/bomb");
+		    _addFairyIcon = Content.Load<Texture2D>("Powers/addFairy");
 
 			// Play music
 			PlayMusic(_gameMusic);
@@ -437,6 +438,12 @@ namespace SpaceUnicorn
 			    for (int i = 0; i < _saveMe.Count; i++)
 			    {
                     _saveMe[i].Draw(_spriteBatch);
+			    }
+
+                // Draw the AddFairy power up
+			    for (int i = 0; i < _addFairies.Count; i++)
+			    {
+                    _addFairies[i].Draw(_spriteBatch);
 			    }
 
 				// Draw the _score
@@ -864,18 +871,22 @@ namespace SpaceUnicorn
 
 	    private void AddFairyPower()
 	    {
-            AddFairy fairyPower = new AddFairy();
+	        Animation addFairyAnimation = new Animation();
+	        addFairyAnimation.Initialize(_addFairyIcon, Vector2.Zero, 32, 32, 10, 16, Color.White, 1f, true);
 
-	        fairyPower.Initialize(GraphicsDevice.Viewport, _addFairyIcon,
-	            new Vector2((GraphicsDevice.Viewport.Width + _addFairyIcon.Width / 2),
-	                _random.Next(50, GraphicsDevice.Viewport.Height - 50)));
+	        Vector2 position = new Vector2(GraphicsDevice.Viewport.Width + _addFairyIcon.Width / 2,
+	            _random.Next(50, GraphicsDevice.Viewport.Height - 50));
+
+	        AddFairy addIt = new AddFairy();
+	        addIt.Initialize(addFairyAnimation, position);
+	        _addFairies.Add(addIt);
 	    }
 
 	    private void UpdateFairyPower(GameTime gameTime)
 	    {
 	        if (gameTime.TotalGameTime - _wasAddingFairy > _isAddingFairy)
 	        {
-	            _wasSaving = gameTime.TotalGameTime;
+	            _wasAddingFairy = gameTime.TotalGameTime;
 
 	            AddFairyPower();
             }

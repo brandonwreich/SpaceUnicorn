@@ -47,3 +47,4 @@ C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceU
 C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.exe
 C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\obj\x86\Debug\SpaceUnicorn.pdb
 C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Powers\bomb.xnb
+C:\Users\breich1\Documents\Source\SpaceUnicorn\SpaceUnicorn\bin\Debug\Content\Powers\addFairy.xnb

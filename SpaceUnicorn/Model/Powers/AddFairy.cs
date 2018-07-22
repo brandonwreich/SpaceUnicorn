@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceUnicorn.View;
 
 namespace SpaceUnicorn.Model.Powers
 {
@@ -7,13 +8,14 @@ namespace SpaceUnicorn.Model.Powers
     {
         #region Variables
 
-        // Image representing the power
-        private Texture2D _texture;
-        public Texture2D Texture
+        // Animation representing the power
+        private Animation _addFairyAnimation;
+        public Animation AddFairyAnimation
         {
-            get { return _texture; }
-            set { _texture = value; }
+            get { return _addFairyAnimation; }
+            set { _addFairyAnimation = value; }
         }
+
         // Position of the power relative to the upper left side of the screen
         public Vector2 Position;
 
@@ -28,30 +30,31 @@ namespace SpaceUnicorn.Model.Powers
         // Get the width of the power
         public int Width
         {
-            get { return Texture.Width; }
+            get { return AddFairyAnimation.FrameWidth; }
         }
 
         // Get the height of the power
         public int Height
         {
-            get { return Texture.Height; }
+            get { return AddFairyAnimation.FrameHeight; }
         }
 
         // Determines how fast the power moves
-        private float _addFairyPowerUpMoveSpeed;
+        private float _addFairyPowerMoveSpeed;
 
         #endregion
 
         #region Initialize
 
-        public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
+        public void Initialize(Animation animation, Vector2 position)
         {
-            _texture = texture;
+            _addFairyAnimation = animation;
+
             Position = position;
 
             _active = true;
 
-            _addFairyPowerUpMoveSpeed = 6f;
+            _addFairyPowerMoveSpeed = 6f;
         }
 
         #endregion
@@ -60,7 +63,11 @@ namespace SpaceUnicorn.Model.Powers
 
         public void Update(GameTime gameTime)
         {
-            Position.X -= _addFairyPowerUpMoveSpeed;
+            Position.X -= _addFairyPowerMoveSpeed;
+
+            _addFairyAnimation.Position = Position;
+
+            _addFairyAnimation.Update(gameTime);
 
             if (Position.X < -Width)
             {
@@ -74,8 +81,7 @@ namespace SpaceUnicorn.Model.Powers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f,
-                SpriteEffects.None, 0f);
+            _addFairyAnimation.Draw(spriteBatch);
         }
 
         #endregion
