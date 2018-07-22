@@ -544,6 +544,15 @@ namespace SpaceUnicorn
 
         #endregion
 
+        #region Fariy
+
+	    private void AddFairy()
+	    {
+
+	    }
+
+        #endregion
+
         #region Music
 
         private void PlayMusic(Song song)
@@ -994,6 +1003,18 @@ namespace SpaceUnicorn
 		                _score += _enemies[i].ScoreValue;
 		            }
                     _saveMe.Clear();
+		        }
+		    }
+
+            // Player vs AddFairy
+		    for (int i = 0; i < _addFairies.Count; i++)
+		    {
+		        rectangle2 = new Rectangle((int) _addFairies[i].Position.X, (int) _addFairies[i].Position.Y,
+		            _addFairies[i].Width, _addFairies[i].Height);
+
+		        if (rectangle1.Intersects(rectangle2))
+		        {
+		            AddFairy();
 		        }
 		    }
 
