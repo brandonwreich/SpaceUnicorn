@@ -220,7 +220,7 @@ namespace SpaceUnicorn
 
             // Add Fairy
             _addFairies = new List<AddFairy>();
-            _isAddingFairy = TimeSpan.FromSeconds(1f);
+            _isAddingFairy = TimeSpan.FromSeconds(40f);
             _wasAddingFairy = TimeSpan.Zero;
 
 
