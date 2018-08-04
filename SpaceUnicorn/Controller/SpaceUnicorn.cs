@@ -177,7 +177,7 @@ namespace SpaceUnicorn
             // GameTime Variables
 		    _gameUpdate = TimeSpan.FromSeconds(10f);
             _previousGameUpdate = TimeSpan.Zero;
-            _increase = TimeSpan.FromSeconds(0.01f);
+            _increase = TimeSpan.FromSeconds(0.001f);
 
 			/* Power ups/downs */
 
@@ -548,7 +548,17 @@ namespace SpaceUnicorn
 
 	    private void AddFairy()
 	    {
+	        var yPosition = 0;
 
+            Animation fairyAnimation = new Animation();
+            fairyAnimation.Initialize(_fairyTexture, Vector2.Zero, 0, 0, 0, 0, Color.White, 1f, true);
+
+	        Vector2 position = new Vector2(_player.Position.X, yPosition);
+
+            Fairy fairy = new Fairy();
+            fairy.Initialize(fairyAnimation, position);
+
+            _faries.Add(fairy);
 	    }
 
         #endregion
@@ -1078,4 +1088,4 @@ namespace SpaceUnicorn
 
 	    #endregion
     }
-}	
+}		
