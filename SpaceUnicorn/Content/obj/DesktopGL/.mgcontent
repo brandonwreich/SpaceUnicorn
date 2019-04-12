@@ -4,20 +4,6 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Animation/enemy.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Animation/explosion.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Animation/glitterExplosion.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Animation/marshmallowLaser.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Animation/meteor.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Animation/Space Unicorn.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Background/spaceBackground.jpg</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Background/startScreen.jpg</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Fonts/gameFont.spritefont</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Music/Space Unicorn.mp3</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Powers/healthPowerUp.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Powers/hyperSpace.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Powers/speedIncrease.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Powers/bomb.png</File>
-    <File>C:/Users/breich1/Documents/Source/SpaceUnicorn/SpaceUnicorn/Content/Powers/addFairy.png</File>
+    <File>C:/Users/Whitney/Source/Repos/SpaceUnicorn/SpaceUnicorn/Content/Music/Space Unicorn.mp3</File>
   </SourceFiles>
 </SourceFileCollection>

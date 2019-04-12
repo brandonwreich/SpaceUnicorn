@@ -74,6 +74,8 @@ namespace SpaceUnicorn.Model
 
 	    public Boolean Reverse { get; set; }
 
+        public Boolean Lift { get; set; }
+
         #endregion
 
         #region Initailize
@@ -88,6 +90,7 @@ namespace SpaceUnicorn.Model
 			_enemyMoveSpeed = 6f;
 			_scoreValue = 100;
 		    Reverse = false;
+            Lift = false;
 		}
 
         #endregion
@@ -108,6 +111,16 @@ namespace SpaceUnicorn.Model
             if (Reverse)
             {
                 Position.X += _enemyMoveSpeed;
+            }
+
+            if (Lift)
+            {
+                Position.Y += _enemyMoveSpeed;
+            }
+            
+            if (Lift == false)
+            {
+                Position.Y -= EnemyMoveSpeed;
             }
 
             if (Health <= 0)

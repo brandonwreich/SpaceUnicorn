@@ -81,7 +81,8 @@ namespace SpaceUnicorn
         // GameTime Variables
 	    private TimeSpan _gameUpdate;
 	    private TimeSpan _previousGameUpdate;
-	    private TimeSpan _increase;
+	    private TimeSpan _increaseSpawn;
+        private TimeSpan _increaseFire;
 
 		/* Power Ups/Downs */
 
@@ -177,7 +178,8 @@ namespace SpaceUnicorn
             // GameTime Variables
 		    _gameUpdate = TimeSpan.FromSeconds(10f);
             _previousGameUpdate = TimeSpan.Zero;
-            _increase = TimeSpan.FromSeconds(0.001f);
+            _increaseSpawn = TimeSpan.FromSeconds(0.001f);
+            _increaseFire = TimeSpan.FromSeconds(0.001f);
 
 			/* Power ups/downs */
 
@@ -216,7 +218,7 @@ namespace SpaceUnicorn
             // Savior
             _saveMe = new List<Savior>();
             _wasSaving = TimeSpan.Zero;
-		    _isSaving = TimeSpan.FromSeconds(1f);
+		    _isSaving = TimeSpan.FromSeconds(20f);
 
             // Add Fairy
             _addFairies = new List<AddFairy>();
@@ -363,11 +365,14 @@ namespace SpaceUnicorn
 			    {
 			        _previousGameUpdate = gameTime.TotalGameTime;
 
-			        _enemySpawnTime = _enemySpawnTime - (_increase + TimeSpan.FromSeconds(0.1f));
-			        _fireTime = _fireTime - _increase;
+			        _enemySpawnTime = _enemySpawnTime - _increaseSpawn;
+			        _fireTime = _fireTime + _increaseFire;
 
                     Console.WriteLine(_enemySpawnTime + "  " + _fireTime);
 			    }
+
+                _increaseSpawn = _increaseSpawn + TimeSpan.FromSeconds(0.1f);
+                _increaseFire = _increaseFire + TimeSpan.FromSeconds(0.5f);
 			}
 
 			base.Update(gameTime);
@@ -650,6 +655,20 @@ namespace SpaceUnicorn
 			        _enemies[i].Reverse = true;
 			    }
 
+                if (gameTime.TotalGameTime > TimeSpan.FromSeconds(1f))
+                {
+                    if (_enemies[i].Position.Y <= 0)
+                    {
+                       _enemies[i].Lift = false;
+                    }
+
+                    if (_enemies[i].Position.Y > GraphicsDevice.Viewport.Height)
+                    {
+                        _enemies[i].Lift = true;
+                    }
+                }
+
+
 				if (_enemies[i].Active == false)
 				{
 					// If not active and health <= 0
@@ -864,7 +883,7 @@ namespace SpaceUnicorn
 	    {
 	        if (gameTime.TotalGameTime - _wasSaving > _isSaving)
             { 
-	            if (_enemies.Count >= 10)
+	            if (_enemies.Count >= 15)
 	            {
                    _wasSaving = gameTime.TotalGameTime;
 
@@ -880,7 +899,6 @@ namespace SpaceUnicorn
 	            {
                     _saveMe.RemoveAt(i);
 	            }
-	            
 	        }
 	    }
 
@@ -964,7 +982,7 @@ namespace SpaceUnicorn
 
 				if (rectangle1.Intersects(rectangle2))
 				{
-					_player.Health = 100;
+					_player.Health += 50;
 					_healthy.RemoveAt(i);
 				}
 			}
