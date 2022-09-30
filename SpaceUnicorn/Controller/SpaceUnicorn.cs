@@ -244,7 +244,7 @@ namespace SpaceUnicorn
 
 			// Menu
 		    _startScreen = new StartScreen(this, _spriteBatch, Content.Load<SpriteFont>("Fonts/gameFont"),
-		        Content.Load<Texture2D>("Background/startScreen"));
+		        Content.Load<Texture2D>("Background/StartScreen"));
 			Components.Add(_startScreen);
 			_startScreen.Hide();
 
