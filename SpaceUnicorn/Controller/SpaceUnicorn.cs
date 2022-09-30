@@ -639,8 +639,7 @@ namespace SpaceUnicorn {
 
         #region Marshmallows
 
-        private void AddMarshmallow(Vector2 position)
-		{
+        private void AddMarshmallow(Vector2 position) {
 			// Initalize _marshmallows
 			MarshmallowLaser marshmallow = new MarshmallowLaser();
 			marshmallow.Initialize(GraphicsDevice.Viewport, _marshmallowIcon, position);
@@ -649,15 +648,12 @@ namespace SpaceUnicorn {
 			_marshmallows.Add(marshmallow);
 		}
 
-		private void UpdateMarshallows()
-		{
-			for (int i = _marshmallows.Count - 1; i >= 0; i--)
-			{
+		private void UpdateMarshallows() {
+			for (int i = _marshmallows.Count - 1; i >= 0; i--) {
 				_marshmallows[i].Update();
 
 				// If _marshmallows hit something or leave the screen
-				if (_marshmallows[i].Active == false)
-				{
+				if (_marshmallows[i].Active == false) {
                     // Remove _marshmallows
 				    _marshmallows.RemoveAt(i);
 				}
@@ -668,8 +664,7 @@ namespace SpaceUnicorn {
 
         #region Health Boost
 
-        private void AddHealthBoost()
-		{
+        private void AddHealthBoost() {
             // Initalize health boost
 		    HealthBoost health = new HealthBoost();
 		    health.Initialize(GraphicsDevice.Viewport, _healthBoostIcon,
@@ -680,24 +675,20 @@ namespace SpaceUnicorn {
 			_healthy.Add(health);
 		}
 
-		private void UpdateHealthBoost(GameTime gameTime)
-		{
+		private void UpdateHealthBoost(GameTime gameTime) {
             // Adds helath boost every _healthSpawnTime
-		    if (gameTime.TotalGameTime - _previousHealthSpawnTime > _healthSpawnTime)
-			{
+		    if (gameTime.TotalGameTime - _previousHealthSpawnTime > _healthSpawnTime) {
 				_previousHealthSpawnTime = gameTime.TotalGameTime;
 
 				AddHealthBoost();
 			}
 
             // Loop through health boost list
-			for (int i = _healthy.Count - 1; i >= 0; i--)
-			{
+			for (int i = _healthy.Count - 1; i >= 0; i--) {
                 // Update each boost
 			    _healthy[i].Update(gameTime);
 
-			    if (_healthy[i].Active == false)
-				{
+			    if (_healthy[i].Active == false) {
 				    _healthy.RemoveAt(i);
 				}
 			}
@@ -707,8 +698,7 @@ namespace SpaceUnicorn {
 
         #region Speed
 
-        private void AddSpeed()
-		{
+        private void AddSpeed() {
 			Animation speedAnimation = new Animation();
 			speedAnimation.Initialize(_speedIcon, Vector2.Zero, 40, 40, 10, 30, Color.White, 1f, true);
 
@@ -720,43 +710,35 @@ namespace SpaceUnicorn {
 			_speed.Add(speedPower);
 		}
 
-		private void UpdateSpeed(GameTime gameTime)
-		{
-			if (gameTime.TotalGameTime - _previousSpeedSpawnTime > _speedSpawnTime)
-			{
+		private void UpdateSpeed(GameTime gameTime) {
+			if (gameTime.TotalGameTime - _previousSpeedSpawnTime > _speedSpawnTime) {
 				_previousSpeedSpawnTime = gameTime.TotalGameTime;
 
 				AddSpeed();
 			}
 
-			for (int i = _speed.Count - 1; i >= 0; i--)
-			{
+			for (int i = _speed.Count - 1; i >= 0; i--) {
 				_speed[i].Update(gameTime);
 
-				if (_speed[i].Active == false || _hyperSpace.Count > 0)
-				{
+				if (_speed[i].Active == false || _hyperSpace.Count > 0) {
 					_speed.RemoveAt(i);
 				}
 			}
 		}
 
-        private void OnSpeedTimedEvent(object sender, ElapsedEventArgs e)
-        {
+        private void OnSpeedTimedEvent(object sender, ElapsedEventArgs e) {
             _speedCountSeconds--;
 
             var power = _random.Next(1, 100);
 
-            if (power > 50)
-            {
+            if (power > 50) {
                 _isInvading = true;
             }
-            else
-            {
+            else {
                 _isSlowingDown = true;
             }
 
-            if (_speedCountSeconds == 0)
-            {
+            if (_speedCountSeconds == 0) {
                 _isInvading = false;
                 _isSlowingDown = false;
 
@@ -770,8 +752,7 @@ namespace SpaceUnicorn {
 
         #region Hyper Space
 
-        private void AddHyperSpace()
-		{
+        private void AddHyperSpace() {
 			HyperSpace flash = new HyperSpace();
 		    flash.Initialize(GraphicsDevice.Viewport, _hyperSpaceIcon,
 		        new Vector2((GraphicsDevice.Viewport.Width + _hyperSpaceIcon.Width / 2),
@@ -779,33 +760,27 @@ namespace SpaceUnicorn {
 			_hyperSpace.Add(flash);
 		}
 
-		private void UpdateHyperSpace(GameTime gameTime)
-		{
-			if (gameTime.TotalGameTime - _wasJumping > _hyperSpaceSpawnTime)
-			{
+		private void UpdateHyperSpace(GameTime gameTime) {
+			if (gameTime.TotalGameTime - _wasJumping > _hyperSpaceSpawnTime) {
 				_wasJumping = gameTime.TotalGameTime;
 
 				AddHyperSpace();
 			}
 
-			for (int i = _hyperSpace.Count - 1; i >= 0; i--)
-			{
+			for (int i = _hyperSpace.Count - 1; i >= 0; i--) {
 				_hyperSpace[i].Update(gameTime);
 
-				if (_hyperSpace[i].Active == false)
-				{
+				if (_hyperSpace[i].Active == false) {
 					_hyperSpace.RemoveAt(i);
 				}
 			}
 		}
 
-	    private void OnHyperSpaceTimedEvent(object sender, ElapsedEventArgs e)
-	    {
+	    private void OnHyperSpaceTimedEvent(object sender, ElapsedEventArgs e) {
 	        _hyperSpaceCountSeconds--;
 
 	        _isJumping = true;
-	        if (_hyperSpaceCountSeconds == 0)
-	        {
+	        if (_hyperSpaceCountSeconds == 0) {
 	            _hyperSpaceTimer.Stop();
 	            _hyperSpaceTimer.Close();
 	            _isJumping = false;
@@ -817,8 +792,7 @@ namespace SpaceUnicorn {
 
         #region Savior
 
-	    private void AddSavior()
-	    {
+	    private void AddSavior() {
             Animation saviorAnimation = new Animation();
             saviorAnimation.Initialize(_saviorIcon, Vector2.Zero, 47, 40, 9, 30, Color.White, 1f, true);
 
@@ -830,24 +804,19 @@ namespace SpaceUnicorn {
             _saveMe.Add(save);
 	    }
 
-	    private void UpdateSavior(GameTime gameTime)
-	    {
-	        if (gameTime.TotalGameTime - _wasSaving > _isSaving)
-            { 
-	            if (_enemies.Count >= 15)
-	            {
+	    private void UpdateSavior(GameTime gameTime) {
+	        if (gameTime.TotalGameTime - _wasSaving > _isSaving) { 
+	            if (_enemies.Count >= 15) {
                    _wasSaving = gameTime.TotalGameTime;
 
                    AddSavior();
 	            }
             }
 
-	        for(int i = _saveMe.Count - 1; i >= 0; i--)
-	        {
+	        for(int i = _saveMe.Count - 1; i >= 0; i--) {
                 _saveMe[i].Update(gameTime);
 
-	            if (_saveMe[i].Active == false)
-	            {
+	            if (_saveMe[i].Active == false) {
                     _saveMe.RemoveAt(i);
 	            }
 	        }
@@ -857,8 +826,7 @@ namespace SpaceUnicorn {
 
         #region Add Fairy
 
-	    private void AddFairyPower()
-	    {
+	    private void AddFairyPower() {
 	        Animation addFairyAnimation = new Animation();
 	        addFairyAnimation.Initialize(_addFairyIcon, Vector2.Zero, 32, 32, 10, 16, Color.White, 1f, true);
 
@@ -870,21 +838,17 @@ namespace SpaceUnicorn {
 	        _addFairies.Add(addIt);
 	    }
 
-	    private void UpdateFairyPower(GameTime gameTime)
-	    {
-	        if (gameTime.TotalGameTime - _wasAddingFairy > _isAddingFairy)
-	        {
+	    private void UpdateFairyPower(GameTime gameTime) {
+	        if (gameTime.TotalGameTime - _wasAddingFairy > _isAddingFairy) {
 	            _wasAddingFairy = gameTime.TotalGameTime;
 
 	            AddFairyPower();
             }
 
-	        for (int i = 0; i < _addFairies.Count; i++)
-	        {
+	        for (int i = 0; i < _addFairies.Count; i++) {
                 _addFairies[i].Update(gameTime);
 
-	            if (_addFairies[i].Active == false)
-	            {
+	            if (_addFairies[i].Active == false) {
                     _addFairies.RemoveAt(i);
 	            }
 	        }
@@ -894,8 +858,7 @@ namespace SpaceUnicorn {
 
         #region Collisions
 
-        private void UpdateCollisions()
-		{
+        private void UpdateCollisions() {
 			// Use the Rectangle's built-in intersect function to 
 			// determine if two objects are overlapping
 			Rectangle rectangle1;
@@ -906,47 +869,40 @@ namespace SpaceUnicorn {
 		        _player.Height);
 
 			// Player vs enemy
-			for (int i = 0; i < _enemies.Count; i++)
-			{
+			for (int i = 0; i < _enemies.Count; i++) {
 			    rectangle2 = new Rectangle((int) _enemies[i].Position.X, (int) _enemies[i].Position.Y,
 			        _enemies[i].Width, _enemies[i].Height);
 
-				if (rectangle1.Intersects(rectangle2))
-				{
+				if (rectangle1.Intersects(rectangle2)) {
 					_player.Health -= _enemies[i].Damage;
 
 					_enemies[i].Health = 0;
 
-					if (_player.Health <= 0)
-					{
+					if (_player.Health <= 0) {
 						_player.Active = false;
 					}
 				}
 			}
 
 			// Player vs Health power up 
-			for (int i = 0; i < _healthy.Count; i++)
-			{
+			for (int i = 0; i < _healthy.Count; i++) {
 				// Create the health power up rectangle
 			    rectangle2 = new Rectangle((int) _healthy[i].Position.X, (int) _healthy[i].Position.Y,
 			        _healthy[i].Width, _healthy[i].Height);
 
-				if (rectangle1.Intersects(rectangle2))
-				{
+				if (rectangle1.Intersects(rectangle2)) {
 					_player.Health += 50;
 					_healthy.RemoveAt(i);
 				}
 			}
 
 			//Player vs Speed Power
-			for (int i = 0; i < _speed.Count; i++)
-			{
+			for (int i = 0; i < _speed.Count; i++) {
 				// Create slow motion power rectangle
 			    rectangle2 = new Rectangle((int) _speed[i].Position.X, (int) _speed[i].Position.Y, _speed[i].Width,
 			        _speed[i].Height);
 
-				if (rectangle1.Intersects(rectangle2))
-				{
+				if (rectangle1.Intersects(rectangle2)) {
 					_speedTimer.Stop();
 					_speedTimer.Start();
 					_speed.RemoveAt(i);
@@ -954,13 +910,11 @@ namespace SpaceUnicorn {
 			}
 
 			// Player vs Hyper Space
-			for (int i = 0; i < _hyperSpace.Count; i++)
-			{
+			for (int i = 0; i < _hyperSpace.Count; i++) {
 			    rectangle2 = new Rectangle((int) _hyperSpace[i].Position.X, (int) _hyperSpace[i].Position.Y,
 			        _hyperSpace[i].Width, _hyperSpace[i].Height);
 
-				if (rectangle1.Intersects(rectangle2))
-				{
+				if (rectangle1.Intersects(rectangle2)) {
 					_hyperSpaceTimer.Stop();
 					_hyperSpaceTimer.Start();
 					_hyperSpace.RemoveAt(i);
@@ -968,15 +922,12 @@ namespace SpaceUnicorn {
 			}
 
             // Player vs Savior
-		    for (int i = 0; i < _saveMe.Count; i++)
-		    {
+		    for (int i = 0; i < _saveMe.Count; i++) {
 		        rectangle2 = new Rectangle((int) _saveMe[i].Position.X, (int) _saveMe[i].Position.Y,
 		            _saveMe[i].Width, _saveMe[i].Height);
 
-		        if (rectangle1.Intersects(rectangle2))
-		        {
-		            for (int j = 0; j < _enemies.Count; j++)
-		            {
+		        if (rectangle1.Intersects(rectangle2)) {
+		            for (int j = 0; j < _enemies.Count; j++) {
 		                _enemies[j].Active = false;
                         AddExplosion(_enemies[j].Position);
 		                _score += _enemies[i].ScoreValue;
@@ -986,22 +937,18 @@ namespace SpaceUnicorn {
 		    }
 
             // Player vs AddFairy
-		    for (int i = 0; i < _addFairies.Count; i++)
-		    {
+		    for (int i = 0; i < _addFairies.Count; i++) {
 		        rectangle2 = new Rectangle((int) _addFairies[i].Position.X, (int) _addFairies[i].Position.Y,
 		            _addFairies[i].Width, _addFairies[i].Height);
 
-		        if (rectangle1.Intersects(rectangle2))
-		        {
+		        if (rectangle1.Intersects(rectangle2)) {
 		            AddFairy();
 		        }
 		    }
 
 			// Projectile vs Enemy Collision
-			for (int i = 0; i < _marshmallows.Count; i++)
-			{
-				for (int j = 0; j < _enemies.Count; j++)
-				{
+			for (int i = 0; i < _marshmallows.Count; i++) {
+				for (int j = 0; j < _enemies.Count; j++) {
 					// Create the mashmallow rectangle
 					rectangle1 = new Rectangle((int)_marshmallows[i].Position.X - _marshmallows[i].Width / 2, (int)_marshmallows[i].Position.Y -
 											   _marshmallows[i].Height / 2, _marshmallows[i].Width, _marshmallows[i].Height);
@@ -1012,8 +959,7 @@ namespace SpaceUnicorn {
 				        _enemies[j].Height);
 
 					// Determine if the two objects collided with each other
-					if (rectangle1.Intersects(rectangle2))
-					{
+					if (rectangle1.Intersects(rectangle2)) {
 						//Enemies take damage and mashmallows disapear
 						_enemies[j].Health -= _marshmallows[i].Damage;
 						_marshmallows[i].Active = false;
@@ -1026,20 +972,16 @@ namespace SpaceUnicorn {
 
         #region Explosions
 
-        private void AddExplosion(Vector2 position)
-		{
+        private void AddExplosion(Vector2 position) {
 			Animation explosion = new Animation();
 		    explosion.Initialize(_explosionTexture, position, 134, 134, 12, 35, Color.White, 1f, false);
 			_explosions.Add(explosion);
 		}
 
-		private void UpdateExplosions(GameTime gameTime)
-		{
-			for (int i = _explosions.Count - 1; i >= 0; i--)
-			{
+		private void UpdateExplosions(GameTime gameTime) {
+			for (int i = _explosions.Count - 1; i >= 0; i--) {
 				_explosions[i].Update(gameTime);
-				if (_explosions[i].Active == false)
-				{
+				if (_explosions[i].Active == false) {
 					_explosions.RemoveAt(i);
 				}
 			}
@@ -1049,8 +991,7 @@ namespace SpaceUnicorn {
 
 	    #region Helper Methods
 
-	    private bool CheckKey(Keys theKey)
-	    {
+	    private bool CheckKey(Keys theKey) {
 	        return _keyboardState.IsKeyUp(theKey) &&
 	               _oldKeyboardState.IsKeyDown(theKey);
 	    }
