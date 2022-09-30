@@ -5,8 +5,7 @@ using System;
 #endif
 #endregion
 
-namespace SpaceUnicorn
-{
+namespace SpaceUnicorn {
 #if __IOS__ || __TVOS__
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
@@ -48,18 +47,15 @@ namespace SpaceUnicorn
 		}
 
 #if __IOS__ || __TVOS__
-        public override void FinishedLaunching(UIApplication app)
-        {
+        public override void FinishedLaunching(UIApplication app) {
             RunGame();
         }
 #endif
 	}
 
 #if MONOMAC
-    class AppDelegate : NSApplicationDelegate
-    {
-        public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
-        {
+    class AppDelegate : NSApplicationDelegate {
+        public override void FinishedLaunching (MonoMac.Foundation.NSObject notification) {
             AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs a) =>  {
                 if (a.Name.StartsWith("MonoMac")) {
                     return typeof(MonoMac.AppKit.AppKitFramework).Assembly;
@@ -69,10 +65,10 @@ namespace SpaceUnicorn
             Program.RunGame();
         }
 
-        public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
-        {
+        public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender) {
             return true;
         }
     }  
+    
 #endif
 }

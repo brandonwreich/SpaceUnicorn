@@ -3,16 +3,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceUnicorn.View;
 
-namespace SpaceUnicorn.Model
-{
-	public class Enemy
-	{
+namespace SpaceUnicorn.Model {
+	public class Enemy {
         #region Variables
 
         // Animation representing the enemy
         private Animation _enemyAnimation;
-		public Animation EnemyAnimation
-		{
+		public Animation EnemyAnimation {
 			get { return _enemyAnimation; }
 			set { _enemyAnimation = value; }
 		}
@@ -22,52 +19,45 @@ namespace SpaceUnicorn.Model
 
 		// The state of the Enemy Ships
 		private bool _active;
-		public bool Active
-		{
+		public bool Active {
 			get { return _active; }
 			set { _active = value; }
 		}
 
 		// Health of the enemy
 		private int _health;
-		public int Health
-		{
+		public int Health {
 			get { return _health; }
 			set { _health = value; }
 		}
 
 		// The amount of damage the enemy inflicts on the player
 		private int _damage;
-		public int Damage
-		{
+		public int Damage {
 			get { return _damage; }
 			set { _damage = value; }
 		}
 
 		// The amount of score the enemy will give to the player
 		private int _scoreValue;
-		public int ScoreValue
-		{
+		public int ScoreValue {
 			get { return _scoreValue; }
 			set { _scoreValue = value; }
 		}
 
 		// Get the width of the enemy ship
-		public int Width
-		{
+		public int Width {
 			get { return EnemyAnimation.FrameWidth; }
 		}
 
 		// Get the height of the enemy ship
-		public int Height
-		{
+		public int Height {
 			get { return EnemyAnimation.FrameHeight; }
 		}
 
 		// The speed at which the enemy moves
 		private float _enemyMoveSpeed;
-		public float EnemyMoveSpeed
-		{
+		public float EnemyMoveSpeed {
 			get { return _enemyMoveSpeed; }
 			set { _enemyMoveSpeed = value; }
 		}
@@ -80,8 +70,7 @@ namespace SpaceUnicorn.Model
 
         #region Initailize
 
-        public void Initialize(Animation animation, Vector2 position)
-		{
+        public void Initialize(Animation animation, Vector2 position) {
 			_enemyAnimation = animation;
 			Position = position;
 			_active = true;
@@ -97,34 +86,27 @@ namespace SpaceUnicorn.Model
 
         #region Update
 
-        public void Update(GameTime gameTime)
-        {
+        public void Update(GameTime gameTime) {
 		    _enemyAnimation.Position = Position;
-
             _enemyAnimation.Update(gameTime);
 
-            if (Reverse == false)
-            {
+            if (Reverse == false) {
                 Position.X -= _enemyMoveSpeed;
             }
 
-            if (Reverse)
-            {
+            if (Reverse) {
                 Position.X += _enemyMoveSpeed;
             }
 
-            if (Lift)
-            {
+            if (Lift) {
                 Position.Y += _enemyMoveSpeed;
             }
             
-            if (Lift == false)
-            {
+            if (Lift == false) {
                 Position.Y -= EnemyMoveSpeed;
             }
 
-            if (Health <= 0)
-			{
+            if (Health <= 0) {
 				Active = false;
 				_health = 0;
 			}
@@ -134,8 +116,7 @@ namespace SpaceUnicorn.Model
 
         #region Draw
 
-        public void Draw(SpriteBatch spriteBatch)
-		{
+        public void Draw(SpriteBatch spriteBatch) {
 			_enemyAnimation.Draw(spriteBatch);
 		}
 

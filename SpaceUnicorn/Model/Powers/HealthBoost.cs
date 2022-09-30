@@ -1,16 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceUnicorn.Model.Powers
-{
-	public class HealthBoost
-	{
+namespace SpaceUnicorn.Model.Powers {
+	public class HealthBoost {
         #region Variables
 
         // Image representing the power
         private Texture2D _texture;
-		public Texture2D Texture
-		{
+		public Texture2D Texture {
 			get { return _texture; }
 			set { _texture = value; }
 		}
@@ -19,21 +16,18 @@ namespace SpaceUnicorn.Model.Powers
 
 		// State of the power
 		private bool _active;
-		public bool Active
-		{
+		public bool Active {
 			get { return _active; }
 			set { _active = value; }
 		}
 
 		// Get the width of the power
-		public int Width
-		{
+		public int Width {
 			get { return Texture.Width; }
 		}
 
 		// Get the height of the power
-		public int Height
-		{
+		public int Height {
 			get { return Texture.Height; }
 		}
 
@@ -44,13 +38,10 @@ namespace SpaceUnicorn.Model.Powers
 
         #region Initialize
 
-        public void Initialize(Viewport viewport, Texture2D texture, Vector2 position)
-		{
+        public void Initialize(Viewport viewport, Texture2D texture, Vector2 position) {
 			_texture = texture;
 			Position = position;
-
 			_active = true;
-
 			_healthPowerUpMoveSpeed = 6f;
 		}
 
@@ -58,12 +49,10 @@ namespace SpaceUnicorn.Model.Powers
 
         #region Update
 
-        public void Update(GameTime gameTime)
-		{
+        public void Update(GameTime gameTime) {
 			Position.X -= _healthPowerUpMoveSpeed;
 
-			if(Position.X < -Width)
-			{
+			if(Position.X < -Width) {
 				Active = false;
 			}
 		}
@@ -72,8 +61,7 @@ namespace SpaceUnicorn.Model.Powers
 
         #region Draw
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
+        public void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Texture, Position, null, Color.White, 0f, new Vector2(Width / 2, Height / 2), 1f,
                 SpriteEffects.None, 0f);
         }

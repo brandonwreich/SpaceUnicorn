@@ -2,16 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using SpaceUnicorn.View;
 
-namespace SpaceUnicorn.Model.Powers
-{
-    class AddFairy
-    {
+namespace SpaceUnicorn.Model.Powers {
+    class AddFairy {
         #region Variables
 
         // Animation representing the power
         private Animation _addFairyAnimation;
-        public Animation AddFairyAnimation
-        {
+        public Animation AddFairyAnimation {
             get { return _addFairyAnimation; }
             set { _addFairyAnimation = value; }
         }
@@ -21,21 +18,18 @@ namespace SpaceUnicorn.Model.Powers
 
         // State of the power
         private bool _active;
-        public bool Active
-        {
+        public bool Active {
             get { return _active; }
             set { _active = value; }
         }
 
         // Get the width of the power
-        public int Width
-        {
+        public int Width {
             get { return AddFairyAnimation.FrameWidth; }
         }
 
         // Get the height of the power
-        public int Height
-        {
+        public int Height {
             get { return AddFairyAnimation.FrameHeight; }
         }
 
@@ -46,14 +40,10 @@ namespace SpaceUnicorn.Model.Powers
 
         #region Initialize
 
-        public void Initialize(Animation animation, Vector2 position)
-        {
+        public void Initialize(Animation animation, Vector2 position) {
             _addFairyAnimation = animation;
-
             Position = position;
-
             _active = true;
-
             _addFairyPowerMoveSpeed = 6f;
         }
 
@@ -61,16 +51,12 @@ namespace SpaceUnicorn.Model.Powers
 
         #region Update
 
-        public void Update(GameTime gameTime)
-        {
+        public void Update(GameTime gameTime) {
             Position.X -= _addFairyPowerMoveSpeed;
-
             _addFairyAnimation.Position = Position;
-
             _addFairyAnimation.Update(gameTime);
 
-            if (Position.X < -Width)
-            {
+            if (Position.X < -Width) {
                 Active = false;
             }
         }
@@ -79,8 +65,7 @@ namespace SpaceUnicorn.Model.Powers
 
         #region Draw
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
+        public void Draw(SpriteBatch spriteBatch) {
             _addFairyAnimation.Draw(spriteBatch);
         }
 
