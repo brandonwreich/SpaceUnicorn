@@ -19,13 +19,11 @@ using SpaceUnicorn.View;
  * Fairy's that come to help
  * Change the bomb icon
  */
-namespace SpaceUnicorn
-{
+namespace SpaceUnicorn {
 	/// <summary>
 	/// This is the main type for your game.
 	/// </summary>
-	public class SpaceUnicorn : Game
-	{
+	public class SpaceUnicorn : Game {
         #region Variables
 
         GraphicsDeviceManager _graphics;
@@ -131,8 +129,7 @@ namespace SpaceUnicorn
 
         #region Game Start
 
-        public SpaceUnicorn()
-		{
+        public SpaceUnicorn() {
 			_graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 		}
@@ -145,8 +142,7 @@ namespace SpaceUnicorn
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize()
-		{
+        protected override void Initialize() {
 			// Initalize _player
 			_player = new Player();
 			_playerMoveSpeed = 8.0f;
@@ -237,8 +233,7 @@ namespace SpaceUnicorn
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
-		{
+        protected override void LoadContent() {
 			// Create a new SpriteBatch, which can be used to draw textures.
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -300,8 +295,7 @@ namespace SpaceUnicorn
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-		{
+        protected override void Update(GameTime gameTime) {
 			// For Mobile devices, this logic will close the Game when the Back button is pressed
 			// Exit() is obsolete on iOS
 #if !__IOS__ && !__TVOS__
@@ -310,18 +304,14 @@ namespace SpaceUnicorn
 #endif
 			_keyboardState = Keyboard.GetState();
 
-			if (_activeScreen == _startScreen)
-			{
-				if (CheckKey(Keys.Enter))
-				{
-					if (_startScreen.SelectedIndex == 0)
-					{
+			if (_activeScreen == _startScreen) {
+				if (CheckKey(Keys.Enter)) {
+					if (_startScreen.SelectedIndex == 0) {
 						_activeScreen.Hide();
 						_activeScreen = _actionScreen;
 						_activeScreen.Show();
 					}
-					if (_startScreen.SelectedIndex == 1)
-					{
+					if (_startScreen.SelectedIndex == 1) {
 						Exit();
 					}
 				}
@@ -329,8 +319,7 @@ namespace SpaceUnicorn
 
 			_oldKeyboardState = _keyboardState;
 
-			if (_activeScreen == _actionScreen)
-			{
+			if (_activeScreen == _actionScreen) {
 				// Read the current state of the keyboard and gamepad
 				// and store it
 				_currentKeyboardState = Keyboard.GetState();
@@ -361,8 +350,7 @@ namespace SpaceUnicorn
                 UpdateSavior(gameTime);
                 UpdateFairyPower(gameTime);
 
-			    if (gameTime.TotalGameTime - _previousGameUpdate > _gameUpdate)
-			    {
+			    if (gameTime.TotalGameTime - _previousGameUpdate > _gameUpdate) {
 			        _previousGameUpdate = gameTime.TotalGameTime;
 
 			        _enemySpawnTime = _enemySpawnTime - _increaseSpawn;
@@ -386,8 +374,7 @@ namespace SpaceUnicorn
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-		{
+        protected override void Draw(GameTime gameTime) {
 			_graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			//Start drawing
@@ -395,8 +382,7 @@ namespace SpaceUnicorn
 
 			base.Draw(gameTime);
 
-			if (_activeScreen == _actionScreen)
-			{
+			if (_activeScreen == _actionScreen) {
 				// Draw background
 				_bgLayer1.Draw(_spriteBatch);
 
@@ -404,50 +390,42 @@ namespace SpaceUnicorn
 				_player.Draw(_spriteBatch);
 
 				// Draw _enemies
-				for (int i = 0; i < _enemies.Count; i++)
-				{
+				for (int i = 0; i < _enemies.Count; i++) {
 					_enemies[i].Draw(_spriteBatch);
 				}
 
 				// Draw mashmallows
-				for (int i = 0; i < _marshmallows.Count; i++)
-				{
+				for (int i = 0; i < _marshmallows.Count; i++) {
 					_marshmallows[i].Draw(_spriteBatch);
 				}
 
 				// Draw the _explosions
-				for (int i = 0; i < _explosions.Count; i++)
-				{
+				for (int i = 0; i < _explosions.Count; i++) {
 					_explosions[i].Draw(_spriteBatch);
 				}
 
 				// Draw health boost
-				for (int i = 0; i < _healthy.Count; i++)
-				{
+				for (int i = 0; i < _healthy.Count; i++) {
 					_healthy[i].Draw(_spriteBatch);
 				}
 
 				// Draw _speed icon
-				for (int i = 0; i < _speed.Count; i++)
-				{
+				for (int i = 0; i < _speed.Count; i++) {
 					_speed[i].Draw(_spriteBatch);
 				}
 
 				// Draw hyper space power
-				for (int i = 0; i < _hyperSpace.Count; i++)
-				{
+				for (int i = 0; i < _hyperSpace.Count; i++) {
 					_hyperSpace[i].Draw(_spriteBatch);
 				}
 
                 // Draw Savior power up
-			    for (int i = 0; i < _saveMe.Count; i++)
-			    {
+			    for (int i = 0; i < _saveMe.Count; i++) {
                     _saveMe[i].Draw(_spriteBatch);
 			    }
 
                 // Draw the AddFairy power up
-			    for (int i = 0; i < _addFairies.Count; i++)
-			    {
+			    for (int i = 0; i < _addFairies.Count; i++) {
                     _addFairies[i].Draw(_spriteBatch);
 			    }
 
@@ -471,8 +449,7 @@ namespace SpaceUnicorn
 
         #region Player
 
-        private void UpdatePlayer(GameTime gameTime)
-		{
+        private void UpdatePlayer(GameTime gameTime) {
 			_player.Update(gameTime);
 
 			// Get Thumbstick Controls
@@ -482,34 +459,28 @@ namespace SpaceUnicorn
 			// Use the Keyboard / Dpad
 
 			// Move left
-			if (_currentKeyboardState.IsKeyDown(Keys.Left) || _currentGamePadState.DPad.Left == ButtonState.Pressed)
-			{
+			if (_currentKeyboardState.IsKeyDown(Keys.Left) || _currentGamePadState.DPad.Left == ButtonState.Pressed) {
 				_player.Position.X -= _playerMoveSpeed;
 			}
 
 			// Move right
-			if (_currentKeyboardState.IsKeyDown(Keys.Right) || _currentGamePadState.DPad.Right == ButtonState.Pressed)
-			{
+			if (_currentKeyboardState.IsKeyDown(Keys.Right) || _currentGamePadState.DPad.Right == ButtonState.Pressed) {
 				_player.Position.X += _playerMoveSpeed;
 			}
 
 			// Move up
-			if (_currentKeyboardState.IsKeyDown(Keys.Up) || _currentGamePadState.DPad.Up == ButtonState.Pressed)
-			{
+			if (_currentKeyboardState.IsKeyDown(Keys.Up) || _currentGamePadState.DPad.Up == ButtonState.Pressed) {
 				_player.Position.Y -= _playerMoveSpeed;
 			}
 
 			// Move down
-			if (_currentKeyboardState.IsKeyDown(Keys.Down) || _currentGamePadState.DPad.Down == ButtonState.Pressed)
-			{
+			if (_currentKeyboardState.IsKeyDown(Keys.Down) || _currentGamePadState.DPad.Down == ButtonState.Pressed) {
 				_player.Position.Y += _playerMoveSpeed;
 			}
 
 			// Fire _marshmallows
-			if (_currentKeyboardState.IsKeyDown(Keys.Space))
-			{
-				if (gameTime.TotalGameTime - _previousFireTime > _fireTime)
-				{
+			if (_currentKeyboardState.IsKeyDown(Keys.Space)) {
+				if (gameTime.TotalGameTime - _previousFireTime > _fireTime) {
 					_previousFireTime = gameTime.TotalGameTime;
 
 				    AddMarshmallow(_player.Position - new Vector2(-1 * (_player.Width / 2), _player.Height / 3));
@@ -520,8 +491,7 @@ namespace SpaceUnicorn
 			_player.Position.X = MathHelper.Clamp(_player.Position.X, 10, 790);
 			_player.Position.Y = MathHelper.Clamp(_player.Position.Y, 10, 470);
 
-			if (_player.Health <= 0)
-			{
+			if (_player.Health <= 0) {
                 // Reset game
 				_player.Health = 100;
 				_score = 0;
@@ -551,8 +521,7 @@ namespace SpaceUnicorn
 
         #region Fariy
 
-	    private void AddFairy()
-	    {
+	    private void AddFairy() {
 	        var yPosition = 0;
 
             Animation fairyAnimation = new Animation();
@@ -570,10 +539,8 @@ namespace SpaceUnicorn
 
         #region Music
 
-        private void PlayMusic(Song song)
-		{
-			try
-			{
+        private void PlayMusic(Song song) {
+			try {
 				// Play the song
 				MediaPlayer.Play(song);
 
@@ -587,8 +554,7 @@ namespace SpaceUnicorn
 
         #region Enemy
 
-        private void AddEnemy()
-		{
+        private void AddEnemy() {
 			// Initalize enemy animation
 			Animation enemyAnimation = new Animation();
 			enemyAnimation.Initialize(_enemyTexture, Vector2.Zero, 80, 40, 6, 50, Color.White, 1f, true);
@@ -603,21 +569,17 @@ namespace SpaceUnicorn
 			_enemies.Add(enemy);
 		}
 
-		private void UpdateEnemies(GameTime gameTime)
-		{
+		private void UpdateEnemies(GameTime gameTime) {
 			// Adds enemy every _enemySpawnTime
-			if (gameTime.TotalGameTime - _previousEnemySpawnTime > _enemySpawnTime)
-			{
+			if (gameTime.TotalGameTime - _previousEnemySpawnTime > _enemySpawnTime) {
 				_previousEnemySpawnTime = gameTime.TotalGameTime;
 
 				AddEnemy();
 			}
 
 			// If hyper space is true
-			if (_isJumping)
-			{
-				for (int j = 0; j < _enemies.Count; j++)
-				{
+			if (_isJumping) {
+				for (int j = 0; j < _enemies.Count; j++) {
 					// Increase spawn time and move _speed
 					_enemies[j].EnemyMoveSpeed = 50f;
 					_enemySpawnTime = TimeSpan.FromSeconds(.000001);
@@ -625,55 +587,44 @@ namespace SpaceUnicorn
 			}
 
 			// If invading is true
-			if (_isInvading)
-			{
+			if (_isInvading) {
 				// Increase enemy and marshmallow spawn time
 				_enemySpawnTime = TimeSpan.FromSeconds(.15f);
 				_fireTime = TimeSpan.FromSeconds(.00001f);
 			}
 
 			// If slow motion is true
-			if (_isSlowingDown)
-			{
-				for (int i = 0; i < _enemies.Count; i++)
-				{
+			if (_isSlowingDown) {
+				for (int i = 0; i < _enemies.Count; i++) {
 					_enemies[i].EnemyMoveSpeed = 3f;
 				}
 			}
 
-			for (int i = _enemies.Count - 1; i >= 0; i--)
-			{
+			for (int i = _enemies.Count - 1; i >= 0; i--) {
 				_enemies[i].Update(gameTime);
 
-			    if (_enemies[i].Position.X >= GraphicsDevice.Viewport.Width)
-			    {
+			    if (_enemies[i].Position.X >= GraphicsDevice.Viewport.Width) {
 			        _enemies[i].Reverse = false;
 			    }
 
-			    if (_enemies[i].Position.X <= 0)
-			    {
+			    if (_enemies[i].Position.X <= 0) {
 			        _enemies[i].Reverse = true;
 			    }
 
-                if (gameTime.TotalGameTime > TimeSpan.FromSeconds(1f))
-                {
-                    if (_enemies[i].Position.Y <= 0)
-                    {
+                if (gameTime.TotalGameTime > TimeSpan.FromSeconds(1f)) {
+                    if (_enemies[i].Position.Y <= 0) {
                        _enemies[i].Lift = false;
                     }
 
-                    if (_enemies[i].Position.Y > GraphicsDevice.Viewport.Height)
-                    {
+                    if (_enemies[i].Position.Y > GraphicsDevice.Viewport.Height) {
                         _enemies[i].Lift = true;
                     }
                 }
 
 
-				if (_enemies[i].Active == false)
-				{
+				if (_enemies[i].Active == false) {
 					// If not active and health <= 0
-					if (_enemies[i].Health <= 0)
-					{
+					if (_enemies[i].Health <= 0) {
 						AddExplosion(_enemies[i].Position);
 
 						_score += _enemies[i].ScoreValue;
